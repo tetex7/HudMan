@@ -1,0 +1,7 @@
+{
+    "language.name": "English",
+    "language.region": "United States",
+    "language.code": "en_us",
+    "key.hudman.hudreset": "Hud Reset",
+    "string.hudman.hud_error": "%EDATA%: %STACKTRACE%"
+}

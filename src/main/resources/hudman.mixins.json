@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.trs.hudman.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+  ],
+  "client": [
+        "PlayerGuiMixin",
+        "PlayerGuiMixinAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
