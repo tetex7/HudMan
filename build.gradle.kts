@@ -1,5 +1,11 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.LinkOption
+import java.nio.file.Paths
+import java.nio.file.Path
+import java.nio.file.StandardCopyOption
 
 plugins {
     kotlin("jvm") version "2.0.20"
@@ -31,15 +37,18 @@ repositories {
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
     maven(url = "https://maven.parchmentmc.org")
-    maven(url = "https://server.bbkr.space/artifactory/libs-release")
+    //maven(url = "https://server.bbkr.space/artifactory/libs-release")
     /*maven(
         name = "ParchmentMC",
         url = "https://maven.parchmentmc.org"
     )*/
 }
 
+
+
 dependencies {
     // To change the versions see the gradle.properties file
+    //loom.clientOnlyMinecraftJar()
     minecraft("com.mojang:minecraft:${project.property("minecraft_version")}")
     mappings(loom.layered {
         officialMojangMappings().
@@ -47,11 +56,12 @@ dependencies {
     })
     modImplementation("net.fabricmc:fabric-loader:${project.property("loader_version")}")
     modImplementation(include("net.fabricmc:fabric-language-kotlin:${project.property("kotlin_loader_version")}") ?: "")
-    modImplementation(include("io.github.cottonmc:LibGui:8.1.0+1.20.1") ?: "")
+    //modImplementation(include("io.github.cottonmc:LibGui:8.1.0+1.20.1") ?: "")
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.property("fabric_version")}")
 }
+
 
 tasks.processResources {
     inputs.property("version", project.version)
@@ -64,6 +74,47 @@ tasks.processResources {
             "minecraft_version" to project.property("minecraft_version"),
             "loader_version" to project.property("loader_version"),
             "kotlin_loader_version" to project.property("kotlin_loader_version"))
+    }
+}
+
+tasks.register("buildJar") {
+    group = "build"
+    description = "Runs build, remapJar, and remapSourcesJar in sequence, then copies outputs."
+
+    dependsOn("build", "remapJar", "remapSourcesJar")
+
+    doLast {
+        fun deleteDirectoryRecursively(directory: Path) {
+            Files.walk(directory)
+                .sorted(Comparator.reverseOrder())
+                .forEach { path ->
+                    Files.delete(path)
+                }
+        }
+
+        val namej = project.property("archives_base_name") as String
+        val buildOutPath = Paths.get("${project.rootDir}/build_out")
+        val sourcesJarPath = Paths.get("${project.rootDir}/build/devlibs/${namej}-${project.version}-sources.jar")
+        val jarPath = Paths.get("${project.rootDir}/build/libs/${namej}-${project.version}.jar")
+
+        println("Checking existence of paths:")
+        println("Source JAR path: $sourcesJarPath (exists: ${Files.exists(sourcesJarPath)})")
+        println("JAR path: $jarPath (exists: ${Files.exists(jarPath)})")
+
+        // Delete the output directory if it exists
+        if (Files.exists(buildOutPath, LinkOption.NOFOLLOW_LINKS)) {
+            deleteDirectoryRecursively(buildOutPath)
+        }
+        Files.createDirectories(buildOutPath)
+
+        // Copy only if both source files exist
+        if (Files.exists(sourcesJarPath) && Files.exists(jarPath)) {
+            Files.copy(sourcesJarPath, buildOutPath.resolve(sourcesJarPath.fileName), StandardCopyOption.REPLACE_EXISTING)
+            Files.copy(jarPath, buildOutPath.resolve(jarPath.fileName), StandardCopyOption.REPLACE_EXISTING)
+            println("Files successfully copied to $buildOutPath")
+        } else {
+            throw IllegalStateException("One or both required JAR files are missing: $sourcesJarPath, $jarPath")
+        }
     }
 }
 
@@ -83,6 +134,22 @@ tasks.withType<KotlinCompile>().configureEach {
 tasks.jar {
     from("LICENSE") {
         rename { "${it}_${project.base.archivesName}" }
+    }
+}
+
+tasks.clean.get().doLast {
+    val buildOutPath = Paths.get("${project.rootDir}/build_out")
+    fun deleteDirectoryRecursively(directory: Path) {
+        Files.walk(directory)
+            .sorted(Comparator.reverseOrder()) // Ensures files are deleted before the directory itself
+            .forEach { path ->
+                Files.delete(path)
+            }
+    }
+
+    if (Files.exists(buildOutPath, LinkOption.NOFOLLOW_LINKS))
+    {
+        deleteDirectoryRecursively(buildOutPath)
     }
 }
 

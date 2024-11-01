@@ -1,25 +1,38 @@
+/*
+ * Copyright (C) 2024  Tete
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.trs.hudman
 
 import com.google.gson.Gson
 import com.mojang.blaze3d.platform.InputConstants
-import com.trs.hudman.HudState
-import com.trs.hudman.confg.ConfgHelper
+import com.trs.hudman.confg.ConfigHelper
 import com.trs.hudman.confg.JsonConfgHudElement
 import com.trs.hudman.confg.JsonConfgHudFile
 import com.trs.hudman.events.ClientWorldEvent
 import com.trs.hudman.events.HudResetEvent
-import com.trs.hudman.gui.screens.HudEditerScreen
-import io.github.cottonmc.cotton.gui.widget.data.Vec2i
+import com.trs.hudman.util.Vec2i
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
-import net.fabricmc.fabric.mixin.event.lifecycle.client.ClientWorldMixin
 import net.minecraft.client.KeyMapping
 import net.minecraft.client.Minecraft
 import net.minecraft.client.multiplayer.ClientLevel
-import net.minecraft.network.chat.Component
 import org.lwjgl.glfw.GLFW
 import java.io.File
 
@@ -53,9 +66,8 @@ object HudmanClient : ClientModInitializer
 
     override fun onInitializeClient()
     {
-
         HudResetEvent.EVENT.register RET@{
-            ConfgHelper.mkHud(Minecraft.getInstance())
+            ConfigHelper.mkHud(Minecraft.getInstance())
             return@RET true
         }
 
@@ -68,7 +80,7 @@ object HudmanClient : ClientModInitializer
             {
                 if (HudState.showHud)
                 {
-                    ConfgHelper.mkHud(Minecraft.getInstance())
+                    HudResetEvent.call()
                 }
             }
             while(HUDMAN_SHOW.consumeClick())
@@ -115,7 +127,7 @@ object HudmanClient : ClientModInitializer
             HudState.hudElements.clear()
         }
 
-        val conf = File("${Minecraft.getInstance().gameDirectory}/hud.json")
+        val conf = File(HudState.configPath)
         if (!conf.exists())
         {
             val congHud = JsonConfgHudFile(
@@ -126,11 +138,13 @@ object HudmanClient : ClientModInitializer
                         Vec2i(0, 0),
                         0,
                         0,
+                        1f,
                         "",
-                        true,
+                        false,
                         arrayOf("")
                     )
-                )
+                ),
+                false
             )
             HudState.LOGGER.info(conf.toString())
             conf.writer(Charsets.US_ASCII).append(Gson().toJson(congHud)).close()

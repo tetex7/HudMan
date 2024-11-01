@@ -17,41 +17,61 @@
 
 package com.trs.hudman.gui.hudmods;
 
-import com.trs.hudman.HudState;
 import com.trs.hudman.confg.JsonConfgHudElement;
-import com.trs.hudman.util.NamespacePath;
 import com.trs.hudman.util.Vec2i;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.network.chat.Component;
+import net.minecraft.client.player.LocalPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
-public class FPSElement extends AbstractHudElement
+public abstract class AbstractHudElement
 {
+    private final AbstractHudElement root;
+    private final LocalPlayer player;
+    private final Vec2i cords;
+    private final Minecraft client;
+    private final JsonConfgHudElement jsonElementl;
 
-    private int fps = 0;
-
-    public FPSElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i rCords, @NotNull JsonConfgHudElement jsonElement)
+    public AbstractHudElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i rCords, @NotNull JsonConfgHudElement jsonElement)
     {
-        super(root, client, rCords, jsonElement);
+        this.root = root;
+        this.player = client.player;
+        this.cords = rCords;
+        this.client = client;
+        this.jsonElementl = jsonElement;
     }
 
-    @Override
-    public void render(float partialTick, GuiGraphics guiGraphics, Gui gui)
+    public final Minecraft getClient()
     {
-        Component Text = Component.literal("FPS: " + fps);
-        guiGraphics.drawCenteredString(gui.getFont(), Text, getCords().x(), getCords().y(), 0xFFFFFF);
+        return client;
+    }
+
+    public final JsonConfgHudElement getJsonElementl()
+    {
+        return this.jsonElementl;
+    }
+
+    public final AbstractHudElement getRoot()
+    {
+        return root;
+    }
+
+    public final LocalPlayer getPlayer()
+    {
+        return player;
+    }
+
+    public final Vec2i getCords()
+    {
+        return cords;
     }
 
 
-    @Override
-    public void tick()
-    {
-        fps = getClient().getFps();
-    }
+    public abstract void render(float partialTick, GuiGraphics guiGraphics, Gui gui);
+    public abstract void tick();
 }

@@ -1,10 +1,27 @@
+/*
+ * Copyright (C) 2024  Tete
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.trs.hudman.gui.hudmods
 
 import com.trs.hudman.confg.JsonConfgHudElement
 import com.trs.hudman.qlang.FLAG
 import com.trs.hudman.qlang.Qlang
 import com.trs.hudman.qlang.Qlang_inst
-import io.github.cottonmc.cotton.gui.widget.data.Vec2i
+import com.trs.hudman.util.Vec2i
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.client.Minecraft
@@ -15,8 +32,8 @@ import java.util.regex.Pattern
 
 
 @Environment(EnvType.CLIENT)
-open class CordsElement(root: HudElement?, client: Minecraft, rCords: Vec2i, jsonElement: JsonConfgHudElement) :
-    HudElement(root, client, rCords, jsonElement)
+open class CordsElement(root: AbstractHudElement?, client: Minecraft, rCords: Vec2i, jsonElement: JsonConfgHudElement) :
+    AbstractHudElement(root, client, rCords, jsonElement)
 {
     @JvmField
     var Text: Component = Component.literal("test")
@@ -24,22 +41,22 @@ open class CordsElement(root: HudElement?, client: Minecraft, rCords: Vec2i, jso
     @JvmField
     protected var isCenter: FLAG = run<FLAG> {
         var fl = false
-        for (str: String in super.jsonElementl.Strs())
+        for (str: String in super.jsonElementl.strs())
         {
             fl = str.lowercase() == "center"
         }
         return@run fl
     }
 
-    override fun render(pPartialTick: Float, pGuiGraphics: GuiGraphics, gui: Gui)
+    override fun render(partialTick: Float, guiGraphics: GuiGraphics, gui: Gui)
     {
         if (isCenter)
         {
-            pGuiGraphics.drawCenteredString(gui.font, Text, pGuiGraphics.guiWidth() / 2, jsonElementl.Cords.y, 0xFFFFFF)
+            guiGraphics.drawCenteredString(gui.font, Text, guiGraphics.guiWidth() / 2, jsonElementl.cords.y, 0xFFFFFF)
         }
         else
         {
-            pGuiGraphics.drawCenteredString(gui.font, Text, jsonElementl.Cords.x, jsonElementl.Cords.y, 0xFFFFFF)
+            guiGraphics.drawCenteredString(gui.font, Text, jsonElementl.cords.x, jsonElementl.cords.y, 0xFFFFFF)
         }
     }
 
@@ -50,7 +67,7 @@ open class CordsElement(root: HudElement?, client: Minecraft, rCords: Vec2i, jso
         val str = run {
             try
             {
-                cordlang(super.jsonElementl.Strs()[0]);
+                cordlang(super.jsonElementl.strs()[0]);
             }
             catch (x: Exception)
             {
@@ -63,11 +80,11 @@ open class CordsElement(root: HudElement?, client: Minecraft, rCords: Vec2i, jso
     }
 
     val cordlang = Qlang.Builder().add(X_TAG, Qlang_inst(RET@ { tag: String, p: Pattern, ctxt: String ->
-        return@RET this@CordsElement.client.player!!.getX().toInt().toString();
+        return@RET this@CordsElement.player!!.getX().toInt().toString();
     })).add(Y_TAG, Qlang_inst(RET@ { tag: String, p: Pattern, ctxt: String ->
-        return@RET this@CordsElement.client.player!!.getY().toInt().toString();
+        return@RET this@CordsElement.player!!.getY().toInt().toString();
     })).add(Z_TAG, Qlang_inst(RET@ { tag: String, p: Pattern, ctxt: String ->
-        return@RET this@CordsElement.client.player!!.getZ().toInt().toString();
+        return@RET this@CordsElement.player!!.getZ().toInt().toString();
     })).bulid(false)
 
     companion object

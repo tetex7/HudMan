@@ -15,38 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.trs.hudman.qlang
+package com.trs.hudman.util;
 
-import java.util.regex.Pattern
+import com.trs.hudman.confg.JsonConfgHudElement;
+import com.trs.hudman.gui.hudmods.AbstractHudElement;
+import net.minecraft.client.Minecraft;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-class qlangBuilder
+@FunctionalInterface
+public interface NewAbstractHudElementHandler
 {
-    val ql = Qlang()
-    fun add(tag:String, ini: Qlang_inst.(tag:String, p: Pattern, ctxt:String)->String): qlangBuilder
-    {
-        ql[Regex(tag)] = Qlang_inst(ini, Regex(tag))
-        return this
-    }
-
-    fun add(tag:String, ini: Qlang_inst): qlangBuilder
-    {
-        ql[Regex(tag)] = ini
-        return this
-    }
-
-    fun initLibSTD(): qlangBuilder
-    {
-        ql.initLibSTD()
-        return this
-    }
-
-    fun bulid(init_std:FLAG = true): Qlang
-    {
-        if (init_std)
-        {
-            initLibSTD()
-        }
-        return ql;
-    }
-
+    AbstractHudElement create(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i rCords, @NotNull JsonConfgHudElement jsonElement);
 }

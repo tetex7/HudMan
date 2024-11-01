@@ -1,21 +1,25 @@
+/*
+ * Copyright (C) 2024  Tete
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.trs.hudman.qlang.libstd
 
-//const val `%conf_file%` = "%conf_file%"
 const val h_hour = "%h%"
 const val h_minute = "%m%"
 const val h_second = "%s%"
 const val h_day = "%d%"
 const val h_month = "%mm%"
 const val h_year = "%y%"
-//const val h_tname = "%tname%"
-//const val p_temp = "%temp%"
-//const val p_user_conf = "%USER_CONF%"
-//const val p_user_folder = "%USER%"
-/*const val c_nl_tab = "%NTAB%"
-const val c_nl = "%N%"
-const val c_tab = "%TAB%"*/
-
-
-
-//const val
-//const val p_class_path = "%cpath%"

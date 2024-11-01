@@ -17,41 +17,35 @@
 
 package com.trs.hudman.gui.hudmods;
 
-import com.trs.hudman.HudState;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.trs.hudman.confg.JsonConfgHudElement;
-import com.trs.hudman.util.NamespacePath;
 import com.trs.hudman.util.Vec2i;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
-public class FPSElement extends AbstractHudElement
+public abstract class AbstractHud3DElement extends AbstractHudElement
 {
-
-    private int fps = 0;
-
-    public FPSElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i rCords, @NotNull JsonConfgHudElement jsonElement)
+    public AbstractHud3DElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i rCords, @NotNull JsonConfgHudElement jsonElement)
     {
         super(root, client, rCords, jsonElement);
     }
 
+
     @Override
     public void render(float partialTick, GuiGraphics guiGraphics, Gui gui)
     {
-        Component Text = Component.literal("FPS: " + fps);
-        guiGraphics.drawCenteredString(gui.getFont(), Text, getCords().x(), getCords().y(), 0xFFFFFF);
+        render3d(guiGraphics.pose(), guiGraphics, gui);
+        render2d(guiGraphics, gui);
     }
 
+    public abstract void render3d(PoseStack matrixStack, GuiGraphics guiGraphics, Gui gui);
 
-    @Override
-    public void tick()
-    {
-        fps = getClient().getFps();
-    }
+
+    public abstract void render2d(GuiGraphics guiGraphics, Gui gui);
 }

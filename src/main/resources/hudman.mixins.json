@@ -6,8 +6,9 @@
   "mixins": [
   ],
   "client": [
-        "PlayerGuiMixin",
-        "PlayerGuiMixinAccessor"
+    "PlayerGuiMixin",
+    "PlayerGuiMixinAccessor",
+    "PlayerTabOverlayMixinAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
