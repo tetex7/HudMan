@@ -27,12 +27,12 @@ import com.trs.hudman.events.HudResetEvent
 import com.trs.hudman.gui.hudmods.AbstractHudElement
 import com.trs.hudman.util.ElementRegistry
 import com.trs.hudman.util.INamespaceHandler
-import com.trs.hudman.util.NewAbstractHudElementHandler
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.resources.ResourceLocation
 import org.jetbrains.annotations.ApiStatus.Internal
 import org.slf4j.Logger
+
 import java.io.File
 
 @Environment(EnvType.CLIENT)
@@ -68,8 +68,10 @@ object HudState
     @JvmStatic
     val configPath = "${Minecraft.getInstance().gameDirectory}/config/hudman.json"
 
+    @Deprecated("to be removed for ElementRegistry", level = DeprecationLevel.WARNING)
     @JvmStatic
     val namespaceHandlers: HashMap<String, INamespaceHandler> = HashMap()
+
 
     @JvmStatic
     fun getCong(): JsonConfgHudFile

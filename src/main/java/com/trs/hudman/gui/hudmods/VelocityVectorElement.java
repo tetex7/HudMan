@@ -65,11 +65,11 @@ public class VelocityVectorElement extends AbstractHudElement
             this.getJsonElementl().scale(),
             Map.of(
 
-                    "X_VECTOR_METER", new FlowMeterWidget(-25, 0, 0f),
+                    "X_VECTOR_METER", new FlowMeterWidget(-25, 0, 0f, 0),
                     "X_METER", new TextWidget("X", 0xFFFFFF, -14, 66, 0f),
-                    "Y_VECTOR_METER", new FlowMeterWidget(0, 0, 0f),
+                    "Y_VECTOR_METER", new FlowMeterWidget(0, 0, 0f, 0),
                     "Y_METER", new TextWidget("Y", 0xFFFFFF, 11, 66, 0f),
-                    "Z_VECTOR_METER", new FlowMeterWidget(25, 0, 0f),
+                    "Z_VECTOR_METER", new FlowMeterWidget(25, 0, 0f, 0),
                     "Z_METER", new TextWidget("Z", 0xFFFFFF, 36, 66, 0f)
             )
     );

@@ -33,12 +33,12 @@ public class TextWidget extends AbstractHudWidget
 
     public TextWidget(int x, int y, float scale)
     {
-        super(x, y, scale);
+        super(x, y, scale, 0);
     }
 
     public TextWidget(String text, int color, int x, int y, float scale)
     {
-        super(x, y, scale);
+        super(x, y, scale, 0);
         this.text = text;
         this.color = color;
     }

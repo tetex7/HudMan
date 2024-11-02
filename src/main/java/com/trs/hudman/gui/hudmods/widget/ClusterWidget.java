@@ -29,14 +29,19 @@ public class ClusterWidget extends AbstractHudWidget
 {
     private final HashMap<String, AbstractHudWidget> widgetHashMap = new HashMap<>();
 
+    private WidgetMetaData mkMetaData()
+    {
+        return WidgetMetaData.of(0, 0, null);
+    }
+
     public ClusterWidget(int x, int y, float scale)
     {
-        super(x, y, scale);
+        super(x, y, scale, 0);
     }
 
     public ClusterWidget(int x, int y, float scale, Map<String, AbstractHudWidget> widget_map)
     {
-        super(x, y, scale);
+        super(x, y, scale, 0);
         for (Map.Entry<String, AbstractHudWidget> widget_set : widget_map.entrySet())
         {
             AbstractHudWidget widget = widget_set.getValue();

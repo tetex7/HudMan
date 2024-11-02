@@ -57,21 +57,6 @@ public final class ConfigHelper
                         else
                         {
                             HudState.getLOGGER().info("no (new reg system)element by Id:'{}'", element.elementId());
-
-
-                            /*switch (path.getPath())
-                            {
-                                case "cords" -> HudState.getHudElements().push(new CordsElement(null, minecraft, element.cords(), element));
-                                case "text" -> HudState.getHudElements().push(new TextElement(null, minecraft, element.cords(), element));
-                                case "compass" -> HudState.getHudElements().push(new CompassElement(null, minecraft, element.cords(), element));
-                                case "velocity_vector" -> HudState.getHudElements().push(new VelocityVectorElement(null, minecraft, element.cords(), element));
-                                //case "fps" -> HudState.getHudElements().push(new FPSElement(null, minecraft, element.cords(), element));
-                                default ->
-                                {
-                                    HudState.getLOGGER().info("no element by Id:'{}'", element.elementId());
-                                    continue;
-                                }
-                            }*/
                         }
                         HudState.getLOGGER().info("loaded ElementID:'{}'", path);
                     }
@@ -82,7 +67,6 @@ public final class ConfigHelper
                 }
                 else
                 {
-
                     try
                     {
                         if (HudState.getElementRegistry().has(path))
@@ -99,26 +83,6 @@ public final class ConfigHelper
                     {
                         HudState.getLOGGER().error("Exception in NamespaceHandler:'{}' on Loading ElementName:'{}'\n{}", path.getNamespace(), path.getPath(), stackTraceString(exception));
                     }
-                    /*INamespaceHandler name_fun = HudState.getNamespaceHandlers().get(path.getNamespace());
-                    if (name_fun != null)
-                    {
-                        try
-                        {
-                            boolean ret_v = name_fun.work(element);
-                            if (ret_v)
-                            {
-                                HudState.getLOGGER().warn("NamespaceHandler for Namespace:'{}' returned a bool of 1", path.getNamespace());
-                            }
-                        }
-                        catch (Throwable exception)
-                        {
-                            HudState.getLOGGER().error("Exception in NamespaceHandler:'{}' on Loading ElementName:'{}'\n{}", path.getNamespace(), path.getPath(), stackTraceString(exception));
-                        }
-                    }
-                    else
-                    {
-                        HudState.getLOGGER().warn("No NamespaceHandler for ElementID:'{}'", path.getFullPath());
-                    }*/
                     continue;
                 }
             }

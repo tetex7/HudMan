@@ -19,7 +19,9 @@ package com.trs.hudman.gui.hudmods.widget;
 
 import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Stack;
 
 public abstract class AbstractHudWidget
@@ -35,20 +37,19 @@ public abstract class AbstractHudWidget
     private int y;
     private float scale;
 
-    AbstractHudWidget(int x, int y, float scale)
+    private final int rotation;
+    private WidgetMetaData metaData;
+
+
+    AbstractHudWidget(int x, int y, float scale, int rotation)
     {
         this.x = x;
         this.y = y;
         this.scale = scale;
+        this.rotation = rotation;
     }
 
     protected abstract void tick();
-
-    /*@SuppressWarnings("unchecked")
-    public <T extends AbstractHudWidget> T cast()
-    {
-        return (T)this;
-    }*/
 
     public final void widget_tick()
     {
@@ -91,9 +92,45 @@ public abstract class AbstractHudWidget
         this.scale = scale;
     }
 
+    protected final WidgetMetaData getMetaData()
+    {
+        return metaData;
+    }
+
+    protected final void setMetaData(WidgetMetaData metaData)
+    {
+        this.metaData = metaData;
+    }
+
+    public final int getRotation()
+    {
+        return rotation;
+    }
+
     @FunctionalInterface
     public interface OnTickHandler
     {
         void work(AbstractHudWidget this_widget);
+    }
+
+
+    protected record WidgetMetaData(
+            int width,
+            int height,
+            @Nullable Map<String, ?> userdata
+    ) {
+        public static @NotNull WidgetMetaData of(int width, int height, @Nullable Map<String, ?> userdata)
+        {
+            return new WidgetMetaData(width, height, userdata);
+        }
+
+        public @NotNull WidgetMetaData copy()
+        {
+            return new WidgetMetaData(
+                    this.width,
+                    this.height,
+                    this.userdata == null ? null : Map.copyOf(userdata)
+            );
+        }
     }
 }

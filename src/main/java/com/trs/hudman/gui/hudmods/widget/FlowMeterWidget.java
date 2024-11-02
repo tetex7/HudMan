@@ -19,6 +19,7 @@ package com.trs.hudman.gui.hudmods.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import com.trs.hudman.HudState;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
@@ -32,9 +33,10 @@ public class FlowMeterWidget extends AbstractHudWidget
 
     private int value = 0;
 
-    public FlowMeterWidget(int x, int y, float scale)
+    public FlowMeterWidget(int x, int y, float scale, int rotation)
     {
-        super(x, y, scale);
+        super(x, y, scale, rotation);
+        super.setMetaData(WidgetMetaData.of(22, 62, null));
     }
 
     @Override
@@ -42,7 +44,18 @@ public class FlowMeterWidget extends AbstractHudWidget
     {
         PoseStack poseStack = guiGraphics.pose();
         poseStack.pushPose();
+        //poseStack.translate((this.getX() - 11), (this.getY() - 32), 0);
         poseStack.scale(this.getScale(), this.getScale(), this.getScale());
+
+
+
+        float angle = super.getRotation(); // Rotation angle in degrees
+        float pointX = 0; // X-coordinate of the rotation center
+        float pointY = 0; // Y-coordinate of the rotation center
+        float pointZ = 0.0f;  // Z-coordinate, set to 0 for 2D plane
+
+        poseStack.rotateAround(Axis.ZP.rotationDegrees(angle), pointX, pointY, pointZ);
+
         RenderSystem.enableBlend();
         guiGraphics.blit(
                 FLOW_METER_BODY_LOCATION,

@@ -47,7 +47,7 @@ class ItemInfoWidget extends AbstractHudWidget
 
     public ItemInfoWidget(int x, int y, float scale)
     {
-        super(x, y, scale);
+        super(x, y, scale, 0);
     }
 
     @Override

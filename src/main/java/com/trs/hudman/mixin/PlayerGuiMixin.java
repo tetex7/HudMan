@@ -63,7 +63,6 @@ public abstract class PlayerGuiMixin
                         {
                             element.render(partialTick, guiGraphics, (Gui)(Object)this);
                         }
-
                     }
                 }
             }
@@ -80,7 +79,6 @@ public abstract class PlayerGuiMixin
                 Stack<AbstractHudElement> huds = HudState.getHudElements();
                 if (!huds.isEmpty())
                 {
-
                     for (AbstractHudElement element : huds)
                     {
                         String pairGameHudElement = element.getJsonElementl().pairGameHudElement();
