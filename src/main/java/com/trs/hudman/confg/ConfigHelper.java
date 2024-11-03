@@ -19,10 +19,7 @@ package com.trs.hudman.confg;
 
 import com.trs.hudman.HudState;
 import com.trs.hudman.gui.hudmods.*;
-import com.trs.hudman.mixin.PlayerGuiMixinAccessor;
-import com.trs.hudman.util.INamespaceHandler;
 import com.trs.hudman.util.NamespacePath;
-import com.trs.hudman.util.Vec2i;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -40,7 +37,7 @@ public final class ConfigHelper
     {
         JsonConfgHudFile huds = HudState.getCong();
         HudState.getHudElements().clear();
-        for (JsonConfgHudElement element : huds.Elements())
+        for (JsonConfgHudElement element : huds.elements())
         {
             if (element.enable())
             {

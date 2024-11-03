@@ -26,14 +26,14 @@ here is a test config:
 ```json
 {
     "ver":"v1.0",
-    "Elements":[
+    "elements": [
         {
-            "elementId":"hudman:velocity_vector",
-            "cords":{"x":100, "y":110},
-            "width":0,
-            "height":0,
+            "elementId": "hudman:velocity_vector",
+            "cords": {"x": 100, "y": 110},
+            "width": 0,
+            "height": 0,
             "scale": 0.75,
-            "pairGameHudElement":"minecraft:hotbar",
+            "pairGameHudElement": "minecraft:hotbar",
             "enable": true,
             "strs": [
                 "doTooltip"
