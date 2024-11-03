@@ -26,16 +26,18 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
-public class FlowMeterWidget extends AbstractHudWidget
+import java.util.Map;
+
+public final class FlowMeterWidget extends AbstractHudWidget
 {
     public static final ResourceLocation FLOW_METER_BODY_LOCATION = new ResourceLocation(HudState.getModid(), "textures/gui/hudmods/widget/flow_meter_widget/flow_meter_body.png");
     public static final ResourceLocation FLOW_METER_POINT_LOCATION = new ResourceLocation(HudState.getModid(), "textures/gui/hudmods/widget/flow_meter_widget/flow_meter_point.png");
 
     private int value = 0;
 
-    public FlowMeterWidget(int x, int y, float scale, int rotation)
+    public FlowMeterWidget(int x, int y, float scale)
     {
-        super(x, y, scale, rotation);
+        super(x, y, scale, 0);
         super.setMetaData(WidgetMetaData.of(22, 62, null));
     }
 
@@ -76,12 +78,12 @@ public class FlowMeterWidget extends AbstractHudWidget
     @Override
     protected void tick() {}
 
-    public final int getValue()
+    public int getValue()
     {
         return value;
     }
 
-    public final void setValue(@Range(from = -25, to = 25) int value)
+    public void setValue(@Range(from = -25, to = 25) int value)
     {
         this.value = value;
     }

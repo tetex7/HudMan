@@ -41,7 +41,7 @@ open class CordsElement(root: AbstractHudElement?, client: Minecraft, rCords: Ve
     @JvmField
     protected var isCenter: FLAG = run<FLAG> {
         var fl = false
-        for (str: String in super.jsonElementl.strs())
+        for (str: String in super.jsonElement.strs())
         {
             fl = str.lowercase() == "center"
         }
@@ -52,11 +52,11 @@ open class CordsElement(root: AbstractHudElement?, client: Minecraft, rCords: Ve
     {
         if (isCenter)
         {
-            guiGraphics.drawCenteredString(gui.font, Text, guiGraphics.guiWidth() / 2, jsonElementl.cords.y, 0xFFFFFF)
+            guiGraphics.drawCenteredString(gui.font, Text, guiGraphics.guiWidth() / 2, jsonElement.cords.y, 0xFFFFFF)
         }
         else
         {
-            guiGraphics.drawCenteredString(gui.font, Text, jsonElementl.cords.x, jsonElementl.cords.y, 0xFFFFFF)
+            guiGraphics.drawCenteredString(gui.font, Text, jsonElement.cords.x, jsonElement.cords.y, 0xFFFFFF)
         }
     }
 
@@ -67,7 +67,7 @@ open class CordsElement(root: AbstractHudElement?, client: Minecraft, rCords: Ve
         val str = run {
             try
             {
-                cordlang(super.jsonElementl.strs()[0]);
+                cordlang(super.jsonElement.strs()[0]);
             }
             catch (x: Exception)
             {

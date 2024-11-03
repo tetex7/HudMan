@@ -28,14 +28,13 @@ import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.network.chat.Component
 
 @Environment(EnvType.CLIENT)
-class TextElement(root: AbstractHudElement?, client: Minecraft, rCords: Vec2i, jsonElement: JsonConfgHudElement) :
-    AbstractHudElement(root, client, rCords, jsonElement)
+class TextElement(root: AbstractHudElement?, client: Minecraft, rCords: Vec2i, jsonElement: JsonConfgHudElement) : AbstractHudElement(root, client, rCords, jsonElement)
 {
 
     //@JvmField
     private var isCenter: FLAG = run<FLAG> {
         var fl = false
-        for (str: String in super.jsonElementl.strs())
+        for (str: String in super.jsonElement.strs())
         {
             fl = str.lowercase() == "center"
         }
@@ -45,7 +44,7 @@ class TextElement(root: AbstractHudElement?, client: Minecraft, rCords: Vec2i, j
     private val text: Component = run<Component> {
         try
         {
-            Component.literal(super.jsonElementl.strs()[0])
+            Component.literal(super.jsonElement.strs()[0])
         }
         catch (ex: Exception)
         {
@@ -59,12 +58,12 @@ class TextElement(root: AbstractHudElement?, client: Minecraft, rCords: Vec2i, j
     {
         if (isCenter)
         {
-            guiGraphics.drawCenteredString(gui.font, text, guiGraphics.guiWidth() / 2, jsonElementl.cords.y, 0xFFFFFF)
+            guiGraphics.drawCenteredString(gui.font, text, guiGraphics.guiWidth() / 2, jsonElement.cords.y, 0xFFFFFF)
             //pGuiGraphics.drawCenteredString()
         }
         else
         {
-            guiGraphics.drawCenteredString(gui.font, text, jsonElementl.cords.x, jsonElementl.cords.y, 0xFFFFFF)
+            guiGraphics.drawCenteredString(gui.font, text, jsonElement.cords.x, jsonElement.cords.y, 0xFFFFFF)
         }
     }
 

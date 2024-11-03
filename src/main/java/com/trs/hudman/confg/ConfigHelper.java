@@ -45,45 +45,47 @@ public final class ConfigHelper
             if (element.enable())
             {
                 NamespacePath path = NamespacePath.of(element.elementId());
-                HudState.getLOGGER().info("New ElementID:'{}' to load", path);
+
                 if (path.getNamespace().equals("hudman"))
                 {
+                    HudState.getLOGGER().info("New ElementName:'{}' to load on built-in Namespace:'{}'", path.getPath(), path.getNamespace());
                     try
                     {
                         if (HudState.getElementRegistry().has(path))
                         {
                             HudState.getHudElements().push(HudState.getElementRegistry().get(path).create(null, minecraft, element.cords(), element));
+                            HudState.getLOGGER().info("loaded ElementName:'{}' on built-in Namespace:'{}'", path.getPath(), path.getNamespace());
                         }
                         else
                         {
-                            HudState.getLOGGER().info("no (new reg system)element by Id:'{}'", element.elementId());
+                            HudState.getLOGGER().info("no Element by ElementName:'{}' on built-in Namespace:'{}'", path.getPath(), path.getNamespace());
                         }
-                        HudState.getLOGGER().info("loaded ElementID:'{}'", path);
                     }
                     catch (Throwable exception)
                     {
-                        HudState.getLOGGER().error("Exception in built-in NamespaceHandler:'{}' on Loading ElementName:'{}'\n{}", path.getNamespace(), path.getPath(), stackTraceString(exception));
+                        HudState.getLOGGER().error("Exception in built-in Namespace:'{}' on Loading ElementName:'{}'\n{}", path.getNamespace(), path.getPath(), stackTraceString(exception));
                     }
                 }
                 else
                 {
+                    HudState.getLOGGER().info("New ElementName:'{}' to load on External Namespace:'{}'", path.getPath(), path.getNamespace());
                     try
                     {
                         if (HudState.getElementRegistry().has(path))
                         {
                             HudState.getHudElements().push(HudState.getElementRegistry().get(path).create(null, minecraft, element.cords(), element));
+                            HudState.getLOGGER().info("loaded ElementName:'{}' on External Namespace:'{}'", path.getPath(), path.getNamespace());
                         }
                         else
                         {
-                            HudState.getLOGGER().warn("no (new reg system)element by Id:'{}'", element.elementId());
+                            HudState.getLOGGER().warn("no Element by ElementName:'{}' on External Namespace:'{}'", path.getPath(), path.getNamespace());
                         }
-                        HudState.getLOGGER().info("loaded ElementID:'{}'", path);
+
                     }
                     catch (Throwable exception)
                     {
-                        HudState.getLOGGER().error("Exception in NamespaceHandler:'{}' on Loading ElementName:'{}'\n{}", path.getNamespace(), path.getPath(), stackTraceString(exception));
+                        HudState.getLOGGER().error("Exception in External Namespace:'{}' on Loading ElementName:'{}'\n{}", path.getNamespace(), path.getPath(), stackTraceString(exception));
                     }
-                    continue;
                 }
             }
         }

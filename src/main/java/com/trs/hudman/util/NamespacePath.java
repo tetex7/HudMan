@@ -22,13 +22,14 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Vector2i;
 
 
+/**
+ * a wrapper for the minecraft {@link ResourceLocation}
+ */
 @Environment(EnvType.CLIENT)
-public class NamespacePath
+public class NamespacePath implements Comparable<NamespacePath>
 {
-
     private static final String MOD_NAMESPACE = HudState.getModid();
     private final String fullPath;
     private final ResourceLocation resourceLocation;
@@ -83,7 +84,6 @@ public class NamespacePath
         return fullPath;
     }
 
-
     public final ResourceLocation getResourceLocation()
     {
         return resourceLocation;
@@ -98,6 +98,31 @@ public class NamespacePath
     public String toString()
     {
         return resourceLocation.toString();
+    }
+
+    @Override
+    public int compareTo(@NotNull NamespacePath path)
+    {
+        return this.resourceLocation.compareTo(path.resourceLocation);
+    }
+
+    public int compareTo(@NotNull ResourceLocation location)
+    {
+        return this.resourceLocation.compareTo(location);
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (object instanceof ResourceLocation)
+        {
+            return this.resourceLocation.equals(object);
+        }
+        else if (object instanceof NamespacePath)
+        {
+            return this.resourceLocation.equals(((NamespacePath)object).resourceLocation);
+        }
+        return super.equals(object);
     }
 
 }

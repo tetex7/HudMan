@@ -23,7 +23,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
-public class TextWidget extends AbstractHudWidget
+public final class TextWidget extends AbstractHudWidget
 {
 
 
@@ -58,22 +58,22 @@ public class TextWidget extends AbstractHudWidget
         poseStack.popPose();
     }
 
-    public final String getText()
+    public String getText()
     {
         return text;
     }
 
-    public final void setText(String text)
+    public void setText(String text)
     {
         this.text = text;
     }
 
-    public final int getColor()
+    public int getColor()
     {
         return color;
     }
 
-    public final void setColor(int color)
+    public void setColor(int color)
     {
         this.color = color;
     }

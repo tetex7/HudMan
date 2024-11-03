@@ -26,5 +26,5 @@ import org.jetbrains.annotations.Nullable;
 @FunctionalInterface
 public interface NewAbstractHudElementHandler
 {
-    AbstractHudElement create(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i rCords, @NotNull JsonConfgHudElement jsonElement);
+    AbstractHudElement create(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfgHudElement jsonElement);
 }

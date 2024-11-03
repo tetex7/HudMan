@@ -36,12 +36,12 @@ open class CompassElement(root: AbstractHudElement?, client: Minecraft, rCords: 
     var Text: Component = Component.literal("test")
 
     @JvmField
-    protected var noCenter: FLAG = super.jsonElementl.strs.first() == "!center"
+    protected var noCenter: FLAG = super.jsonElement.strs.first() == "!center"
 
     @JvmField
     protected var raw: FLAG = run<FLAG> RET@{
         var rl = false
-        for (str: String in super.jsonElementl.strs())
+        for (str: String in super.jsonElement.strs())
         {
             rl = str == "raw"
         }
@@ -52,11 +52,11 @@ open class CompassElement(root: AbstractHudElement?, client: Minecraft, rCords: 
     {
         if (noCenter)
         {
-            guiGraphics.drawCenteredString(gui.font, Text, jsonElementl.cords.x, jsonElementl.cords.y, 0xFFFFFF)
+            guiGraphics.drawCenteredString(gui.font, Text, jsonElement.cords.x, jsonElement.cords.y, 0xFFFFFF)
         }
         else
         {
-            guiGraphics.drawCenteredString(gui.font, Text, guiGraphics.guiWidth() / 2, jsonElementl.cords.y, 0xFFFFFF)
+            guiGraphics.drawCenteredString(gui.font, Text, guiGraphics.guiWidth() / 2, jsonElement.cords.y, 0xFFFFFF)
         }
 
     }
@@ -77,7 +77,7 @@ open class CompassElement(root: AbstractHudElement?, client: Minecraft, rCords: 
 
         if (raw)
         {
-            string2 =  "$string2(${(((player.yRot) % 360 + 360) % 360).toInt()})"//.toInt()})" //(playr.getYRot().toInt() / 2).toInt()})"
+            string2 =  "$string2(${(((player.yRot) % 360 + 360) % 360).toInt()})"
         }
 
 

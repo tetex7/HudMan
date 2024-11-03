@@ -31,14 +31,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
-public class FPSElement extends AbstractHudElement
+public final class FPSElement extends AbstractHudElement
 {
 
     private int fps = 0;
 
-    public FPSElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i rCords, @NotNull JsonConfgHudElement jsonElement)
+    public FPSElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfgHudElement jsonElement)
     {
-        super(root, client, rCords, jsonElement);
+        super(root, client, cords, jsonElement);
     }
 
     @Override

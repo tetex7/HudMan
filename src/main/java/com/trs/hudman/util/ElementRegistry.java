@@ -25,10 +25,8 @@ import java.util.Map;
 
 public class ElementRegistry
 {
-    private final HashMap<ResourceLocation, NewAbstractHudElementHandler> elementMap = new HashMap<ResourceLocation, NewAbstractHudElementHandler>();
+    private final HashMap<ResourceLocation, NewAbstractHudElementHandler> elementMap = new HashMap<>();
 
-
-    public ElementRegistry(){}
 
     public void register(NamespacePath namespacePath, NewAbstractHudElementHandler newElementHandler)
     {

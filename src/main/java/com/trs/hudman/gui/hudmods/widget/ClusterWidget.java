@@ -17,6 +17,8 @@
 
 package com.trs.hudman.gui.hudmods.widget;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import com.trs.hudman.gui.hudmods.FPSElement;
 import com.trs.hudman.util.NewAbstractHudElementHandler;
 import net.minecraft.client.gui.GuiGraphics;
@@ -34,14 +36,14 @@ public class ClusterWidget extends AbstractHudWidget
         return WidgetMetaData.of(0, 0, null);
     }
 
-    public ClusterWidget(int x, int y, float scale)
+    public ClusterWidget(int x, int y, float scale, int rotation)
     {
-        super(x, y, scale, 0);
+        super(x, y, scale, rotation);
     }
 
-    public ClusterWidget(int x, int y, float scale, Map<String, AbstractHudWidget> widget_map)
+    public ClusterWidget(int x, int y, float scale, int rotation, Map<String, AbstractHudWidget> widget_map)
     {
-        super(x, y, scale, 0);
+        this(x, y, scale, rotation);
         for (Map.Entry<String, AbstractHudWidget> widget_set : widget_map.entrySet())
         {
             AbstractHudWidget widget = widget_set.getValue();
@@ -50,6 +52,16 @@ public class ClusterWidget extends AbstractHudWidget
             widget.setScale(this.getScale() + widget.getScale());
             widgetHashMap.put(widget_set.getKey(), widget_set.getValue());
         }
+    }
+
+    public ClusterWidget(int x, int y, float scale)
+    {
+        this(x, y, scale, 0);
+    }
+
+    public ClusterWidget(int x, int y, float scale, Map<String, AbstractHudWidget> widget_map)
+    {
+        this(x, y, scale, 0, widget_map);
     }
 
     public final void clearWidgets()
@@ -92,9 +104,14 @@ public class ClusterWidget extends AbstractHudWidget
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, float partialTick)
     {
+        PoseStack poseStack = guiGraphics.pose();
+        poseStack.pushPose();
+
+        //TODO: rotation
         for (AbstractHudWidget widget : widgetHashMap.values())
         {
             widget.render(guiGraphics, partialTick);
         }
+        poseStack.popPose();
     }
 }

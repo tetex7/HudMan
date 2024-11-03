@@ -35,40 +35,40 @@ public abstract class AbstractHudElement
     private final LocalPlayer player;
     private final Vec2i cords;
     private final Minecraft client;
-    private final JsonConfgHudElement jsonElementl;
+    private final JsonConfgHudElement jsonElement;
 
-    public AbstractHudElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i rCords, @NotNull JsonConfgHudElement jsonElement)
+    public AbstractHudElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfgHudElement jsonElement)
     {
         this.root = root;
         this.player = client.player;
-        this.cords = rCords;
+        this.cords = cords;
         this.client = client;
-        this.jsonElementl = jsonElement;
+        this.jsonElement = jsonElement;
     }
 
     public final Minecraft getClient()
     {
-        return client;
+        return this.client;
     }
 
-    public final JsonConfgHudElement getJsonElementl()
+    public final JsonConfgHudElement getJsonElement()
     {
-        return this.jsonElementl;
+        return this.jsonElement;
     }
 
     public final AbstractHudElement getRoot()
     {
-        return root;
+        return this.root;
     }
 
     public final LocalPlayer getPlayer()
     {
-        return player;
+        return this.player;
     }
 
     public final Vec2i getCords()
     {
-        return cords;
+        return this.cords;
     }
 
 
