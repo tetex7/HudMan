@@ -19,7 +19,7 @@ along with this program.  If not, see "https://www.gnu.org/licenses/"
 a client side minecraft mod I make in my free time for mc1.20.1    
 the main feature of the mod is To allow the user to create custom HUD using a config file written in Json.  
 This mod quite small, only having one dependency and that is the Fabric API and technically Minecraft itself.
-This mod is also expandable by third party plug-in mods using the Element registry system.  
+This mod is also expandable by external plug-in mods using the Element registry system.  
 
 
 here is a test config:
