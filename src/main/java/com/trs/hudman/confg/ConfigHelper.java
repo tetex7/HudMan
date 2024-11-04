@@ -43,7 +43,7 @@ public final class ConfigHelper
             {
                 NamespacePath path = NamespacePath.of(element.elementId());
 
-                if (path.getNamespace().equals("hudman"))
+                if (path.getNamespace().equals(NamespacePath.MOD_NAMESPACE) || path.getNamespace().equals(NamespacePath.MINECRAFT_NAMESPACE))
                 {
                     HudState.getLOGGER().info("New ElementName:'{}' to load on built-in Namespace:'{}'", path.getPath(), path.getNamespace());
                     try

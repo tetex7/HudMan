@@ -35,11 +35,11 @@ here is a test config:
             "scale": 0.75,
             "pairGameHudElement": "minecraft:hotbar",
             "enable": true,
-            "strs": [
+            "strings": [
                 "doTooltip"
             ]
         }
     ],
-    "bDebug": false
+    "debug": false
 }
 ```

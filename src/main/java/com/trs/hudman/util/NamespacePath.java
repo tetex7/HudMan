@@ -30,11 +30,19 @@ import org.jetbrains.annotations.NotNull;
 @Environment(EnvType.CLIENT)
 public class NamespacePath implements Comparable<NamespacePath>
 {
-    private static final String MOD_NAMESPACE = HudState.getModid();
+    public static final String MOD_NAMESPACE = HudState.getModid();
+    public static final String MINECRAFT_NAMESPACE = ResourceLocation.DEFAULT_NAMESPACE;
+
+
     private final String fullPath;
     private final ResourceLocation resourceLocation;
     private final String namespace;
     private final String path;
+
+    public static @NotNull NamespacePath pathMcOf(String path)
+    {
+        return new NamespacePath(MINECRAFT_NAMESPACE, path);
+    }
 
     public static @NotNull NamespacePath pathOf(String path)
     {

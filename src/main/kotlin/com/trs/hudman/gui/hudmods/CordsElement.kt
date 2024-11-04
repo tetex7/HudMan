@@ -41,7 +41,7 @@ open class CordsElement(root: AbstractHudElement?, client: Minecraft, rCords: Ve
     @JvmField
     protected var isCenter: FLAG = run<FLAG> {
         var fl = false
-        for (str: String in super.jsonElement.strs())
+        for (str: String in super.jsonElement.strings())
         {
             fl = str.lowercase() == "center"
         }
@@ -67,7 +67,7 @@ open class CordsElement(root: AbstractHudElement?, client: Minecraft, rCords: Ve
         val str = run {
             try
             {
-                cordlang(super.jsonElement.strs()[0]);
+                cordlang(super.jsonElement.strings()[0]);
             }
             catch (x: Exception)
             {

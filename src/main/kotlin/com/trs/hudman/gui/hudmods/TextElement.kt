@@ -34,7 +34,7 @@ class TextElement(root: AbstractHudElement?, client: Minecraft, rCords: Vec2i, j
     //@JvmField
     private var isCenter: FLAG = run<FLAG> {
         var fl = false
-        for (str: String in super.jsonElement.strs())
+        for (str: String in super.jsonElement.strings())
         {
             fl = str.lowercase() == "center"
         }
@@ -44,7 +44,7 @@ class TextElement(root: AbstractHudElement?, client: Minecraft, rCords: Vec2i, j
     private val text: Component = run<Component> {
         try
         {
-            Component.literal(super.jsonElement.strs()[0])
+            Component.literal(super.jsonElement.strings()[0])
         }
         catch (ex: Exception)
         {

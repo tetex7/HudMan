@@ -28,7 +28,7 @@ public record JsonConfgHudElement(
         //int NodeId,
         String pairGameHudElement,
         boolean enable,
-        String[] strs
+        String[] strings
 
 )
 {
@@ -42,7 +42,7 @@ public record JsonConfgHudElement(
                 element.scale,
                 new String(element.pairGameHudElement),
                 element.enable,
-                element.strs.clone()
+                element.strings.clone()
         );
     }
 }

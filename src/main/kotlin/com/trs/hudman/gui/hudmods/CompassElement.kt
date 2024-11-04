@@ -36,12 +36,12 @@ open class CompassElement(root: AbstractHudElement?, client: Minecraft, rCords: 
     var Text: Component = Component.literal("test")
 
     @JvmField
-    protected var noCenter: FLAG = super.jsonElement.strs.first() == "!center"
+    protected var noCenter: FLAG = super.jsonElement.strings.first() == "!center"
 
     @JvmField
     protected var raw: FLAG = run<FLAG> RET@{
         var rl = false
-        for (str: String in super.jsonElement.strs())
+        for (str: String in super.jsonElement.strings())
         {
             rl = str == "raw"
         }
