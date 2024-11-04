@@ -29,7 +29,6 @@ public record Vec2i(int x, int y)
         return new Vec2i(x, y);
     }
 
-
     public @NotNull Vec2i plus(@NotNull Vec2i vec)
     {
         return new Vec2i((this.x + vec.x),(this.y + vec.y));

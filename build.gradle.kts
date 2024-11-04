@@ -6,6 +6,7 @@ import java.nio.file.LinkOption
 import java.nio.file.Paths
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
+import kotlin.Boolean
 
 plugins {
     kotlin("jvm") version "2.0.20"
@@ -13,7 +14,19 @@ plugins {
     id("maven-publish")
 }
 
-version = project.property("mod_version") as String
+version = run RET@{
+    val ver = project.property("mod_version") as String
+    val isSNAPSHOT = (project.property("isSNAPSHOT") as String).toInt()
+    if (isSNAPSHOT == 1)
+    {
+        "$ver-SNAPSHOT"
+    }
+    else
+    {
+        ver
+    }
+
+}
 group = project.property("maven_group") as String
 
 base {

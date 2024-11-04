@@ -72,10 +72,6 @@ object HudmanClient : ClientModInitializer
         }
 
         ClientTickEvents.END_CLIENT_TICK.register {
-            /*while(HUDMAN_MAPPING.consumeClick())
-            {
-                Minecraft.getInstance().setScreen(HudEditerScreen(Component.literal("hud")));
-            }*/
             while(HUDMAN_RESET.consumeClick())
             {
                 if (HudState.showHud)
