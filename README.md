@@ -57,7 +57,7 @@ import com.trs.hudman.util.Vec2i;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-//Minceraft Minecraft
+//Minecraft import's
 
 public class Tester extends AbstractHudElement
 {
