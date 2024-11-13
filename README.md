@@ -21,7 +21,7 @@ This mod quite small, only having one dependency and that is the Fabric API and 
 This mod is also expandable by external plug-in mods using the Element registry system.
 
 > [!WARNING]
-> Anything written in Kotlin in this mod might not be; soon™
+> Anything written in Kotlin in this mod might not be; soon™<br>
 > And yes that it does mean `HudState`
 
 
