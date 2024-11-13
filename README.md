@@ -20,8 +20,9 @@ the main feature of the mod is To allow the user to create custom HUD using a co
 This mod quite small, only having one dependency and that is the Fabric API and technically Minecraft itself.
 This mod is also expandable by external plug-in mods using the Element registry system.
 
-> [!WARN]
-> Anything written in Kotlin in this mod might not be; soon™ 
+> [!WARNING]
+> Anything written in Kotlin in this mod might not be; soon™
+> And yes that it does mean `HudState`
 
 
 here is a test config:
