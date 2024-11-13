@@ -33,11 +33,13 @@ import net.minecraft.resources.ResourceLocation
 import org.jetbrains.annotations.ApiStatus.Internal
 import org.slf4j.Logger
 
+
 import java.io.File
 
 @Environment(EnvType.CLIENT)
 object HudState
 {
+
     @JvmStatic
     val modid = "hudman"
 
@@ -71,7 +73,6 @@ object HudState
     @Deprecated("to be removed for ElementRegistry", level = DeprecationLevel.WARNING)
     @JvmStatic
     val namespaceHandlers: HashMap<String, INamespaceHandler> = HashMap()
-
 
     @JvmStatic
     fun getCong(): JsonConfgHudFile

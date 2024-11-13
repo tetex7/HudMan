@@ -35,9 +35,8 @@ public final class ConfigHelper
     @Internal
     public static void mkHud(Minecraft minecraft)
     {
-        JsonConfgHudFile huds = HudState.getCong();
         HudState.getHudElements().clear();
-        for (JsonConfgHudElement element : huds.elements())
+        for (JsonConfgHudElement element : HudState.getCong().elements())
         {
             if (element.enable())
             {
@@ -48,7 +47,7 @@ public final class ConfigHelper
                     HudState.getLOGGER().info("New ElementName:'{}' to load on built-in Namespace:'{}'", path.getPath(), path.getNamespace());
                     try
                     {
-                        if (HudState.getElementRegistry().has(path))
+                        if (HudState.getElementRegistry().hasElement(path))
                         {
                             HudState.getHudElements().push(HudState.getElementRegistry().get(path).create(null, minecraft, element.cords(), element));
                             HudState.getLOGGER().info("loaded ElementName:'{}' on built-in Namespace:'{}'", path.getPath(), path.getNamespace());
@@ -68,7 +67,7 @@ public final class ConfigHelper
                     HudState.getLOGGER().info("New ElementName:'{}' to load on External Namespace:'{}'", path.getPath(), path.getNamespace());
                     try
                     {
-                        if (HudState.getElementRegistry().has(path))
+                        if (HudState.getElementRegistry().hasElement(path))
                         {
                             HudState.getHudElements().push(HudState.getElementRegistry().get(path).create(null, minecraft, element.cords(), element));
                             HudState.getLOGGER().info("loaded ElementName:'{}' on External Namespace:'{}'", path.getPath(), path.getNamespace());
@@ -99,6 +98,8 @@ public final class ConfigHelper
                         NamespacePath.pathOf("fps"), FPSElement::new
                 )
         );
+
+
     }
 
     public static String stackTraceString(Throwable throwable)

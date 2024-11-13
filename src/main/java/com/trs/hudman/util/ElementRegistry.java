@@ -17,41 +17,57 @@
 
 package com.trs.hudman.util;
 
-import com.trs.hudman.gui.hudmods.AbstractHudElement;
-import net.minecraft.resources.ResourceLocation;
+import com.trs.hudman.HudState;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class ElementRegistry
 {
-    private final HashMap<ResourceLocation, NewAbstractHudElementHandler> elementMap = new HashMap<>();
+    private final HashMap<@NotNull NamespacePath, @NotNull NewAbstractHudElementHandler> elementMap = new HashMap<>();
 
-
-    public void register(NamespacePath namespacePath, NewAbstractHudElementHandler newElementHandler)
+    public void register(@NotNull NamespacePath namespacePath, NewAbstractHudElementHandler newElementHandler)
     {
-        elementMap.put(namespacePath.getResourceLocation(), newElementHandler);
+        elementMap.put(namespacePath, newElementHandler);
     }
 
-    public void register(Map<NamespacePath, NewAbstractHudElementHandler> elementsMap)
+    public void register(@NotNull Map<NamespacePath, NewAbstractHudElementHandler> elementsMap)
     {
-        for (Map.Entry<NamespacePath, NewAbstractHudElementHandler> entry : elementsMap.entrySet())
+        this.elementMap.putAll(elementsMap);
+    }
+
+    public void unregister(@NotNull NamespacePath namespacePath)
+    {
+        if (this.hasElement(namespacePath))
         {
-             this.elementMap.put(entry.getKey().getResourceLocation(), entry.getValue());
+            elementMap.remove(namespacePath);
+        }
+        else
+        {
+            throw new NoSuchElementException(String.format("No Registered Element by Path: %s", namespacePath.getFullPath()));
         }
     }
 
-    public boolean has(NamespacePath namespacePath)
+    public boolean hasElement(@NotNull NamespacePath namespacePath)
     {
-        return elementMap.containsKey(namespacePath.getResourceLocation());
+        return elementMap.containsKey(namespacePath);
     }
 
-    public NewAbstractHudElementHandler get(NamespacePath namespacePath)
+    public @NotNull NewAbstractHudElementHandler get(@NotNull NamespacePath namespacePath)
     {
-        return elementMap.get(namespacePath.getResourceLocation());
+        if (this.hasElement(namespacePath))
+        {
+            return elementMap.get(namespacePath);
+        }
+        else
+        {
+            throw new NoSuchElementException(String.format("No Registered Element by Path: %s", namespacePath.getFullPath()));
+        }
     }
 
-    public final Map<ResourceLocation, NewAbstractHudElementHandler> getElementMap()
+    public final @NotNull Map<NamespacePath, NewAbstractHudElementHandler> getElementMap()
     {
         return elementMap;
     }
