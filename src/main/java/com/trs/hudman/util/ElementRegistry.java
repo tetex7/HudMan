@@ -18,6 +18,7 @@
 package com.trs.hudman.util;
 
 import com.trs.hudman.HudState;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -26,23 +27,28 @@ import java.util.NoSuchElementException;
 
 public class ElementRegistry
 {
-    private final HashMap<@NotNull NamespacePath, @NotNull NewAbstractHudElementHandler> elementMap = new HashMap<>();
+    private final HashMap<@NotNull ResourceLocation, @NotNull NewAbstractHudElementHandler> elementMap = new HashMap<>();
 
     public void register(@NotNull NamespacePath namespacePath, NewAbstractHudElementHandler newElementHandler)
     {
-        elementMap.put(namespacePath, newElementHandler);
+        elementMap.put(namespacePath.getResourceLocation(), newElementHandler);
+        HudState.getLOGGER().info("Registered HudElement:'" + namespacePath.getFullPath() + '\'');
     }
 
     public void register(@NotNull Map<NamespacePath, NewAbstractHudElementHandler> elementsMap)
     {
-        this.elementMap.putAll(elementsMap);
+        for (Map.Entry<NamespacePath, NewAbstractHudElementHandler> entry : elementsMap.entrySet())
+        {
+            elementMap.put(entry.getKey().getResourceLocation(), entry.getValue());
+            HudState.getLOGGER().info("Registered HudElement:'" + entry.getKey().getFullPath() + '\'');
+        }
     }
 
     public void unregister(@NotNull NamespacePath namespacePath)
     {
         if (this.hasElement(namespacePath))
         {
-            elementMap.remove(namespacePath);
+            elementMap.remove(namespacePath.getResourceLocation());
         }
         else
         {
@@ -52,14 +58,14 @@ public class ElementRegistry
 
     public boolean hasElement(@NotNull NamespacePath namespacePath)
     {
-        return elementMap.containsKey(namespacePath);
+        return elementMap.containsKey(namespacePath.getResourceLocation());
     }
 
     public @NotNull NewAbstractHudElementHandler get(@NotNull NamespacePath namespacePath)
     {
         if (this.hasElement(namespacePath))
         {
-            return elementMap.get(namespacePath);
+            return elementMap.get(namespacePath.getResourceLocation());
         }
         else
         {
@@ -67,7 +73,7 @@ public class ElementRegistry
         }
     }
 
-    public final @NotNull Map<NamespacePath, NewAbstractHudElementHandler> getElementMap()
+    public final @NotNull Map<ResourceLocation, NewAbstractHudElementHandler> getElementMap()
     {
         return elementMap;
     }

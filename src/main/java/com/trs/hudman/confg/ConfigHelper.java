@@ -23,6 +23,9 @@ import com.trs.hudman.util.NamespacePath;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.toasts.SystemToast;
+import net.minecraft.client.gui.components.toasts.ToastComponent;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.io.PrintWriter;
@@ -74,7 +77,7 @@ public final class ConfigHelper
                         }
                         else
                         {
-                            HudState.getLOGGER().warn("no Element by ElementName:'{}' on External Namespace:'{}'", path.getPath(), path.getNamespace());
+                            HudState.getLOGGER().error("no Element by ElementName:'{}' on External Namespace:'{}'", path.getPath(), path.getNamespace());
                         }
 
                     }
@@ -99,7 +102,18 @@ public final class ConfigHelper
                 )
         );
 
+        HudState.getLOGGER().info("Registered all HudElement");
+    }
 
+    private static void randerErrorMsg(String text, Minecraft client)
+    {
+        ToastComponent toastComponent = Minecraft.getInstance().getToasts();
+        SystemToast.multiline(
+                client,
+                SystemToast.SystemToastIds.PERIODIC_NOTIFICATION,
+                Component.literal("\"OH NO\" Error on HudElement Load"),
+                Component.literal(text)
+        );
     }
 
     public static String stackTraceString(Throwable throwable)
