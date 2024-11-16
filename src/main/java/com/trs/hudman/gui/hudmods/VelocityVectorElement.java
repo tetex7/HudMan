@@ -19,7 +19,7 @@ package com.trs.hudman.gui.hudmods;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.trs.hudman.confg.JsonConfgHudElement;
+import com.trs.hudman.confg.JsonConfigHudElement;
 import com.trs.hudman.gui.hudmods.widget.ClusterWidget;
 import com.trs.hudman.gui.hudmods.widget.FlowMeterWidget;
 import com.trs.hudman.gui.hudmods.widget.TextWidget;
@@ -71,7 +71,7 @@ public final class VelocityVectorElement extends AbstractHudElement
 
     private Vec3 delta = player_velocity;
 
-    public VelocityVectorElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i rCords, @NotNull JsonConfgHudElement jsonElement)
+    public VelocityVectorElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i rCords, @NotNull JsonConfigHudElement jsonElement)
     {
         super(root, client, rCords, jsonElement);
     }

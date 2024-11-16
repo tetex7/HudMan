@@ -17,7 +17,7 @@
 
 package com.trs.hudman.gui.hudmods
 
-import com.trs.hudman.confg.JsonConfgHudElement
+import com.trs.hudman.confg.JsonConfigHudElement
 import com.trs.hudman.qlang.FLAG
 import com.trs.hudman.qlang.Qlang
 import com.trs.hudman.qlang.Qlang_inst
@@ -32,7 +32,7 @@ import java.util.regex.Pattern
 
 
 @Environment(EnvType.CLIENT)
-open class CordsElement(root: AbstractHudElement?, client: Minecraft, rCords: Vec2i, jsonElement: JsonConfgHudElement) :
+open class CordsElement(root: AbstractHudElement?, client: Minecraft, rCords: Vec2i, jsonElement: JsonConfigHudElement) :
     AbstractHudElement(root, client, rCords, jsonElement)
 {
     @JvmField

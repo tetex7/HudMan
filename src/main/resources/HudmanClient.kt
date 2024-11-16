@@ -20,8 +20,8 @@ package com.trs.hudman
 import com.google.gson.Gson
 import com.mojang.blaze3d.platform.InputConstants
 import com.trs.hudman.confg.ConfigHelper
-import com.trs.hudman.confg.JsonConfgHudElement
-import com.trs.hudman.confg.JsonConfgHudFile
+import com.trs.hudman.confg.JsonConfigHudElement
+import com.trs.hudman.confg.JsonConfigHudFile
 import com.trs.hudman.events.ClientWorldEvent
 import com.trs.hudman.events.HudResetEvent
 import com.trs.hudman.util.NamespacePath
@@ -132,10 +132,10 @@ object HudmanCslient : ClientModInitializer
         val conf = File(HudmanClient.HudState.configPath)
         if (!conf.exists())
         {
-            val congHud = JsonConfgHudFile(
+            val congHud = JsonConfigHudFile(
                 "v1.0",
                 arrayOf(
-                    JsonConfgHudElement(
+                    JsonConfigHudElement(
                         "null",
                         Vec2i(0, 0),
                         0,

@@ -17,7 +17,7 @@
 
 package com.trs.hudman.util;
 
-import com.trs.hudman.confg.JsonConfgHudElement;
+import com.trs.hudman.confg.JsonConfigHudElement;
 import com.trs.hudman.gui.hudmods.AbstractHudElement;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
@@ -26,5 +26,5 @@ import org.jetbrains.annotations.Nullable;
 @FunctionalInterface
 public interface NewAbstractHudElementHandler
 {
-    AbstractHudElement create(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfgHudElement jsonElement);
+    AbstractHudElement create(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfigHudElement jsonElement);
 }

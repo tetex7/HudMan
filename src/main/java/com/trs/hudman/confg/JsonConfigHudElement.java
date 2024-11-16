@@ -19,7 +19,7 @@ package com.trs.hudman.confg;
 
 import com.trs.hudman.util.Vec2i;
 
-public record JsonConfgHudElement(
+public record JsonConfigHudElement(
         String elementId,
         Vec2i cords,
         int width,
@@ -32,9 +32,9 @@ public record JsonConfgHudElement(
 
 )
 {
-    public static JsonConfgHudElement copy(JsonConfgHudElement element)
+    public static JsonConfigHudElement copy(JsonConfigHudElement element)
     {
-        return new JsonConfgHudElement(
+        return new JsonConfigHudElement(
                 new String(element.elementId),
                 new Vec2i(element.cords.x(), element.cords.y()),
                 element.width,

@@ -18,11 +18,10 @@
 package com.trs.hudman
 
 import com.google.gson.Gson
-import com.trs.hudman.confg.ConfigHelper
+import com.trs.hudman.confg.JsonConfigHudFile
 import net.minecraft.client.Minecraft
 import org.slf4j.LoggerFactory
 import java.util.*
-import com.trs.hudman.confg.JsonConfgHudFile
 import com.trs.hudman.events.HudResetEvent
 import com.trs.hudman.gui.hudmods.AbstractHudElement
 import com.trs.hudman.util.ElementRegistry
@@ -75,10 +74,10 @@ object HudState
     val namespaceHandlers: HashMap<String, INamespaceHandler> = HashMap()
 
     @JvmStatic
-    fun getCong(): JsonConfgHudFile
+    fun getCong(): JsonConfigHudFile
     {
         val confpath = configPath
-        val confgHud: JsonConfgHudFile = Gson().fromJson<JsonConfgHudFile>(File(confpath).readText(Charsets.UTF_8), JsonConfgHudFile::class.java)
+        val confgHud: JsonConfigHudFile = Gson().fromJson<JsonConfigHudFile>(File(confpath).readText(Charsets.UTF_8), JsonConfigHudFile::class.java)
         return confgHud
     }
 

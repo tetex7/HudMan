@@ -17,8 +17,8 @@
 
 package com.trs.hudman.confg;
 
-public record JsonConfgHudFile(
+public record JsonConfigHudFile(
         String ver,
-        JsonConfgHudElement[] elements,
+        JsonConfigHudElement[] elements,
         boolean debug
 ){}

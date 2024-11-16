@@ -17,14 +17,13 @@
 
 package com.trs.hudman.util;
 
-import com.trs.hudman.confg.JsonConfgHudElement;
+import com.trs.hudman.confg.JsonConfigHudElement;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.world.entity.Entity;
 
 @Environment(EnvType.CLIENT)
 @FunctionalInterface
 public interface INamespaceHandler
 {
-    boolean work(JsonConfgHudElement element);
+    boolean work(JsonConfigHudElement element);
 }

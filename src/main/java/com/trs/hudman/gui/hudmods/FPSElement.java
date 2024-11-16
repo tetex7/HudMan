@@ -17,7 +17,7 @@
 
 package com.trs.hudman.gui.hudmods;
 
-import com.trs.hudman.confg.JsonConfgHudElement;
+import com.trs.hudman.confg.JsonConfigHudElement;
 import com.trs.hudman.util.Vec2i;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -34,7 +34,7 @@ public final class FPSElement extends AbstractHudElement
 
     private int fps = 0;
 
-    public FPSElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfgHudElement jsonElement)
+    public FPSElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfigHudElement jsonElement)
     {
         super(root, client, cords, jsonElement);
     }

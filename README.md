@@ -55,7 +55,7 @@ Also here's some syntax on how to make your own element written of Java of cours
 I do not recommend writing this in Kotlin
 
 ```java
-import com.trs.hudman.confg.JsonConfgHudElement;
+import com.trs.hudman.confg.JsonConfigHudElement;
 import com.trs.hudman.gui.hudmods.AbstractHudElement;
 import com.trs.hudman.gui.hudmods.widget.FlowMeterWidget;
 import com.trs.hudman.util.Vec2i;

@@ -17,7 +17,7 @@
 
 package com.trs.hudman.gui.hudmods;
 
-import com.trs.hudman.confg.JsonConfgHudElement;
+import com.trs.hudman.confg.JsonConfigHudElement;
 import com.trs.hudman.util.Vec2i;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -35,9 +35,9 @@ public abstract class AbstractHudElement implements IRenderPrimitive
     private final LocalPlayer player;
     private final Vec2i cords;
     private final Minecraft client;
-    private final JsonConfgHudElement jsonElement;
+    private final JsonConfigHudElement jsonElement;
 
-    public AbstractHudElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfgHudElement jsonElement)
+    public AbstractHudElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfigHudElement jsonElement)
     {
         this.root = root;
         this.player = client.player;
@@ -51,7 +51,7 @@ public abstract class AbstractHudElement implements IRenderPrimitive
         return this.client;
     }
 
-    public final JsonConfgHudElement getJsonElement()
+    public final JsonConfigHudElement getJsonElement()
     {
         return this.jsonElement;
     }

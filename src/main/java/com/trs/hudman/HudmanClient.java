@@ -20,8 +20,8 @@ package com.trs.hudman;
 import com.google.gson.Gson;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.trs.hudman.confg.ConfigHelper;
-import com.trs.hudman.confg.JsonConfgHudElement;
-import com.trs.hudman.confg.JsonConfgHudFile;
+import com.trs.hudman.confg.JsonConfigHudElement;
+import com.trs.hudman.confg.JsonConfigHudFile;
 import com.trs.hudman.events.ClientWorldEvent;
 import com.trs.hudman.events.HudResetEvent;
 import com.trs.hudman.util.NamespacePath;
@@ -43,7 +43,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import com.trs.hudman.HudState;
 
 @Environment(EnvType.CLIENT)
 public class HudmanClient implements ClientModInitializer {
@@ -146,10 +145,10 @@ public class HudmanClient implements ClientModInitializer {
         File conf = new File(HudState.getConfigPath());
         if (!conf.exists())
         {
-            JsonConfgHudFile congHud = new JsonConfgHudFile(
+            JsonConfigHudFile congHud = new JsonConfigHudFile(
                     "v1.0",
-                    new JsonConfgHudElement[]{
-                            new JsonConfgHudElement(
+                    new JsonConfigHudElement[]{
+                            new JsonConfigHudElement(
                                     "null",
                                     new Vec2i(0, 0),
                                     0,

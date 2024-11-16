@@ -18,7 +18,7 @@
 package com.trs.hudman.gui.hudmods;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.trs.hudman.confg.JsonConfgHudElement;
+import com.trs.hudman.confg.JsonConfigHudElement;
 import com.trs.hudman.util.Vec2i;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 @Environment(EnvType.CLIENT)
 public abstract class AbstractHud3DElement extends AbstractHudElement
 {
-    public AbstractHud3DElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i rCords, @NotNull JsonConfgHudElement jsonElement)
+    public AbstractHud3DElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i rCords, @NotNull JsonConfigHudElement jsonElement)
     {
         super(root, client, rCords, jsonElement);
     }

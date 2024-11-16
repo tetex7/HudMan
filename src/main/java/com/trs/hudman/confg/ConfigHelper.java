@@ -39,7 +39,7 @@ public final class ConfigHelper
     public static void mkHud(Minecraft minecraft)
     {
         HudState.getHudElements().clear();
-        for (JsonConfgHudElement element : HudState.getCong().elements())
+        for (JsonConfigHudElement element : HudState.getCong().elements())
         {
             if (element.enable())
             {

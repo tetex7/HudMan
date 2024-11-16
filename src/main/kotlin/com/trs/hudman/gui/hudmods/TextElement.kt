@@ -17,7 +17,7 @@
 
 package com.trs.hudman.gui.hudmods
 
-import com.trs.hudman.confg.JsonConfgHudElement
+import com.trs.hudman.confg.JsonConfigHudElement
 import com.trs.hudman.qlang.FLAG
 import com.trs.hudman.util.Vec2i
 import net.fabricmc.api.EnvType
@@ -28,7 +28,7 @@ import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.network.chat.Component
 
 @Environment(EnvType.CLIENT)
-class TextElement(root: AbstractHudElement?, client: Minecraft, rCords: Vec2i, jsonElement: JsonConfgHudElement) : AbstractHudElement(root, client, rCords, jsonElement)
+class TextElement(root: AbstractHudElement?, client: Minecraft, rCords: Vec2i, jsonElement: JsonConfigHudElement) : AbstractHudElement(root, client, rCords, jsonElement)
 {
 
     //@JvmField
