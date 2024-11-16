@@ -18,7 +18,6 @@
 package com.trs.hudman.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.trs.hudman.HudState;
 import com.trs.hudman.gui.hudmods.AbstractHudElement;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -34,6 +33,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import com.trs.hudman.HudState;
 
 import java.util.Collection;
 import java.util.Stack;
@@ -89,7 +90,6 @@ public abstract class PlayerGuiMixin
                         {
                             element.render(0, guiGraphics, (Gui)(Object)this);
                         }
-
                     }
                 }
             }

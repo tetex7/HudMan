@@ -17,13 +17,14 @@
 
 package com.trs.hudman.util;
 
-import com.trs.hudman.HudState;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+
+import com.trs.hudman.HudState;
 
 public class ElementRegistry
 {

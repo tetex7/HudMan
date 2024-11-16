@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
-public abstract class AbstractHudElement
+public abstract class AbstractHudElement implements IRenderPrimitive
 {
     private final AbstractHudElement root;
     private final LocalPlayer player;

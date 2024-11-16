@@ -17,7 +17,6 @@
 
 package com.trs.hudman.confg;
 
-import com.trs.hudman.HudState;
 import com.trs.hudman.gui.hudmods.*;
 import com.trs.hudman.util.NamespacePath;
 import net.fabricmc.api.EnvType;
@@ -31,6 +30,7 @@ import org.jetbrains.annotations.ApiStatus.Internal;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Map;
+import com.trs.hudman.HudState;
 
 @Environment(EnvType.CLIENT)
 public final class ConfigHelper

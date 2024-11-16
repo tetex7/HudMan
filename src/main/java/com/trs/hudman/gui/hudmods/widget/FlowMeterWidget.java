@@ -20,13 +20,12 @@ package com.trs.hudman.gui.hudmods.widget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.trs.hudman.HudState;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
-import java.util.Map;
+import com.trs.hudman.HudState;
 
 public final class FlowMeterWidget extends AbstractHudWidget
 {

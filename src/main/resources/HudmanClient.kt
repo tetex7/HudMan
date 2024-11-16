@@ -24,6 +24,7 @@ import com.trs.hudman.confg.JsonConfgHudElement
 import com.trs.hudman.confg.JsonConfgHudFile
 import com.trs.hudman.events.ClientWorldEvent
 import com.trs.hudman.events.HudResetEvent
+import com.trs.hudman.util.NamespacePath
 import com.trs.hudman.util.Vec2i
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.api.EnvType
@@ -37,7 +38,7 @@ import org.lwjgl.glfw.GLFW
 import java.io.File
 
 @Environment(EnvType.CLIENT)
-object HudmanClient : ClientModInitializer
+object HudmanCslient : ClientModInitializer
 {
     /*var HUDMAN_MAPPING = KeyBindingHelper.registerKeyBinding(KeyMapping(
         "key.hudman.hudediter",
@@ -74,16 +75,16 @@ object HudmanClient : ClientModInitializer
         ClientTickEvents.END_CLIENT_TICK.register {
             while(HUDMAN_RESET.consumeClick())
             {
-                if (HudState.showHud)
+                if (HudmanClient.HudState.showHud)
                 {
                     HudResetEvent.call()
                 }
             }
             while(HUDMAN_SHOW.consumeClick())
             {
-                HudState.hudElements.clear()
-                HudState.showHud = !HudState.showHud
-                if (HudState.showHud)
+                HudmanClient.HudState.hudElements.clear()
+                HudmanClient.HudState.showHud = !HudmanClient.HudState.showHud
+                if (HudmanClient.HudState.showHud)
                 {
                     HudResetEvent.call()
                 }
@@ -105,7 +106,7 @@ object HudmanClient : ClientModInitializer
         }
 
         ClientWorldEvent.CLIENT_WORLD_LOAD_EVENT.register RET@{
-            HudState.LOGGER.info("running World load event")
+            HudmanClient.HudState.LOGGER.info("running World load event")
             if (!waled_good)
             {
                 if (Minecraft.getInstance().player == null)
@@ -118,12 +119,17 @@ object HudmanClient : ClientModInitializer
         }
 
         ClientWorldEvent.CLIENT_WORLD_UNLOAD_EVENT.register {
-            HudState.LOGGER.info("running World unload event")
+            HudmanClient.HudState.LOGGER.info("running World unload event")
             waled_good = false;
-            HudState.hudElements.clear()
+            HudmanClient.HudState.hudElements.clear()
         }
 
-        val conf = File(HudState.configPath)
+        if (NamespacePath.pathOf("test") != NamespacePath.pathOf("test"))
+        {
+            throw RuntimeException("will fuck")
+        }
+
+        val conf = File(HudmanClient.HudState.configPath)
         if (!conf.exists())
         {
             val congHud = JsonConfgHudFile(
@@ -142,7 +148,7 @@ object HudmanClient : ClientModInitializer
                 ),
                 false
             )
-            HudState.LOGGER.info(conf.toString())
+            HudmanClient.HudState.LOGGER.info(conf.toString())
             conf.writer(Charsets.US_ASCII).append(Gson().toJson(congHud)).close()
         }
     }

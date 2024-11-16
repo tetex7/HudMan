@@ -17,9 +17,7 @@
 
 package com.trs.hudman.gui.hudmods;
 
-import com.trs.hudman.HudState;
 import com.trs.hudman.confg.JsonConfgHudElement;
-import com.trs.hudman.util.NamespacePath;
 import com.trs.hudman.util.Vec2i;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

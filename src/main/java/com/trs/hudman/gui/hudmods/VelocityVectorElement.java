@@ -19,7 +19,6 @@ package com.trs.hudman.gui.hudmods;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.trs.hudman.HudState;
 import com.trs.hudman.confg.JsonConfgHudElement;
 import com.trs.hudman.gui.hudmods.widget.ClusterWidget;
 import com.trs.hudman.gui.hudmods.widget.FlowMeterWidget;
@@ -37,6 +36,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import com.trs.hudman.HudState;
 
 import java.util.Map;
 

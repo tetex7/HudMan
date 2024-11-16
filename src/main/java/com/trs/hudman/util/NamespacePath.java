@@ -17,12 +17,12 @@
 
 package com.trs.hudman.util;
 
-import com.trs.hudman.HudState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
+import com.trs.hudman.HudState;
 
 /**
  * a wrapper for the minecraft {@link ResourceLocation}
@@ -64,9 +64,9 @@ public class NamespacePath implements Comparable<NamespacePath>
         return new NamespacePath(resource);
     }
 
-    private NamespacePath(String namespace, String path)
+    private NamespacePath(@NotNull String namespace, String path)
     {
-        this(new ResourceLocation(namespace, path).toString());
+        this(new ResourceLocation(namespace, path));
     }
 
     private NamespacePath(@NotNull ResourceLocation resource)
@@ -122,13 +122,17 @@ public class NamespacePath implements Comparable<NamespacePath>
     @Override
     public boolean equals(Object object)
     {
-        if (object instanceof ResourceLocation)
+        if (object instanceof ResourceLocation obj_path)
         {
-            return this.resourceLocation.equals(object);
+            return this.resourceLocation.equals(obj_path);
         }
-        else if (object instanceof NamespacePath)
+        else if (object instanceof String obj_string)
         {
-            return this.resourceLocation.equals(((NamespacePath)object).resourceLocation);
+            return this.resourceLocation.toString().equals(obj_string);
+        }
+        else if (object instanceof NamespacePath obj_path)
+        {
+            return this.resourceLocation.equals(obj_path.resourceLocation);
         }
         return super.equals(object);
     }
