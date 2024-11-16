@@ -7,7 +7,10 @@
   "authors": [
     "Tete"
   ],
-  "contact": {},
+  "contact": {
+      "homepage": "https://github.com/tetex7/HudMan",
+      "issues": "https://github.com/tetex7/HudMan/issues"
+  },
 
   "license": "GPL-3.0",
   "icon": "assets/hudman/icon.png",

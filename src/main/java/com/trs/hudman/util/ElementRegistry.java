@@ -28,11 +28,11 @@ import com.trs.hudman.HudState;
 
 public class ElementRegistry
 {
-    private final HashMap<@NotNull ResourceLocation, @NotNull NewAbstractHudElementHandler> elementMap = new HashMap<>();
+    private final HashMap<@NotNull NamespacePath, @NotNull NewAbstractHudElementHandler> elementMap = new HashMap<>();
 
     public void register(@NotNull NamespacePath namespacePath, NewAbstractHudElementHandler newElementHandler)
     {
-        elementMap.put(namespacePath.getResourceLocation(), newElementHandler);
+        elementMap.put(namespacePath, newElementHandler);
         HudState.getLOGGER().info("Registered HudElement:'" + namespacePath.getFullPath() + '\'');
     }
 
@@ -40,7 +40,7 @@ public class ElementRegistry
     {
         for (Map.Entry<NamespacePath, NewAbstractHudElementHandler> entry : elementsMap.entrySet())
         {
-            elementMap.put(entry.getKey().getResourceLocation(), entry.getValue());
+            elementMap.put(entry.getKey(), entry.getValue());
             HudState.getLOGGER().info("Registered HudElement:'" + entry.getKey().getFullPath() + '\'');
         }
     }
@@ -49,7 +49,7 @@ public class ElementRegistry
     {
         if (this.hasElement(namespacePath))
         {
-            elementMap.remove(namespacePath.getResourceLocation());
+            elementMap.remove(namespacePath);
         }
         else
         {
@@ -59,14 +59,14 @@ public class ElementRegistry
 
     public boolean hasElement(@NotNull NamespacePath namespacePath)
     {
-        return elementMap.containsKey(namespacePath.getResourceLocation());
+        return elementMap.containsKey(namespacePath);
     }
 
     public @NotNull NewAbstractHudElementHandler get(@NotNull NamespacePath namespacePath)
     {
         if (this.hasElement(namespacePath))
         {
-            return elementMap.get(namespacePath.getResourceLocation());
+            return elementMap.get(namespacePath);
         }
         else
         {
@@ -74,7 +74,7 @@ public class ElementRegistry
         }
     }
 
-    public final @NotNull Map<ResourceLocation, NewAbstractHudElementHandler> getElementMap()
+    public final @NotNull Map<NamespacePath, NewAbstractHudElementHandler> getElementMap()
     {
         return elementMap;
     }

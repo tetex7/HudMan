@@ -136,4 +136,9 @@ public class NamespacePath implements Comparable<NamespacePath>
         return super.equals(object);
     }
 
+    @Override
+    public int hashCode()
+    {
+        return this.resourceLocation.hashCode();
+    }
 }
