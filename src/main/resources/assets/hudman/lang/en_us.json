@@ -3,5 +3,7 @@
     "language.region": "United States",
     "language.code": "en_us",
     "key.hudman.hudreset": "Hud Reset",
+    "key.hudman.hudshow": "Hud Show",
+    "key.categories.hudman":  "HudMan",
     "string.hudman.hud_error": "%EDATA%: %STACKTRACE%"
 }

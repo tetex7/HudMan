@@ -61,14 +61,14 @@ public class HudmanClient implements ClientModInitializer {
             "key.hudman.hudreset",
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_F12,
-            KeyMapping.CATEGORY_MISC
+            "key.categories.hudman"
     ));
 
     private static final KeyMapping HUDMAN_SHOW = KeyBindingHelper.registerKeyBinding(new KeyMapping(
             "key.hudman.hudshow",
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_F8,
-            KeyMapping.CATEGORY_MISC
+            "key.categories.hudman"
     ));
 
     private static ClientLevel lastWorld = null;
@@ -95,7 +95,8 @@ public class HudmanClient implements ClientModInitializer {
             {
                 HudState.getHudElements().clear();
                 HudState.setShowHud(!HudState.getShowHud());
-                if (HudState.getShowHud()) {
+                if (HudState.getShowHud())
+                {
                     HudResetEvent.call();
                 }
             }
@@ -138,7 +139,7 @@ public class HudmanClient implements ClientModInitializer {
 
         if (!NamespacePath.pathOf("test").equals(NamespacePath.pathOf("test")))
         {
-            throw new RuntimeException("Error: 'NamespacePath::equals' function failed self test ");
+            throw new RuntimeException("Error: 'NamespacePath::equals' function failed self test");
         }
 
         File conf = new File(HudState.getConfigPath());
