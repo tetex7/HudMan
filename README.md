@@ -82,7 +82,7 @@ public class Tester extends AbstractHudElement
     @Override
     public void render(float partialTick, GuiGraphics guiGraphics, Gui gui)
     {
-        TEST_FLOW_METER.render(guiGraphics, var1);
+        TEST_FLOW_METER.render(partialTick, gui);
     }
 
     @Override
