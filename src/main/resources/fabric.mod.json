@@ -2,10 +2,11 @@
   "schemaVersion": 1,
   "id": "hudman",
   "version": "${version}",
-
   "name": "HudMan",
   "description": "",
-  "authors": [],
+  "authors": [
+    "Tete"
+  ],
   "contact": {},
 
   "license": "GPL-3.0",
@@ -13,12 +14,9 @@
 
   "environment": "client",
   "entrypoints": {
-    "client": [
-      {
-        "adapter": "kotlin",
-        "value": "com.trs.hudman.HudmanClient"
-      }
-    ]
+        "client": [
+            "com.trs.hudman.HudmanClient"
+        ]
   },
 
   "mixins": [

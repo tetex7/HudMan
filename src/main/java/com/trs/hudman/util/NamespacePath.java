@@ -33,7 +33,6 @@ public class NamespacePath implements Comparable<NamespacePath>
     public static final String MOD_NAMESPACE = HudState.getModid();
     public static final String MINECRAFT_NAMESPACE = ResourceLocation.DEFAULT_NAMESPACE;
 
-
     private final String fullPath;
     private final ResourceLocation resourceLocation;
     private final String namespace;
@@ -64,7 +63,7 @@ public class NamespacePath implements Comparable<NamespacePath>
         return new NamespacePath(resource);
     }
 
-    private NamespacePath(@NotNull String namespace, String path)
+    private NamespacePath(String namespace, String path)
     {
         this(new ResourceLocation(namespace, path));
     }

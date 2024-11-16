@@ -84,7 +84,7 @@ object HudState
 
     init
     {
-        ConfigHelper.registerAll();
+
         HudResetEvent.EVENT.register RET@{
             val jconfig = getCong()
             LOGGER.info("config_debug is ${jconfig.debug()}")

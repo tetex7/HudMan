@@ -77,6 +77,7 @@ public class HudmanClient implements ClientModInitializer {
     @Override
     public void onInitializeClient()
     {
+        ConfigHelper.registerAll();
         HudResetEvent.EVENT.register(() -> {
             ConfigHelper.mkHud(Minecraft.getInstance());
             return true;
