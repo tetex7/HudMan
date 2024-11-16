@@ -15,14 +15,16 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see "https://www.gnu.org/licenses/"
 --?>
 # Hud Manager
-a client side minecraft mod I make in my free time for mc1.20.1    
-the main feature of the mod is To allow the user to create custom HUD using a config file written in Json.  
-This mod quite small, only having one dependency and that is the Fabric API and technically Minecraft itself.
-This mod is also expandable by external plug-in mods using the Element registry system.
+a client side minecraft mod that I’ve created in my free time for mc1.20.1<br>
+the main feature of the mod is To allow the user to create custom HUD using a config file written in Json.<br>
+This mod is quite small, only having one dependency and that is the Fabric API and technically Minecraft itself.<br>
+This mod is also expandable by external plug-in mods using the Element registry system.<br>
 
 > [!WARNING]
 > Anything written in Kotlin in this mod might not be; soon™<br>
 > And yes that it does mean `HudState`
+> Reason: Kotlin syntax is sugar-coated in all the wrong places<br>
+> And it would be a war crime to have myself or any other contributor having to continuously read that slop 
 
 
 here is a test config:
