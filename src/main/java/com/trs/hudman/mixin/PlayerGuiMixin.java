@@ -63,7 +63,7 @@ public abstract class PlayerGuiMixin
                     for (AbstractHudElement element : huds)
                     {
                         String pairGameHudElement = element.getJsonElement().pairGameHudElement();
-                        if (pairGameHudElement.equals(HudState.getGameHudElements().get("hotbar").toString()) || pairGameHudElement.equals(""))
+                        if (pairGameHudElement.equals(HudState.getGameHudElements().get("hotbar").toString()) || pairGameHudElement.isEmpty())
                         {
                             element.render(partialTick, guiGraphics, (Gui)(Object)this);
                         }

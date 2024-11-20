@@ -45,7 +45,8 @@ here is a test config:
             ]
         }
     ],
-    "debug": false
+    "debug": false,
+    "errorNotification": false
 }   
 ```
 

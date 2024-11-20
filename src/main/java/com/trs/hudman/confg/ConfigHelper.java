@@ -18,13 +18,19 @@
 package com.trs.hudman.confg;
 
 import com.trs.hudman.gui.hudmods.*;
+import com.trs.hudman.util.CrashElement;
 import com.trs.hudman.util.NamespacePath;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.io.PrintWriter;
@@ -63,6 +69,10 @@ public final class ConfigHelper
                     catch (Throwable exception)
                     {
                         HudState.getLOGGER().error("Exception in built-in Namespace:'{}' on Loading ElementName:'{}'\n{}", path.getNamespace(), path.getPath(), stackTraceString(exception));
+                        if (HudState.getErrorNotification())
+                        {
+                            showToast("Failure on Element Load", "no Element by ElementPath:'" + path.getFullPath() + '\'');
+                        }
                     }
                 }
                 else
@@ -78,6 +88,10 @@ public final class ConfigHelper
                         else
                         {
                             HudState.getLOGGER().error("no Element by ElementName:'{}' on External Namespace:'{}'", path.getPath(), path.getNamespace());
+                            if (HudState.getErrorNotification())
+                            {
+                                showToast("Failure on Element Load", "no Element by ElementPath:'" + path.getFullPath() + '\'');
+                            }
                         }
 
                     }
@@ -125,5 +139,37 @@ public final class ConfigHelper
 
         pw.flush();
         return sw.toString();
+    }
+
+    public static void osWarn()
+    {
+        if (Util.getPlatform() == Util.OS.LINUX)
+        {
+            showToast("Linux warning", "Linux is untested But is supported");
+        }
+        else if (Util.getPlatform() == Util.OS.OSX)
+        {
+            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.VILLAGER_NO, 1.0F, 1.0F));
+            HudState.getHudElements().push(new CrashElement(180));
+            showToast("No support for Mac OS", "I do not own a Mac nor care to test for Mac OS");
+        }
+        else if (Util.getPlatform() == Util.OS.SOLARIS)
+        {
+            showToast("Have fun with spark", "Solaris Haven't heard that name in about two decades");
+        }
+        else if (Util.getPlatform() == Util.OS.UNKNOWN)
+        {
+            showToast("How did this even happen", "This is a unknown OS");
+        }
+    }
+
+    public static void showToast(String title, String message) {
+        Minecraft minecraft = Minecraft.getInstance();
+
+        // Create the title and message components with optional formatting
+        Component titleComponent = Component.literal(title).withStyle(ChatFormatting.BOLD);
+        Component messageComponent = Component.literal(message).withStyle(ChatFormatting.ITALIC, ChatFormatting.GOLD);
+        // Create and add the toast to the toast manager
+        minecraft.getToasts().addToast(new SystemToast(SystemToast.SystemToastIds.PACK_LOAD_FAILURE, titleComponent, messageComponent));
     }
 }

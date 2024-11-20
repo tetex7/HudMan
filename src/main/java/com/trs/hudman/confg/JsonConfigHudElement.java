@@ -35,12 +35,12 @@ public record JsonConfigHudElement(
     public static JsonConfigHudElement copy(JsonConfigHudElement element)
     {
         return new JsonConfigHudElement(
-                new String(element.elementId),
+                (element.elementId),
                 new Vec2i(element.cords.x(), element.cords.y()),
                 element.width,
                 element.height,
                 element.scale,
-                new String(element.pairGameHudElement),
+                (element.pairGameHudElement),
                 element.enable,
                 element.strings.clone()
         );

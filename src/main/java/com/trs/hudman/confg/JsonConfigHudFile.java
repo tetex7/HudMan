@@ -20,5 +20,6 @@ package com.trs.hudman.confg;
 public record JsonConfigHudFile(
         String ver,
         JsonConfigHudElement[] elements,
-        boolean debug
+        boolean debug,
+        boolean errorNotification
 ){}

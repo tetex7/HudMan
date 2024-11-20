@@ -34,6 +34,7 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
+import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -119,6 +120,7 @@ public class HudmanClient implements ClientModInitializer {
         });
 
         ClientWorldEvent.CLIENT_WORLD_LOAD_EVENT.register(() -> {
+
             HudState.getLOGGER().info("running World load event");
             if (!worldGood)
             {
@@ -139,7 +141,7 @@ public class HudmanClient implements ClientModInitializer {
 
         if (!NamespacePath.pathOf("test").equals(NamespacePath.pathOf("test")))
         {
-            throw new RuntimeException("Error: 'NamespacePath::equals' function failed self test");
+            throw new IllegalStateException("Error: 'NamespacePath::equals' function failed self test");
         }
 
         File conf = new File(HudState.getConfigPath());
@@ -157,9 +159,11 @@ public class HudmanClient implements ClientModInitializer {
                                     "",
                                     false,
                                     new String[]{""}
-                            )
+                            ),
+
                     },
-                    false
+                    false,
+                    true
             );
             HudState.getLOGGER().info(conf.toString());
             try (FileWriter writer = new FileWriter(conf, StandardCharsets.US_ASCII))

@@ -81,13 +81,17 @@ object HudState
         return confgHud
     }
 
+    @JvmStatic
+    var errorNotification: Boolean = true
+        private set
+
     init
     {
-
         HudResetEvent.EVENT.register RET@{
             val jconfig = getCong()
             LOGGER.info("config_debug is ${jconfig.debug()}")
             configDebug = jconfig.debug()
+            errorNotification = jconfig.errorNotification()
             return@RET true
         }
     }
