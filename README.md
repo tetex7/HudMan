@@ -104,7 +104,7 @@ class ModClient implements ClientModInitializer
     public final static MODID = "test";
     void onInitializeClient()
     {
-         HudState.getElementRegistry().register(NamespacePath.of(MODID, "test_text"), Tester::new);
+         HudState.elementRegistry.register(NamespacePath.of(MODID, "test_text"), Tester::new);
     }
 }
 ```

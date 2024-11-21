@@ -68,8 +68,6 @@ dependencies {
         parchment("org.parchmentmc.data:parchment-1.20.1:2023.09.03@zip")
     })
     modImplementation("net.fabricmc:fabric-loader:${project.property("loader_version")}")
-    modImplementation(include("net.fabricmc:fabric-language-kotlin:${project.property("kotlin_loader_version")}") ?: "")
-    //modImplementation(include("io.github.cottonmc:LibGui:8.1.0+1.20.1") ?: "")
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.property("fabric_version")}")

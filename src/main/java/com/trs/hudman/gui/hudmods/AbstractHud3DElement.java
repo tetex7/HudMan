@@ -38,7 +38,7 @@ public abstract class AbstractHud3DElement extends AbstractHudElement
 
 
     @Override
-    public void render(float partialTick, GuiGraphics guiGraphics, Gui gui)
+    public final void render(float partialTick, GuiGraphics guiGraphics, Gui gui)
     {
         render3d(guiGraphics.pose(), guiGraphics, gui);
         render2d(guiGraphics, gui);
