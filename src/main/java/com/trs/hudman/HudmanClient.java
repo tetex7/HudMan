@@ -46,7 +46,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 @Environment(EnvType.CLIENT)
-public class HudmanClient implements ClientModInitializer {
+public class HudmanClient implements ClientModInitializer
+{
 
     /* Uncomment to register HUD editor keybinding
     private static final KeyMapping HUDMAN_MAPPING = KeyBindingHelper.registerKeyBinding(new KeyMapping(

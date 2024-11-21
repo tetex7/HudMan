@@ -15,38 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.trs.hudman.qlang
+package com.trs.qlang;
 
-import java.util.regex.Pattern
-
-class qlangBuilder
+public class QlangStandardTags
 {
-    val ql = Qlang()
-    fun add(tag:String, ini: Qlang_inst.(tag:String, p: Pattern, ctxt:String)->String): qlangBuilder
-    {
-        ql[Regex(tag)] = Qlang_inst(ini, Regex(tag))
-        return this
-    }
-
-    fun add(tag:String, ini: Qlang_inst): qlangBuilder
-    {
-        ql[Regex(tag)] = ini
-        return this
-    }
-
-    fun initLibSTD(): qlangBuilder
-    {
-        ql.initLibSTD()
-        return this
-    }
-
-    fun bulid(init_std:FLAG = true): Qlang
-    {
-        if (init_std)
-        {
-            initLibSTD()
-        }
-        return ql;
-    }
-
+    public final static String H_HOUR = "%h%";
+    public final static String H_MIUNTE = "%m%";
+    public final static String H_SECOND = "%s%";
+    public final static String H_DAY = "%d%";
+    public final static String H_MOUTH = "%mm%";
+    public final static String H_YEAR = "%y%";
 }
