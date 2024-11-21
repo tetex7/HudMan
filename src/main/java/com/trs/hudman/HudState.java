@@ -42,7 +42,8 @@ import org.slf4j.Logger;
 import java.io.File;
 
 @Environment(EnvType.CLIENT)
-public class HudState {
+public class HudState
+{
 
     public static final String MODID = "hudman";
 
