@@ -44,6 +44,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
 
 @Environment(EnvType.CLIENT)
 public class HudmanClient implements ClientModInitializer
@@ -179,6 +181,29 @@ public class HudmanClient implements ClientModInitializer
                 throw new ReportedException(crashReport);
             }
         }
+        /*File preset_confg_dir = new File(HudState.configDirPath + "/hudman_conf");
+        if (!preset_confg_dir.exists())
+        {
+            if (!preset_confg_dir.mkdir())
+            {
+                CrashReport crashReport = CrashReport.forThrowable(new RuntimeException("Fell to make directory " + preset_confg_dir), "Fell to make directory");
+                CrashReportCategory category = crashReport.addCategory("File I/O");
+                category.setDetail("Config File Path", preset_confg_dir.getAbsolutePath());
+                throw new ReportedException(crashReport);
+            }
+
+            try (FileWriter writer = new FileWriter(HudState.configDirPath + "/hudman/placeholder.txt", StandardCharsets.US_ASCII))
+            {
+                writer.write("This folder is work in progress");
+            }
+            catch (IOException e)
+            {
+                CrashReport crashReport = CrashReport.forThrowable(e, "Failed to write a Placeholder file");
+                CrashReportCategory category = crashReport.addCategory("File I/O");
+                category.setDetail("Config File Path", preset_confg_dir.getAbsolutePath());
+                throw new ReportedException(crashReport);
+            }
+        }*/
     }
 }
 

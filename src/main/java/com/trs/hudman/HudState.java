@@ -66,6 +66,8 @@ public class HudState
 
     public static final String configPath = Minecraft.getInstance().gameDirectory.toString() + "/config/hudman.json";
 
+    public static final String configDirPath = Minecraft.getInstance().gameDirectory.toString() + "/config";
+
     @Deprecated(forRemoval = true, since = "1.0")
     public static final HashMap<String, INamespaceHandler> namespaceHandlers = new HashMap<>();
 
