@@ -44,8 +44,8 @@ public final class ConfigHelper
     @Internal
     public static void mkHud(Minecraft minecraft)
     {
-        HudState.getHudElements().clear();
-        for (JsonConfigHudElement element : HudState.getCong().elements())
+        HudState.hudElements.clear();
+        for (JsonConfigHudElement element : HudState.getConfig().elements())
         {
             if (element.enable())
             {
@@ -53,22 +53,22 @@ public final class ConfigHelper
 
                 if (path.getNamespace().equals(NamespacePath.MOD_NAMESPACE) || path.getNamespace().equals(NamespacePath.MINECRAFT_NAMESPACE))
                 {
-                    HudState.getLOGGER().info("New ElementName:'{}' to load on built-in Namespace:'{}'", path.getPath(), path.getNamespace());
+                    HudState.LOGGER.info("New ElementName:'{}' to load on built-in Namespace:'{}'", path.getPath(), path.getNamespace());
                     try
                     {
-                        if (HudState.getElementRegistry().hasElement(path))
+                        if (HudState.elementRegistry.hasElement(path))
                         {
-                            HudState.getHudElements().push(HudState.getElementRegistry().get(path).create(null, minecraft, element.cords(), element));
-                            HudState.getLOGGER().info("loaded ElementName:'{}' on built-in Namespace:'{}'", path.getPath(), path.getNamespace());
+                            HudState.hudElements.push(HudState.elementRegistry.get(path).create(null, minecraft, element.cords(), element));
+                            HudState.LOGGER.info("loaded ElementName:'{}' on built-in Namespace:'{}'", path.getPath(), path.getNamespace());
                         }
                         else
                         {
-                            HudState.getLOGGER().info("no Element by ElementName:'{}' on built-in Namespace:'{}'", path.getPath(), path.getNamespace());
+                            HudState.LOGGER.info("no Element by ElementName:'{}' on built-in Namespace:'{}'", path.getPath(), path.getNamespace());
                         }
                     }
                     catch (Throwable exception)
                     {
-                        HudState.getLOGGER().error("Exception in built-in Namespace:'{}' on Loading ElementName:'{}'\n{}", path.getNamespace(), path.getPath(), stackTraceString(exception));
+                        HudState.LOGGER.error("Exception in built-in Namespace:'{}' on Loading ElementName:'{}'\n{}", path.getNamespace(), path.getPath(), stackTraceString(exception));
                         if (HudState.getErrorNotification())
                         {
                             showToast("Failure on Element Load", "no Element by ElementPath:'" + path.getFullPath() + '\'');
@@ -77,17 +77,17 @@ public final class ConfigHelper
                 }
                 else
                 {
-                    HudState.getLOGGER().info("New ElementName:'{}' to load on External Namespace:'{}'", path.getPath(), path.getNamespace());
+                    HudState.LOGGER.info("New ElementName:'{}' to load on External Namespace:'{}'", path.getPath(), path.getNamespace());
                     try
                     {
-                        if (HudState.getElementRegistry().hasElement(path))
+                        if (HudState.elementRegistry.hasElement(path))
                         {
-                            HudState.getHudElements().push(HudState.getElementRegistry().get(path).create(null, minecraft, element.cords(), element));
-                            HudState.getLOGGER().info("loaded ElementName:'{}' on External Namespace:'{}'", path.getPath(), path.getNamespace());
+                            HudState.hudElements.push(HudState.elementRegistry.get(path).create(null, minecraft, element.cords(), element));
+                            HudState.LOGGER.info("loaded ElementName:'{}' on External Namespace:'{}'", path.getPath(), path.getNamespace());
                         }
                         else
                         {
-                            HudState.getLOGGER().error("no Element by ElementName:'{}' on External Namespace:'{}'", path.getPath(), path.getNamespace());
+                            HudState.LOGGER.error("no Element by ElementName:'{}' on External Namespace:'{}'", path.getPath(), path.getNamespace());
                             if (HudState.getErrorNotification())
                             {
                                 showToast("Failure on Element Load", "no Element by ElementPath:'" + path.getFullPath() + '\'');
@@ -97,7 +97,7 @@ public final class ConfigHelper
                     }
                     catch (Throwable exception)
                     {
-                        HudState.getLOGGER().error("Exception in External Namespace:'{}' on Loading ElementName:'{}'\n{}", path.getNamespace(), path.getPath(), stackTraceString(exception));
+                        HudState.LOGGER.error("Exception in External Namespace:'{}' on Loading ElementName:'{}'\n{}", path.getNamespace(), path.getPath(), stackTraceString(exception));
                     }
                 }
             }
@@ -106,7 +106,7 @@ public final class ConfigHelper
 
     public static void registerAll()
     {
-        HudState.getElementRegistry().register(
+        HudState.elementRegistry.register(
                 Map.of(
                         NamespacePath.pathOf("cords"), CordsElement::new,
                         NamespacePath.pathOf("text"), TextElement::new,
@@ -116,7 +116,7 @@ public final class ConfigHelper
                 )
         );
 
-        HudState.getLOGGER().info("Registered all HudElement");
+        HudState.LOGGER.info("Registered all HudElement");
     }
 
     private static void randerErrorMsg(String text, Minecraft client)
@@ -150,7 +150,7 @@ public final class ConfigHelper
         else if (Util.getPlatform() == Util.OS.OSX)
         {
             Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.VILLAGER_NO, 1.0F, 1.0F));
-            HudState.getHudElements().push(new CrashElement(180));
+            HudState.hudElements.push(new CrashElement(180));
             showToast("No support for Mac OS", "I do not own a Mac nor care to test for Mac OS");
         }
         else if (Util.getPlatform() == Util.OS.SOLARIS)

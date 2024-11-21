@@ -29,8 +29,8 @@ import com.trs.hudman.HudState;
 
 public final class FlowMeterWidget extends AbstractHudWidget
 {
-    public static final ResourceLocation FLOW_METER_BODY_LOCATION = new ResourceLocation(HudState.getModid(), "textures/gui/hudmods/widget/flow_meter_widget/flow_meter_body.png");
-    public static final ResourceLocation FLOW_METER_POINT_LOCATION = new ResourceLocation(HudState.getModid(), "textures/gui/hudmods/widget/flow_meter_widget/flow_meter_point.png");
+    public static final ResourceLocation FLOW_METER_BODY_LOCATION = new ResourceLocation(HudState.MODID, "textures/gui/hudmods/widget/flow_meter_widget/flow_meter_body.png");
+    public static final ResourceLocation FLOW_METER_POINT_LOCATION = new ResourceLocation(HudState.MODID, "textures/gui/hudmods/widget/flow_meter_widget/flow_meter_point.png");
 
     private int value = 0;
 

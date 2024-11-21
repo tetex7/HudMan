@@ -30,7 +30,7 @@ import com.trs.hudman.HudState;
 @Environment(EnvType.CLIENT)
 public class NamespacePath implements Comparable<NamespacePath>
 {
-    public static final String MOD_NAMESPACE = HudState.getModid();
+    public static final String MOD_NAMESPACE = HudState.MODID;
     public static final String MINECRAFT_NAMESPACE = ResourceLocation.DEFAULT_NAMESPACE;
 
     private final String fullPath;

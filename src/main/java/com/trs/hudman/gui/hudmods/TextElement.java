@@ -39,8 +39,10 @@ public class TextElement extends AbstractHudElement
 
         // Initialize isCenter by checking if "center" is in jsonElement's strings
         boolean centerFlag = false;
-        for (String str : super.getJsonElement().strings()) {
-            if (str.equalsIgnoreCase("center")) {
+        for (String str : super.getJsonElement().strings())
+        {
+            if (str.equalsIgnoreCase("center"))
+            {
                 centerFlag = true;
                 break;
             }
@@ -49,9 +51,12 @@ public class TextElement extends AbstractHudElement
 
         // Initialize text with the first string in jsonElement or a default if not present
         Component tempText;
-        try {
+        try
+        {
             tempText = Component.literal(super.getJsonElement().strings()[0]);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             tempText = Component.literal("'NO STR'");
         }
         this.text = tempText;

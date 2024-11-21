@@ -54,16 +54,16 @@ public abstract class PlayerGuiMixin
     {
         if (this.getCameraPlayer() != null)
         {
-            if (HudState.getShowHud())
+            if (HudState.showHud)
             {
-                Stack<AbstractHudElement> huds = HudState.getHudElements();
+                Stack<AbstractHudElement> huds = HudState.hudElements;
                 if (!huds.isEmpty())
                 {
 
                     for (AbstractHudElement element : huds)
                     {
                         String pairGameHudElement = element.getJsonElement().pairGameHudElement();
-                        if (pairGameHudElement.equals(HudState.getGameHudElements().get("hotbar").toString()) || pairGameHudElement.isEmpty())
+                        if (pairGameHudElement.equals(HudState.gameHudElements.get("hotbar").toString()) || pairGameHudElement.isEmpty())
                         {
                             element.render(partialTick, guiGraphics, (Gui)(Object)this);
                         }
@@ -78,15 +78,15 @@ public abstract class PlayerGuiMixin
     {
         if (!collection.isEmpty())
         {
-            if (HudState.getShowHud())
+            if (HudState.showHud)
             {
-                Stack<AbstractHudElement> huds = HudState.getHudElements();
+                Stack<AbstractHudElement> huds = HudState.hudElements;
                 if (!huds.isEmpty())
                 {
                     for (AbstractHudElement element : huds)
                     {
                         String pairGameHudElement = element.getJsonElement().pairGameHudElement();
-                        if (pairGameHudElement.equals(HudState.getGameHudElements().get("effectbar").toString()))
+                        if (pairGameHudElement.equals(HudState.gameHudElements.get("effectbar").toString()))
                         {
                             element.render(0, guiGraphics, (Gui)(Object)this);
                         }
@@ -101,9 +101,9 @@ public abstract class PlayerGuiMixin
     {
         if (this.getCameraPlayer() != null)
         {
-            if (HudState.getShowHud())
+            if (HudState.showHud)
             {
-                Stack<AbstractHudElement> huds = HudState.getHudElements();
+                Stack<AbstractHudElement> huds = HudState.hudElements;
 
                 if (!huds.isEmpty())
                 {

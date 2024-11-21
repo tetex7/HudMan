@@ -87,7 +87,7 @@ public class HudmanClient implements ClientModInitializer
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (HUDMAN_RESET.consumeClick())
             {
-                if (HudState.getShowHud())
+                if (HudState.showHud)
                 {
                     HudResetEvent.call();
                 }
@@ -95,9 +95,9 @@ public class HudmanClient implements ClientModInitializer
 
             while (HUDMAN_SHOW.consumeClick())
             {
-                HudState.getHudElements().clear();
-                HudState.setShowHud(!HudState.getShowHud());
-                if (HudState.getShowHud())
+                HudState.hudElements.clear();
+                HudState.showHud = !HudState.showHud;
+                if (HudState.showHud)
                 {
                     HudResetEvent.call();
                 }
@@ -122,7 +122,7 @@ public class HudmanClient implements ClientModInitializer
 
         ClientWorldEvent.CLIENT_WORLD_LOAD_EVENT.register(() -> {
 
-            HudState.getLOGGER().info("running World load event");
+            HudState.LOGGER.info("running World load event");
             if (!worldGood)
             {
                 if (Minecraft.getInstance().player == null)
@@ -135,9 +135,9 @@ public class HudmanClient implements ClientModInitializer
         });
 
         ClientWorldEvent.CLIENT_WORLD_UNLOAD_EVENT.register(() -> {
-            HudState.getLOGGER().info("running World unload event");
+            HudState.LOGGER.info("running World unload event");
             worldGood = false;
-            HudState.getHudElements().clear();
+            HudState.hudElements.clear();
         });
 
         if (!NamespacePath.pathOf("test").equals(NamespacePath.pathOf("test")))
@@ -145,7 +145,7 @@ public class HudmanClient implements ClientModInitializer
             throw new IllegalStateException("Error: 'NamespacePath::equals' function failed self test");
         }
 
-        File conf = new File(HudState.getConfigPath());
+        File conf = new File(HudState.configPath);
         if (!conf.exists())
         {
             JsonConfigHudFile congHud = new JsonConfigHudFile(
@@ -166,7 +166,7 @@ public class HudmanClient implements ClientModInitializer
                     false,
                     true
             );
-            HudState.getLOGGER().info(conf.toString());
+            HudState.LOGGER.info(conf.toString());
             try (FileWriter writer = new FileWriter(conf, StandardCharsets.US_ASCII))
             {
                 writer.write(new Gson().toJson(congHud));
