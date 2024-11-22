@@ -117,4 +117,6 @@ cd ./HudMan
 ./gradlew :init
 ./gradlew :buildJar
 ```
-
+This will create a folder called build_out containing two jars<br>
+The source jar is used for plugin developers to use my code base As I wrote it<br>
+The other jar is the mod Just put that in your mod file and or put it your lib folder 
