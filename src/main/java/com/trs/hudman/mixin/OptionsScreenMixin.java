@@ -16,7 +16,6 @@
  */
 
 package com.trs.hudman.mixin;
-import com.trs.hudman.gui.screens.ConfigPresetSelectionScreen;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.layouts.FrameLayout;
 import net.minecraft.client.gui.screens.OptionsScreen;
@@ -42,12 +41,12 @@ public abstract class OptionsScreenMixin extends Screen
     @Inject(method = "init", at = @At(value = "RETURN"))
     void injectInit(CallbackInfo ci)
     {
-        Button s = super.addRenderableWidget(
+        /*Button s = super.addRenderableWidget(
             this.openScreenButton(
                 Component.translatable("screen.hudman.hud_preset_meun"),
-                () -> new ConfigPresetSelectionScreen(Component.translatable("screen.hudman.hud_preset_meun"),  (OptionsScreen)(Object)this)
+                    () -> new ConfigPresetSelectionScreen(Component.translatable("screen.hudman.hud_preset_meun"),  (OptionsScreen)(Object)this)
             )
-        );
-        FrameLayout.alignInRectangle(s, 0, this.height - 25, this.width, this.height, 0.5F, 0.0F);
+        );*/
+        //FrameLayout.alignInRectangle(s, 0, this.height - 25, this.width, this.height, 0.5F, 0.0F);
     }
 }
