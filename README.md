@@ -108,3 +108,13 @@ class ModClient implements ClientModInitializer
     }
 }
 ```
+<br>
+<hr>
+<h2>How to build</h2>
+```bash
+git clone https://github.com/tetex7/HudMan.git
+cd ./HudMan
+./gradlew :init
+./gradlew :buildJar
+```
+
