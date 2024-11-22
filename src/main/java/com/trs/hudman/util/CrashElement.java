@@ -27,6 +27,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public final class CrashElement extends AbstractHudElement
 {
     private final int ticks;
@@ -44,7 +46,7 @@ public final class CrashElement extends AbstractHudElement
                         0f,
                         "",
                         true,
-                        new String[]{""}
+                        List.of("")
                 )
         );
         this.ticks = ticks;

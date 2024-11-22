@@ -18,6 +18,7 @@
 package com.trs.hudman.confg;
 
 import com.trs.hudman.util.Vec2i;
+import java.util.List;
 
 public record JsonConfigHudElement(
         String elementId,
@@ -28,7 +29,7 @@ public record JsonConfigHudElement(
         //int NodeId,
         String pairGameHudElement,
         boolean enable,
-        String[] strings
+        List<String> strings
 
 )
 {
@@ -42,7 +43,7 @@ public record JsonConfigHudElement(
                 element.scale,
                 (element.pairGameHudElement),
                 element.enable,
-                element.strings.clone()
+                List.copyOf(element.strings)
         );
     }
 }

@@ -41,7 +41,7 @@ public class CompassElement extends AbstractHudElement
         super(root, client, rCords, jsonElement);
 
         // Initialize noCenter flag based on jsonElement's strings
-        this.noCenter = super.getJsonElement().strings()[0].equals("!center");
+        this.noCenter = super.getJsonElement().strings().get(0).equals("!center");
 
         // Initialize raw flag by checking if "raw" is in the strings list
         boolean rawFlag = false;

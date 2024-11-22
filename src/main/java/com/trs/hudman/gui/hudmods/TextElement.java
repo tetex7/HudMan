@@ -53,7 +53,7 @@ public class TextElement extends AbstractHudElement
         Component tempText;
         try
         {
-            tempText = Component.literal(super.getJsonElement().strings()[0]);
+            tempText = Component.literal(super.getJsonElement().strings().get(0));
         }
         catch (Exception ex)
         {

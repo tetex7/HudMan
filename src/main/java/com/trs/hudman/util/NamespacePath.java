@@ -28,7 +28,7 @@ import com.trs.hudman.HudState;
  * a wrapper for the minecraft {@link ResourceLocation}
  */
 @Environment(EnvType.CLIENT)
-public class NamespacePath implements Comparable<NamespacePath>
+public final class NamespacePath implements Comparable<NamespacePath>
 {
     public static final String MOD_NAMESPACE = HudState.MODID;
     public static final String MINECRAFT_NAMESPACE = ResourceLocation.DEFAULT_NAMESPACE;
@@ -139,6 +139,6 @@ public class NamespacePath implements Comparable<NamespacePath>
     @Override
     public int hashCode()
     {
-        return this.resourceLocation.hashCode();
+        return this.getResourceLocation().hashCode();
     }
 }

@@ -47,7 +47,7 @@ public final class VelocityVectorElement extends AbstractHudElement
     private Vec3 player_cords = new Vec3(0, 0, 0);
     private Vec3 dta_cords = new Vec3(0, 0, 0);
 
-    private final boolean doTooltip = this.getJsonElement().strings().length != 0 && this.getJsonElement().strings()[this.getJsonElement().strings().length - 1].equalsIgnoreCase("dotooltip");
+    private final boolean doTooltip = !this.getJsonElement().strings().isEmpty() && this.getJsonElement().strings().get(this.getJsonElement().strings().size() - 1).equalsIgnoreCase("dotooltip");
 
     /*private final FlowMeterWidget X_VECTOR_METER = new FlowMeterWidget(-25, 0, 0f);
     private final FlowMeterWidget Y_VECTOR_METER = new FlowMeterWidget(0, 0, 0f);

@@ -15,13 +15,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.trs.hudman.confg;
+package com.trs.hudman.gui.screens.widget;
 
-import java.util.List;
+import dev.lambdaurora.spruceui.Position;
+import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
+import net.minecraft.client.gui.GuiGraphics;
 
-public record JsonConfigHudFile(
-        String ver,
-        List<JsonConfigHudElement> elements,
-        boolean debug,
-        boolean errorNotification
-){}
+public class PresetWidget extends AbstractSpruceWidget
+{
+    public PresetWidget(Position position, int width)
+    {
+        super(position);
+    }
+
+    @Override
+    protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta)
+    {
+
+    }
+}

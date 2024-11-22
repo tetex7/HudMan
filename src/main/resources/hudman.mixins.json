@@ -1,16 +1,17 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "com.trs.hudman.mixin",
-  "compatibilityLevel": "JAVA_17",
-  "mixins": [
-  ],
-  "client": [
-    "PlayerGuiMixin",
-    "PlayerGuiMixinAccessor",
-    "PlayerTabOverlayMixinAccessor"
-  ],
-  "injectors": {
-    "defaultRequire": 1
+    "required": true,
+    "minVersion": "0.8",
+    "package": "com.trs.hudman.mixin",
+    "compatibilityLevel": "JAVA_17",
+    "mixins": [
+    ],
+    "client": [
+        "OptionsScreenMixin",
+        "PlayerGuiMixin",
+        "PlayerGuiMixinAccessor",
+        "PlayerTabOverlayMixinAccessor"
+    ],
+    "injectors": {
+        "defaultRequire": 1
   }
 }

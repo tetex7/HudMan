@@ -57,7 +57,7 @@ public class CordsElement extends AbstractHudElement
     {
         super(root, client, cords, jsonElement);
 
-        List<String> strings = List.of(getJsonElement().strings());
+        List<String> strings = getJsonElement().strings();
 
         if (strings.isEmpty() || strings.get(0).equalsIgnoreCase("center") || strings.get(0).isEmpty())
         {

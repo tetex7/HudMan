@@ -50,6 +50,7 @@ repositories {
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
     maven(url = "https://maven.parchmentmc.org")
+    maven("https://maven.gegy.dev")
     //maven(url = "https://server.bbkr.space/artifactory/libs-release")
     /*maven(
         name = "ParchmentMC",
@@ -68,6 +69,8 @@ dependencies {
         parchment("org.parchmentmc.data:parchment-1.20.1:2023.09.03@zip")
     })
     modImplementation("net.fabricmc:fabric-loader:${project.property("loader_version")}")
+
+    modImplementation(include("dev.lambdaurora:spruceui:5.0.0+1.20") ?: "")
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.property("fabric_version")}")

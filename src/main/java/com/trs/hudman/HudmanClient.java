@@ -34,7 +34,6 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
-import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -44,21 +43,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
+import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public class HudmanClient implements ClientModInitializer
 {
-
-    /* Uncomment to register HUD editor keybinding
-    private static final KeyMapping HUDMAN_MAPPING = KeyBindingHelper.registerKeyBinding(new KeyMapping(
-        "key.hudman.hudediter",
-        InputConstants.Type.KEYSYM,
-        GLFW.GLFW_KEY_F9,
-        KeyMapping.CATEGORY_MISC
-    ));
-    */
 
     private static final KeyMapping HUDMAN_RESET = KeyBindingHelper.registerKeyBinding(new KeyMapping(
             "key.hudman.hudreset",
@@ -87,7 +76,8 @@ public class HudmanClient implements ClientModInitializer
         });
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while (HUDMAN_RESET.consumeClick())
+
+            if (HUDMAN_RESET.consumeClick())
             {
                 if (HudState.showHud)
                 {
@@ -95,7 +85,7 @@ public class HudmanClient implements ClientModInitializer
                 }
             }
 
-            while (HUDMAN_SHOW.consumeClick())
+            if (HUDMAN_SHOW.consumeClick())
             {
                 HudState.hudElements.clear();
                 HudState.showHud = !HudState.showHud;
@@ -152,19 +142,20 @@ public class HudmanClient implements ClientModInitializer
         {
             JsonConfigHudFile congHud = new JsonConfigHudFile(
                     "v1.0",
-                    new JsonConfigHudElement[]{
+                    List.of(
                             new JsonConfigHudElement(
-                                    "null",
-                                    new Vec2i(0, 0),
+                                    "hudman:velocity_vector",
+                                    new Vec2i(100, 110),
                                     0,
                                     0,
-                                    1f,
+                                    0.25f,
                                     "",
-                                    false,
-                                    new String[]{""}
-                            ),
-
-                    },
+                                    true,
+                                    List.of(
+                                            "doTooltip"
+                                    )
+                            )
+                    ),
                     false,
                     true
             );
