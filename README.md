@@ -109,7 +109,6 @@ class ModClient implements ClientModInitializer
 }
 ```
 <hr>
-<br>
 
 ## How to build
 ```
