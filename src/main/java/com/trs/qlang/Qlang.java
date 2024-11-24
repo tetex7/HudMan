@@ -60,6 +60,12 @@ public class Qlang
             return this;
         }
 
+        public Builder AddInstruction(String tag, QlangInstruction inst)
+        {
+            ints.add(ImmutablePair.of(Pattern.compile(tag), inst));
+            return this;
+        }
+
         public Qlang build()
         {
             return new Qlang(this);

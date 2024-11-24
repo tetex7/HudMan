@@ -36,11 +36,10 @@ public class TextElement extends AbstractHudElement
 
     private final boolean isCenter;
     private final String text;
-    private final boolean badStringFlag;
 
     Qlang parser = Qlang.builder()
             .includesStandardLibrary()
-            .AddInstruction(Pattern.compile("%USER%"), QlangInstruction.of((String tag, Pattern pattern) -> getClient().getUser().getName()))
+            .AddInstruction("%USER%", QlangInstruction.of((String tag, Pattern pattern) -> getClient().getUser().getName()))
             .build();
 
     public TextElement(AbstractHudElement root, Minecraft client, Vec2i rCords, JsonConfigHudElement jsonElement)
@@ -50,7 +49,7 @@ public class TextElement extends AbstractHudElement
         // Initialize isCenter by checking if "center" is in jsonElement's strings
         this.isCenter = getJsonElement().strings().get(getJsonElement().strings().size() - 1).equalsIgnoreCase("center");
 
-        this.badStringFlag = (getJsonElement().strings().size() == 1) && getJsonElement().strings().get(0).equalsIgnoreCase("center");
+        boolean badStringFlag = (getJsonElement().strings().size() == 1) && getJsonElement().strings().get(0).equalsIgnoreCase("center");
 
         // Initialize text with the first string in jsonElement or a default if not present
         String tempText;

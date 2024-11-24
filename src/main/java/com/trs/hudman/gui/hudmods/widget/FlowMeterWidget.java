@@ -53,7 +53,7 @@ public final class FlowMeterWidget extends AbstractHudWidget
         float angle = super.getRotation(); // Rotation angle in degrees
         float pointX = 0; // X-coordinate of the rotation center
         float pointY = 0; // Y-coordinate of the rotation center
-        float pointZ = 0.0f;  // Z-coordinate, set to 0 for 2D plane
+        float pointZ = 0;  // Z-coordinate, set to 0 for 2D plane
 
         poseStack.rotateAround(Axis.ZP.rotationDegrees(angle), pointX, pointY, pointZ);
 
