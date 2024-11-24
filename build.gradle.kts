@@ -1,32 +1,18 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.io.File
+import org.gradle.kotlin.dsl.*
 import java.nio.file.Files
 import java.nio.file.LinkOption
 import java.nio.file.Paths
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
-import kotlin.Boolean
 
 plugins {
-    kotlin("jvm") version "2.0.20"
+    //kotlin("jvm") version "2.0.20"
     id("fabric-loom") version "1.7.1"
     id("maven-publish")
 }
 
-version = run RET@{
-    val ver = project.property("mod_version") as String
-    val isSNAPSHOT = (project.property("isSNAPSHOT") as String).toInt()
-    if (isSNAPSHOT == 1)
-    {
-        "$ver-SNAPSHOT"
-    }
-    else
-    {
-        ver
-    }
+version = "${(project.property("mod_version") as String)}-${project.property("minecraft_version")}"
 
-}
 group = project.property("maven_group") as String
 
 base {
@@ -142,9 +128,9 @@ tasks.withType<JavaCompile>().configureEach {
     options.release.set(targetJavaVersion)
 }
 
-tasks.withType<KotlinCompile>().configureEach {
+/*tasks.withType<KotlinCompile>().configureEach {
     compilerOptions.jvmTarget.set(JvmTarget.fromTarget(targetJavaVersion.toString()))
-}
+}*/
 
 tasks.jar {
     from("LICENSE") {
