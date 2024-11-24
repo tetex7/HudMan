@@ -18,6 +18,7 @@
 package com.trs.qlang;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -79,15 +80,15 @@ public class Qlang
 
     private final Stack<ImmutablePair<Pattern, QlangInstruction>> instructionStack = new Stack<>();
 
-    public record WorkOuput(
+    public record WorkOutput(
        String outputString,
        boolean didWork
     ){}
 
 
-    public WorkOuput parse(final String text)
+    public WorkOutput parse(final String text)
     {
-        WorkOuput workOuput = null;
+        WorkOutput workOuput = null;
         String work_string = text;
         boolean dw = false;
         for (ImmutablePair<Pattern, QlangInstruction> work_pair : instructionStack)
@@ -101,12 +102,12 @@ public class Qlang
         }
         if (work_string.equals(text))
         {
-            return new WorkOuput(
+            return new WorkOutput(
                     text,
                     false
             );
         }
-        return new WorkOuput(
+        return new WorkOutput(
                 work_string,
                 true
         );
@@ -127,12 +128,12 @@ public class Qlang
     }
 
 
-    public WorkOuput invoke(String text)
+    public WorkOutput invoke(String text)
     {
         return parse(text);
     }
 
-    Qlang(Builder builder)
+    Qlang(@NotNull Builder builder)
     {
         this.instructionStack.addAll(builder.ints);
         if (builder.hasSTD)
