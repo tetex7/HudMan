@@ -19,6 +19,8 @@ package com.trs.hudman.gui.hudmods;
 
 import com.trs.hudman.confg.JsonConfigHudElement;
 import com.trs.hudman.util.Vec2i;
+import com.trs.qlang.Qlang;
+import com.trs.qlang.QlangInstruction;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -26,38 +28,46 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
+import java.util.regex.Pattern;
+
 @Environment(EnvType.CLIENT)
 public class TextElement extends AbstractHudElement
 {
 
     private final boolean isCenter;
-    private final Component text;
+    private final String text;
+    private final boolean badStringFlag;
+
+    Qlang parser = Qlang.builder()
+            .includesStandardLibrary()
+            .AddInstruction(Pattern.compile("%USER%"), QlangInstruction.of((String tag, Pattern pattern) -> getClient().getUser().getName()))
+            .build();
 
     public TextElement(AbstractHudElement root, Minecraft client, Vec2i rCords, JsonConfigHudElement jsonElement)
     {
         super(root, client, rCords, jsonElement);
 
         // Initialize isCenter by checking if "center" is in jsonElement's strings
-        boolean centerFlag = false;
-        for (String str : super.getJsonElement().strings())
-        {
-            if (str.equalsIgnoreCase("center"))
-            {
-                centerFlag = true;
-                break;
-            }
-        }
-        this.isCenter = centerFlag;
+        this.isCenter = getJsonElement().strings().get(getJsonElement().strings().size() - 1).equalsIgnoreCase("center");
+
+        this.badStringFlag = (getJsonElement().strings().size() == 1) && getJsonElement().strings().get(0).equalsIgnoreCase("center");
 
         // Initialize text with the first string in jsonElement or a default if not present
-        Component tempText;
-        try
+        String tempText;
+        if (badStringFlag)
         {
-            tempText = Component.literal(super.getJsonElement().strings().get(0));
+            tempText = "'NO STR'";
         }
-        catch (Exception ex)
+        else
         {
-            tempText = Component.literal("'NO STR'");
+            try
+            {
+                tempText = super.getJsonElement().strings().get(0);
+            }
+            catch (Exception ex)
+            {
+                tempText = "'NO STR'";
+            }
         }
         this.text = tempText;
     }
@@ -67,7 +77,7 @@ public class TextElement extends AbstractHudElement
     {
         int x = isCenter ? guiGraphics.guiWidth() / 2 : getCords().x();
         int y = getCords().y();
-        guiGraphics.drawCenteredString(gui.getFont(), text, x, y, 0xFFFFFF);
+        guiGraphics.drawCenteredString(gui.getFont(), Component.literal(parser.parse(text).outputString()), x, y, 0xFFFFFF);
     }
 
     @Override
