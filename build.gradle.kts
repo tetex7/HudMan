@@ -33,7 +33,7 @@ base {
     archivesName.set(project.property("archives_base_name") as String)
 }
 
-val targetJavaVersion = 17
+val targetJavaVersion = 21
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
@@ -66,7 +66,7 @@ dependencies {
     minecraft("com.mojang:minecraft:${project.property("minecraft_version")}")
     mappings(loom.layered {
         officialMojangMappings().
-        parchment("org.parchmentmc.data:parchment-1.20.1:2023.09.03@zip")
+        parchment("org.parchmentmc.data:parchment-1.21.1:2024.11.17@zip")
     })
     modImplementation("net.fabricmc:fabric-loader:${project.property("loader_version")}")
 
@@ -88,7 +88,8 @@ tasks.processResources {
         expand("version" to project.version,
             "minecraft_version" to project.property("minecraft_version"),
             "loader_version" to project.property("loader_version"),
-            "kotlin_loader_version" to project.property("kotlin_loader_version"))
+            //"kotlin_loader_version" to project.property("kotlin_loader_version")
+        )
     }
 }
 

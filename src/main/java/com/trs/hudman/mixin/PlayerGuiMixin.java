@@ -21,6 +21,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.trs.hudman.gui.hudmods.AbstractHudElement;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -49,8 +50,8 @@ public abstract class PlayerGuiMixin
 
     @Shadow protected abstract Player getCameraPlayer();
 
-    @Inject(method = "renderHotbar", at = @At("RETURN"))
-    private void injectRenderHotbar(float partialTick, GuiGraphics guiGraphics, CallbackInfo info)
+    @Inject(method = "renderHotbarAndDecorations", at = @At("RETURN"))
+    private void injectRenderHotbar(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo info)
     {
         if (this.getCameraPlayer() != null)
         {
@@ -65,7 +66,7 @@ public abstract class PlayerGuiMixin
                         String pairGameHudElement = element.getJsonElement().pairGameHudElement();
                         if (pairGameHudElement.equals(HudState.gameHudElements.get("hotbar").toString()) || pairGameHudElement.isEmpty())
                         {
-                            element.render(partialTick, guiGraphics, (Gui)(Object)this);
+                            element.render(deltaTracker.getGameTimeDeltaPartialTick(true), guiGraphics, (Gui)(Object)this);
                         }
                     }
                 }
@@ -74,7 +75,7 @@ public abstract class PlayerGuiMixin
     }
 
     @Inject(method = "renderEffects", at = @At("RETURN"))
-    private void injectRenderEffects(GuiGraphics guiGraphics, CallbackInfo info, @Local Collection<MobEffectInstance> collection)
+    private void injectRenderEffects(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci, @Local Collection<MobEffectInstance> collection)
     {
         if (!collection.isEmpty())
         {
@@ -88,7 +89,7 @@ public abstract class PlayerGuiMixin
                         String pairGameHudElement = element.getJsonElement().pairGameHudElement();
                         if (pairGameHudElement.equals(HudState.gameHudElements.get("effectbar").toString()))
                         {
-                            element.render(0, guiGraphics, (Gui)(Object)this);
+                            element.render(deltaTracker.getGameTimeDeltaPartialTick(true), guiGraphics, (Gui)(Object)this);
                         }
                     }
                 }

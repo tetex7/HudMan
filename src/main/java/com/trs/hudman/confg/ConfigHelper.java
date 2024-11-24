@@ -124,7 +124,7 @@ public final class ConfigHelper
         ToastComponent toastComponent = Minecraft.getInstance().getToasts();
         SystemToast.multiline(
                 client,
-                SystemToast.SystemToastIds.PERIODIC_NOTIFICATION,
+                SystemToast.SystemToastId.PERIODIC_NOTIFICATION,
                 Component.literal("\"OH NO\" Error on HudElement Load"),
                 Component.literal(text)
         );
@@ -170,6 +170,6 @@ public final class ConfigHelper
         Component titleComponent = Component.literal(title).withStyle(ChatFormatting.BOLD);
         Component messageComponent = Component.literal(message).withStyle(ChatFormatting.ITALIC, ChatFormatting.GOLD);
         // Create and add the toast to the toast manager
-        minecraft.getToasts().addToast(new SystemToast(SystemToast.SystemToastIds.PACK_LOAD_FAILURE, titleComponent, messageComponent));
+        minecraft.getToasts().addToast(new SystemToast(SystemToast.SystemToastId.PACK_LOAD_FAILURE, titleComponent, messageComponent));
     }
 }

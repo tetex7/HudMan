@@ -23,7 +23,6 @@ import com.trs.hudman.confg.JsonConfigHudElement;
 import com.trs.hudman.gui.hudmods.widget.ClusterWidget;
 import com.trs.hudman.gui.hudmods.widget.FlowMeterWidget;
 import com.trs.hudman.gui.hudmods.widget.TextWidget;
-import com.trs.hudman.mixin.PlayerGuiMixinAccessor;
 import com.trs.hudman.util.Vec2i;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -81,7 +80,7 @@ public final class VelocityVectorElement extends AbstractHudElement
     {
         if (HudState.getConfigDebug())
         {
-            guiGraphics.drawCenteredString(gui.getFont(), delta.toString(), (((PlayerGuiMixinAccessor)gui).getScreenWidth() / 2), ((((PlayerGuiMixinAccessor)gui).getScreenHeight() / 2) + 5) + 5, 0xFFFFFF);
+            guiGraphics.drawCenteredString(gui.getFont(), delta.toString(), (guiGraphics.guiWidth() / 2), ((guiGraphics.guiHeight() / 2) + 5) + 5, 0xFFFFFF);
         }
 
         PoseStack poseStack = guiGraphics.pose();

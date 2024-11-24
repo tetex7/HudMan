@@ -14,17 +14,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see "https://www.gnu.org/licenses/"
 --?>
+
+> [!IMPORTANT]
+> This Port Minecraft 1.21.1 is still work in progress but is looking promising  
+
+
 # Hud Manager
 a client side minecraft mod that I’ve created in my free time for mc1.20.1<br>
 the main feature of the mod is To allow the user to create custom HUD using a config file written in Json.<br>
 This mod is quite small, only having one dependency and that is the Fabric API and technically Minecraft itself.<br>
-This mod is also expandable by external plug-in mods using the Element registry system.<br>
-
-> [!IMPORTANT]
-> Anything kotlin is now written in Java<br>
-> and a new version will be compiled soon for a release 
-
-
+This mod is also expandable by external plug-in mods using the Element registry system.<br> 
 
 here is a test config:
 ```json
