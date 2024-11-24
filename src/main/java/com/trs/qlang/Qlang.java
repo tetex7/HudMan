@@ -79,15 +79,15 @@ public class Qlang
 
     private final Stack<ImmutablePair<Pattern, QlangInstruction>> instructionStack = new Stack<>();
 
-    public record WorkOuput(
+    public record workOutput(
        String outputString,
        boolean didWork
     ){}
 
 
-    public WorkOuput parse(final String text)
+    public workOutput parse(final String text)
     {
-        WorkOuput workOuput = null;
+        workOutput workOuput = null;
         String work_string = text;
         boolean dw = false;
         for (ImmutablePair<Pattern, QlangInstruction> work_pair : instructionStack)
@@ -101,12 +101,12 @@ public class Qlang
         }
         if (work_string.equals(text))
         {
-            return new WorkOuput(
+            return new workOutput(
                     text,
                     false
             );
         }
-        return new WorkOuput(
+        return new workOutput(
                 work_string,
                 true
         );
@@ -127,7 +127,7 @@ public class Qlang
     }
 
 
-    public WorkOuput invoke(String text)
+    public workOutput invoke(String text)
     {
         return parse(text);
     }
