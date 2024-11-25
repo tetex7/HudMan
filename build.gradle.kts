@@ -93,8 +93,8 @@ tasks.processResources {
             "version" to project.version,
             "date" to date,
             "time" to time,
-            "bid" to fbid
-            //"buid" to ((System.getProperty("user.name").hashCode() * (420/88))).toUInt()
+            "bid" to fbid,
+            "buid" to ((System.getProperty("user.name").hashCode() * (420/88))).toUInt()
         )
     }
 }
