@@ -43,7 +43,18 @@ public class Qlang
             return this;
         }
 
-        public Builder includesStandardLibrary()
+        public Builder AddAllInstructions(List<ImmutablePair<Pattern, QlangInstruction>> itss)
+        {
+            ints.addAll(itss);
+            return this;
+        }
+
+        public Builder AddTagLibrary(List<ImmutablePair<Pattern, QlangInstruction>> itss)
+        {
+            return AddAllInstructions(itss);
+        }
+
+        public Builder includeStandardLibrary()
         {
             hasSTD = true;
             return this;

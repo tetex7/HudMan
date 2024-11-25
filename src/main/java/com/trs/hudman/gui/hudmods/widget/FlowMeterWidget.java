@@ -22,6 +22,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
@@ -84,6 +85,6 @@ public final class FlowMeterWidget extends AbstractHudWidget
 
     public void setValue(@Range(from = -25, to = 25) int value)
     {
-        this.value = value;
+        this.value = Mth.clamp(value, -25, 25);
     }
 }

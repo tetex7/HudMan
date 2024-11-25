@@ -4,6 +4,9 @@ import java.nio.file.LinkOption
 import java.nio.file.Paths
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
+import java.time.LocalDate;
+import java.time.LocalTime
+import kotlin.math.abs
 
 plugins {
     //kotlin("jvm") version "2.0.20"
@@ -11,7 +14,7 @@ plugins {
     id("maven-publish")
 }
 
-version = "${(project.property("mod_version") as String)}-${project.property("minecraft_version")}"
+version = "${(project.property("mod_version") as String)}-mc${project.property("minecraft_version")}"
 
 group = project.property("maven_group") as String
 
@@ -71,10 +74,28 @@ tasks.processResources {
     filteringCharset = "UTF-8"
 
     filesMatching("fabric.mod.json") {
-        expand("version" to project.version,
+        expand(
+            "version" to project.version,
             "minecraft_version" to project.property("minecraft_version"),
             "loader_version" to project.property("loader_version"),
-            "kotlin_loader_version" to project.property("kotlin_loader_version"))
+            "kotlin_loader_version" to project.property("kotlin_loader_version")
+        )
+    }
+
+    val date = "${LocalDate.now().monthValue}/${LocalDate.now().dayOfMonth}/${LocalDate.now().year}"
+    val time = "${LocalTime.now().hour}:${LocalTime.now().minute}:${LocalTime.now().second}"
+    val rbid = "${project.version}$date$time".hashCode()
+    val fbid = if (rbid < 0) -rbid else rbid
+
+    filesMatching("buildStamp.json")
+    {
+        expand(
+            "version" to project.version,
+            "date" to date,
+            "time" to time,
+            "bid" to fbid
+            //"buid" to ((System.getProperty("user.name").hashCode() * (420/88))).toUInt()
+        )
     }
 }
 

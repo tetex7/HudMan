@@ -64,6 +64,10 @@ public final class ConfigHelper
                         else
                         {
                             HudState.LOGGER.info("no Element by ElementName:'{}' on built-in Namespace:'{}'", path.getPath(), path.getNamespace());
+                            if (HudState.getErrorNotification())
+                            {
+                                showToast("Failure on Element Load", "no Element by ElementPath:'" + path.getFullPath() + '\'');
+                            }
                         }
                     }
                     catch (Throwable exception)
@@ -71,7 +75,7 @@ public final class ConfigHelper
                         HudState.LOGGER.error("Exception in built-in Namespace:'{}' on Loading ElementName:'{}'\n{}", path.getNamespace(), path.getPath(), stackTraceString(exception));
                         if (HudState.getErrorNotification())
                         {
-                            showToast("Failure on Element Load", "no Element by ElementPath:'" + path.getFullPath() + '\'');
+                            showToast("Failure on Element Load", "Exception on load '" + path.getFullPath() + '\'');
                         }
                     }
                 }
@@ -98,6 +102,10 @@ public final class ConfigHelper
                     catch (Throwable exception)
                     {
                         HudState.LOGGER.error("Exception in External Namespace:'{}' on Loading ElementName:'{}'\n{}", path.getNamespace(), path.getPath(), stackTraceString(exception));
+                        if (HudState.getErrorNotification())
+                        {
+                            showToast("Failure on Element Load", "Exception on load '" + path.getFullPath() + '\'');
+                        }
                     }
                 }
             }
@@ -150,7 +158,6 @@ public final class ConfigHelper
         else if (Util.getPlatform() == Util.OS.OSX)
         {
             Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.VILLAGER_NO, 1.0F, 1.0F));
-            HudState.hudElements.push(new CrashElement(180));
             showToast("No support for Mac OS", "I do not own a Mac nor care to test for Mac OS");
         }
         else if (Util.getPlatform() == Util.OS.SOLARIS)

@@ -1,0 +1,6 @@
+{
+    "version": "${version}",
+    "builtDate": "${date}",
+    "builtTime": "${time}",
+    "builtID": ${bid}
+}

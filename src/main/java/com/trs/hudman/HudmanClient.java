@@ -18,6 +18,9 @@
 package com.trs.hudman;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.trs.hudman.confg.ConfigHelper;
 import com.trs.hudman.confg.JsonConfigHudElement;
@@ -148,7 +151,7 @@ public class HudmanClient implements ClientModInitializer
                                     new Vec2i(100, 110),
                                     0,
                                     0,
-                                    0.25f,
+                                    0.75f,
                                     "",
                                     true,
                                     List.of(
@@ -160,9 +163,9 @@ public class HudmanClient implements ClientModInitializer
                     true
             );
             HudState.LOGGER.info(conf.toString());
-            try (FileWriter writer = new FileWriter(conf, StandardCharsets.US_ASCII))
+            try (FileWriter writer = new FileWriter(conf, StandardCharsets.UTF_8))
             {
-                writer.write(new Gson().toJson(congHud));
+                writer.write(prettyPrintWithIndent(new Gson().toJson(congHud), 4));
             }
             catch (IOException e)
             {
@@ -195,6 +198,42 @@ public class HudmanClient implements ClientModInitializer
                 throw new ReportedException(crashReport);
             }
         }*/
+    }
+
+    private static String prettyPrintWithIndent(String json, int indentSize)
+    {
+        JsonElement jsonElement = JsonParser.parseString(json);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        // Step 1: Convert JSON to a pretty-printed version with default indentation
+        String prettyJson = gson.toJson(jsonElement);
+
+        // Step 2: Define the custom indentation string
+        String indent = " ".repeat(indentSize);
+
+        // Step 3: Use StringBuilder to construct the final string with custom indentation
+        StringBuilder indentedJson = new StringBuilder();
+        int currentIndentLevel = 0;
+
+        // Split the JSON into lines and apply custom indentation per line
+        for (String line : prettyJson.split("\n")) {
+            String trimmedLine = line.trim();
+
+            // Decrease indent level for closing braces/brackets
+            if (trimmedLine.startsWith("}") || trimmedLine.startsWith("]")) {
+                currentIndentLevel--;
+            }
+
+            // Apply current indentation and add line
+            indentedJson.append(indent.repeat(currentIndentLevel)).append(trimmedLine).append("\n");
+
+            // Increase indent level after opening braces/brackets
+            if (trimmedLine.endsWith("{") || trimmedLine.endsWith("[")) {
+                currentIndentLevel++;
+            }
+        }
+
+        return indentedJson.toString().trim();
     }
 }
 

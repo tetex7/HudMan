@@ -38,7 +38,7 @@ public class TextElement extends AbstractHudElement
     private final String text;
 
     Qlang parser = Qlang.builder()
-            .includesStandardLibrary()
+            .includeStandardLibrary()
             .AddInstruction("%USER%", QlangInstruction.of((String tag, Pattern pattern) -> getClient().getUser().getName()))
             .build();
 
@@ -47,7 +47,7 @@ public class TextElement extends AbstractHudElement
         super(root, client, rCords, jsonElement);
 
         // Initialize isCenter by checking if "center" is in jsonElement's strings
-        this.isCenter = getJsonElement().strings().get(getJsonElement().strings().size() - 1).equalsIgnoreCase("center");
+        this.isCenter = !getJsonElement().strings().isEmpty() && getJsonElement().strings().get(getJsonElement().strings().size() - 1).equalsIgnoreCase("center");
 
         boolean badStringFlag = (getJsonElement().strings().size() == 1) && getJsonElement().strings().get(0).equalsIgnoreCase("center");
 
@@ -55,7 +55,7 @@ public class TextElement extends AbstractHudElement
         String tempText;
         if (badStringFlag)
         {
-            tempText = "'NO STR'";
+            tempText = "%USER% 'NO STR'";
         }
         else
         {
@@ -65,7 +65,7 @@ public class TextElement extends AbstractHudElement
             }
             catch (Exception ex)
             {
-                tempText = "'NO STR'";
+                tempText = "%USER% 'NO STR'";
             }
         }
         this.text = tempText;
