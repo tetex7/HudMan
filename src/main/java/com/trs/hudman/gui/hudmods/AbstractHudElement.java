@@ -28,6 +28,8 @@ import net.minecraft.client.player.LocalPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 @Environment(EnvType.CLIENT)
 public abstract class AbstractHudElement implements IRenderPrimitive
 {
@@ -39,6 +41,9 @@ public abstract class AbstractHudElement implements IRenderPrimitive
 
     public AbstractHudElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfigHudElement jsonElement)
     {
+        Objects.requireNonNull(client);
+        Objects.requireNonNull(cords);
+        Objects.requireNonNull(jsonElement);
         this.root = root;
         this.player = client.player;
         this.cords = cords;
@@ -70,7 +75,6 @@ public abstract class AbstractHudElement implements IRenderPrimitive
     {
         return this.cords;
     }
-
 
     public abstract void render(float partialTick, GuiGraphics guiGraphics, Gui gui);
     public abstract void tick();

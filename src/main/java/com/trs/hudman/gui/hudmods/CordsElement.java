@@ -38,7 +38,7 @@ public class CordsElement extends AbstractHudElement
 {
     private Vec3i cords;
 
-    private String raw_sting;
+    private final String raw_sting;
     Component Text = Component.literal("test");
 
     public static String X_TAG = "%X%";
@@ -61,7 +61,7 @@ public class CordsElement extends AbstractHudElement
 
         if (strings.isEmpty() || strings.get(0).equalsIgnoreCase("center") || strings.get(0).isEmpty())
         {
-            raw_sting = "X(%X%), Z(%Z%)), Y(%Y%)";
+            raw_sting = "X(%X%), Z(%Z%), Y(%Y%)";
         }
         else
         {
