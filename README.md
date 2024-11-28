@@ -20,6 +20,9 @@ the main feature of the mod is To allow the user to create custom HUD using a co
 This mod is quite small, only having one dependency and that is the Fabric API and technically Minecraft itself.<br>
 This mod is also expandable by external plug-in mods using the Element registry system.<br>
 
+### [How to contribute](./how_to_contribute.md)
+<br>
+
 here is a test config:
 ```json
 {
