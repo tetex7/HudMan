@@ -107,6 +107,32 @@ class ModClient implements ClientModInitializer
 ```
 <hr>
 
+<details>
+<summary>How to add this mod to dev environment</summary>
+
+## How to add this mod to dev environment
+```kts
+repositories {
+    ...
+    //Add the modrinth repository 
+    maven("https://api.modrinth.com/maven")
+    ...
+}
+
+dependencies 
+{
+    ...
+    //And then the mod
+    modImplementation("maven.modrinth:hudman:1.5.5-mc1.20.1")
+    ...
+}
+
+```
+
+</details>
+
+***
+
 ## How to build
 ```
 git clone https://github.com/tetex7/HudMan.git

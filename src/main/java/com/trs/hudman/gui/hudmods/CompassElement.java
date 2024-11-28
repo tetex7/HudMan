@@ -33,31 +33,36 @@ public class CompassElement extends AbstractHudElement
 {
     public Component text = Component.literal("test");
 
-    protected final boolean noCenter;
-    protected final boolean raw;
+    protected boolean center = false;
+    protected boolean raw = true;
 
     public CompassElement(AbstractHudElement root, Minecraft client, Vec2i rCords, JsonConfigHudElement jsonElement)
     {
         super(root, client, rCords, jsonElement);
 
-        // Initialize noCenter flag based on jsonElement's strings
-        this.noCenter = super.getJsonElement().strings().get(0).equals("!center");
+        if (!this.getJsonElement().strings().isEmpty())
+        {
+            // Initialize noCenter flag based on jsonElement's strings
+            this.center = super.getJsonElement().strings().get(0).equals("center");
 
-        // Initialize raw flag by checking if "raw" is in the strings list
-        boolean rawFlag = false;
-        for (String str : super.getJsonElement().strings()) {
-            if (str.equals("raw")) {
-                rawFlag = true;
-                break;
+            // Initialize raw flag by checking if "raw" is in the strings list
+            boolean rawFlag = false;
+            for (String str : super.getJsonElement().strings())
+            {
+                if (str.equals("raw"))
+                {
+                    rawFlag = true;
+                    break;
+                }
             }
+            this.raw = rawFlag;
         }
-        this.raw = rawFlag;
     }
 
     @Override
     public void render(float partialTick, GuiGraphics guiGraphics, Gui gui)
     {
-        if (noCenter) {
+        if (!center) {
             guiGraphics.drawCenteredString(gui.getFont(), text, getCords().x(), getCords().y(), 0xFFFFFF);
         } else {
             guiGraphics.drawCenteredString(gui.getFont(), text, guiGraphics.guiWidth() / 2, getCords().y(), 0xFFFFFF);
@@ -71,7 +76,8 @@ public class CompassElement extends AbstractHudElement
         String directionText;
 
         // Map direction to text
-        switch (direction) {
+        switch (direction)
+        {
             case NORTH -> directionText = "North";
             case SOUTH -> directionText = "South";
             case WEST -> directionText = "West";
@@ -80,7 +86,8 @@ public class CompassElement extends AbstractHudElement
         }
 
         // Append rotation if raw is true
-        if (raw) {
+        if (raw)
+        {
             int rotation = (int) (((getPlayer().getYRot() % 360 + 360) % 360));
             directionText = directionText + "(" + rotation + ")";
         }
