@@ -75,6 +75,8 @@ public class HudState
 
     private static boolean errorNotification = true;
 
+    public static final boolean jarDebug;
+
     static {
         HudResetEvent.EVENT.register(() -> {
             JsonConfigHudFile jconfig = getConfig();
@@ -83,6 +85,23 @@ public class HudState
             errorNotification = jconfig.errorNotification();
             return true;
         });
+
+        try
+        {
+            var bytes = Objects.requireNonNull(NamespacePath.class.getClassLoader().getResourceAsStream("hudman.debug.flag")).readAllBytes();
+            if (bytes.length == 1)
+            {
+                jarDebug = bytes[0] == 0x01;
+                LOGGER.info("DEBUG mode active");
+            }
+            else
+            {
+                jarDebug = false;
+            }
+        } catch (Throwable e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     private HudState() {

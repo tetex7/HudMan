@@ -66,6 +66,25 @@ public class HudmanClient implements ClientModInitializer
             "key.categories.hudman"
     ));
 
+    private static final KeyMapping HUDMAN_DEBUG_MENU;
+
+    static
+    {
+        if (HudState.jarDebug)
+        {
+            HUDMAN_DEBUG_MENU = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+                    "key.hudman.huddebug",
+                    InputConstants.Type.KEYSYM,
+                    GLFW.GLFW_KEY_F10,
+                    "key.categories.hudman"
+            ));
+        }
+        else
+        {
+            HUDMAN_DEBUG_MENU = null;
+        }
+    }
+
     private static ClientLevel lastWorld = null;
     private static boolean worldGood = false;
 
@@ -95,6 +114,14 @@ public class HudmanClient implements ClientModInitializer
                 if (HudState.showHud)
                 {
                     HudResetEvent.call();
+                }
+            }
+
+            if (HUDMAN_DEBUG_MENU != null)
+            {
+                if (HUDMAN_DEBUG_MENU.consumeClick())
+                {
+                    HudState.LOGGER.info("WIP");
                 }
             }
 
@@ -175,29 +202,6 @@ public class HudmanClient implements ClientModInitializer
                 throw new ReportedException(crashReport);
             }
         }
-        /*File preset_confg_dir = new File(HudState.configDirPath + "/hudman_conf");
-        if (!preset_confg_dir.exists())
-        {
-            if (!preset_confg_dir.mkdir())
-            {
-                CrashReport crashReport = CrashReport.forThrowable(new RuntimeException("Fell to make directory " + preset_confg_dir), "Fell to make directory");
-                CrashReportCategory category = crashReport.addCategory("File I/O");
-                category.setDetail("Config File Path", preset_confg_dir.getAbsolutePath());
-                throw new ReportedException(crashReport);
-            }
-
-            try (FileWriter writer = new FileWriter(HudState.configDirPath + "/hudman/placeholder.txt", StandardCharsets.US_ASCII))
-            {
-                writer.write("This folder is work in progress");
-            }
-            catch (IOException e)
-            {
-                CrashReport crashReport = CrashReport.forThrowable(e, "Failed to write a Placeholder file");
-                CrashReportCategory category = crashReport.addCategory("File I/O");
-                category.setDetail("Config File Path", preset_confg_dir.getAbsolutePath());
-                throw new ReportedException(crashReport);
-            }
-        }*/
     }
 
     private static String prettyPrintWithIndent(String json, int indentSize)

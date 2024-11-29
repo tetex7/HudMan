@@ -6,7 +6,6 @@ import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 import java.time.LocalDate;
 import java.time.LocalTime
-import kotlin.math.abs
 
 plugins {
     //kotlin("jvm") version "2.0.20"
@@ -14,7 +13,9 @@ plugins {
     id("maven-publish")
 }
 
-version = "${(project.property("mod_version") as String)}-mc${project.property("minecraft_version")}"
+val debug = ((project.property("debug") as String) == "y" || (project.property("debug") as String) == "yes")
+
+version = "${(project.property("mod_version") as String)}${if (debug) "-debug" else ""}-mc${project.property("minecraft_version")}"
 
 group = project.property("maven_group") as String
 
@@ -66,8 +67,13 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.property("fabric_version")}")
 }
 
+fun standardizedPath(path: String): String
+{
+    return path.replace('\\', '/')
+}
 
-tasks.processResources {
+
+tasks.processResources pr@{
     inputs.property("version", project.version)
     inputs.property("minecraft_version", project.property("minecraft_version"))
     inputs.property("loader_version", project.property("loader_version"))
@@ -96,6 +102,19 @@ tasks.processResources {
             "bid" to fbid,
             "buid" to ((System.getProperty("user.name").hashCode() * (420/88))).toUInt()
         )
+    }
+    doLast {
+        val sep = File.separatorChar
+        println("$destinationDir${sep}hudman.debug.flag")
+        val debugMark = File("$destinationDir${sep}hudman.debug.flag")
+        debugMark.createNewFile()
+        if (debug)
+        {
+            debugMark.writeBytes(byteArrayOf(0x01))
+        } else
+        {
+            debugMark.writeBytes(byteArrayOf(0x00))
+        }
     }
 }
 
