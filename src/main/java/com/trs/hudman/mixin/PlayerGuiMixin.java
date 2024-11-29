@@ -56,6 +56,7 @@ public abstract class PlayerGuiMixin
         {
             if (HudState.showHud)
             {
+                minecraft.getProfiler().push("HudMan Rendering Hotbar");
                 Stack<AbstractHudElement> huds = HudState.hudElements;
                 if (!huds.isEmpty())
                 {
@@ -69,6 +70,33 @@ public abstract class PlayerGuiMixin
                         }
                     }
                 }
+                minecraft.getProfiler().pop();
+            }
+        }
+    }
+
+    @Inject(method = "renderPlayerHealth", at = @At("RETURN"))
+    private void injectRenderPlayerHealth(GuiGraphics guiGraphics, CallbackInfo info)
+    {
+        if (this.getCameraPlayer() != null)
+        {
+            if (HudState.showHud)
+            {
+                minecraft.getProfiler().push("HudMan Rendering Hotbar");
+                Stack<AbstractHudElement> huds = HudState.hudElements;
+                if (!huds.isEmpty())
+                {
+
+                    for (AbstractHudElement element : huds)
+                    {
+                        String pairGameHudElement = element.getJsonElement().pairGameHudElement();
+                        if (pairGameHudElement.equals(HudState.gameHudElements.get("healthbar").toString()))
+                        {
+                            element.render(0, guiGraphics, (Gui)(Object)this);
+                        }
+                    }
+                }
+                minecraft.getProfiler().pop();
             }
         }
     }
@@ -80,6 +108,7 @@ public abstract class PlayerGuiMixin
         {
             if (HudState.showHud)
             {
+                minecraft.getProfiler().push("HudMan Rendering Effectbar");
                 Stack<AbstractHudElement> huds = HudState.hudElements;
                 if (!huds.isEmpty())
                 {
@@ -103,6 +132,7 @@ public abstract class PlayerGuiMixin
         {
             if (HudState.showHud)
             {
+                minecraft.getProfiler().push("HudMan Tick");
                 Stack<AbstractHudElement> huds = HudState.hudElements;
 
                 if (!huds.isEmpty())
@@ -112,6 +142,7 @@ public abstract class PlayerGuiMixin
                         hud.tick();
                     }
                 }
+                minecraft.getProfiler().pop();
             }
         }
     }
