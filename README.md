@@ -67,7 +67,7 @@ public class Tester extends AbstractHudElement
 {
     private final FlowMeterWidget TEST_FLOW_METER = new FlowMeterWidget(getCords().x(), getCords().x(), 0.5f);
     private int v = -25;
-    public Tester(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i rCords, @NotNull JsonConfgHudElement jsonElement)
+    public Tester(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i rCords, @NotNull JsonConfigHudElement jsonElement)
     {
         super(root, client, rCords, jsonElement);
         TEST_FLOW_METER.addTickHandler((widget) -> {
@@ -79,9 +79,9 @@ public class Tester extends AbstractHudElement
     }
 
     @Override
-    public void render(float partialTick, GuiGraphics guiGraphics, Gui gui)
+    public void render(GuiGraphics guiGraphics, float partialTick, Gui gui)
     {
-        TEST_FLOW_METER.render(partialTick, gui);
+        TEST_FLOW_METER.render(guiGraphics, var1);
     }
 
     @Override

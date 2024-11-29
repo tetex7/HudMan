@@ -33,7 +33,7 @@ public class ElementRegistry
     public void register(@NotNull NamespacePath namespacePath, NewAbstractHudElementHandler newElementHandler)
     {
         elementMap.put(namespacePath, newElementHandler);
-        HudState.LOGGER.info("Registered HudElement:'" + namespacePath.getFullPath() + '\'');
+        HudState.LOGGER.info("Registered HudElement:'{}'", namespacePath.getFullPath());
     }
 
     public void register(@NotNull Map<NamespacePath, NewAbstractHudElementHandler> elementsMap)
@@ -41,7 +41,8 @@ public class ElementRegistry
         for (Map.Entry<NamespacePath, NewAbstractHudElementHandler> entry : elementsMap.entrySet())
         {
             elementMap.put(entry.getKey(), entry.getValue());
-            HudState.LOGGER.info("Registered HudElement:'" + entry.getKey().getFullPath() + '\'');
+
+            HudState.LOGGER.info("Registered HudElement:'{}'", entry.getKey().getFullPath());
         }
     }
 
