@@ -18,8 +18,10 @@
 package com.trs.hudman;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.trs.hudman.confg.ConfigHelper;
 import com.trs.hudman.confg.JsonConfigHudFile;
+import com.trs.hudman.util.NamespacePath;
 import net.minecraft.client.Minecraft;
 import org.slf4j.LoggerFactory;
 
@@ -95,12 +97,21 @@ public class HudState
         return errorNotification;
     }
 
-    public static JsonConfigHudFile getConfig() {
-        try {
-            String confPath = configPath;
-            String json = Files.readString(Paths.get(confPath), StandardCharsets.UTF_8);
-            return new Gson().fromJson(json, JsonConfigHudFile.class);
-        } catch (IOException e) {
+    public static JsonConfigHudFile getConfig()
+    {
+
+        try
+        {
+            var gson = new GsonBuilder()
+                    .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathAdapter())
+                    .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathJsonDeserializer())
+                    .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathJsonSerializer())
+                    .create();
+            String json = Files.readString(Paths.get(configPath), StandardCharsets.UTF_8);
+            return gson.fromJson(json, JsonConfigHudFile.class);
+        }
+        catch (IOException e)
+        {
             LOGGER.error("Failed to load config from {}\n{}", configPath, ConfigHelper.stackTraceString(e));
             throw new RuntimeException("Critical error: Could not load configuration file at " + configPath, e);
         }

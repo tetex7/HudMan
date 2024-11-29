@@ -49,7 +49,7 @@ public final class ConfigHelper
         {
             if (element.enable())
             {
-                NamespacePath path = NamespacePath.of(element.elementId());
+                NamespacePath path = element.elementId();
 
                 if (path.getNamespace().equals(NamespacePath.MOD_NAMESPACE) || path.getNamespace().equals(NamespacePath.MINECRAFT_NAMESPACE))
                 {

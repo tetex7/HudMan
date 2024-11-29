@@ -147,7 +147,7 @@ public class HudmanClient implements ClientModInitializer
                     "v1.0",
                     List.of(
                             new JsonConfigHudElement(
-                                    "hudman:velocity_vector",
+                                    NamespacePath.of("hudman:velocity_vector"),
                                     new Vec2i(100, 110),
                                     0,
                                     0,
@@ -165,7 +165,7 @@ public class HudmanClient implements ClientModInitializer
             HudState.LOGGER.info(conf.toString());
             try (FileWriter writer = new FileWriter(conf, StandardCharsets.UTF_8))
             {
-                writer.write(prettyPrintWithIndent(new Gson().toJson(congHud), 4));
+                writer.write(prettyPrintWithIndent(new GsonBuilder().registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathAdapter()).create().toJson(congHud), 4));
             }
             catch (IOException e)
             {

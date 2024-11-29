@@ -29,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Environment(EnvType.CLIENT)
 public abstract class AbstractHudElement implements IRenderPrimitive
@@ -38,6 +39,8 @@ public abstract class AbstractHudElement implements IRenderPrimitive
     private final Vec2i cords;
     private final Minecraft client;
     private final JsonConfigHudElement jsonElement;
+    private final UUID elementUUID = UUID.randomUUID();
+    private final int intID = 0;
 
     public AbstractHudElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfigHudElement jsonElement)
     {
@@ -74,6 +77,11 @@ public abstract class AbstractHudElement implements IRenderPrimitive
     public final Vec2i getCords()
     {
         return this.cords;
+    }
+
+    public final UUID getElementUUID()
+    {
+        return elementUUID;
     }
 
     public abstract void render(float partialTick, GuiGraphics guiGraphics, Gui gui);

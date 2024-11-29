@@ -17,12 +17,19 @@
 
 package com.trs.hudman.util;
 
+import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 import com.trs.hudman.HudState;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
 
 /**
  * a wrapper for the minecraft {@link ResourceLocation}
@@ -124,12 +131,10 @@ public final class NamespacePath implements Comparable<NamespacePath>
         if (object instanceof ResourceLocation obj_path)
         {
             return this.resourceLocation.equals(obj_path);
-        }
-        else if (object instanceof String obj_string)
+        } else if (object instanceof String obj_string)
         {
             return this.resourceLocation.toString().equals(obj_string);
-        }
-        else if (object instanceof NamespacePath obj_path)
+        } else if (object instanceof NamespacePath obj_path)
         {
             return this.resourceLocation.equals(obj_path.resourceLocation);
         }
@@ -140,5 +145,58 @@ public final class NamespacePath implements Comparable<NamespacePath>
     public int hashCode()
     {
         return this.getResourceLocation().hashCode();
+    }
+
+
+    public static class NamespacePathAdapter extends TypeAdapter<NamespacePath>
+    {
+        @Override
+        public void write(JsonWriter writer, NamespacePath value) throws IOException
+        {
+            if (value == null)
+            {
+                writer.nullValue();
+                return;
+            }
+            writer.value(value.getFullPath());
+        }
+
+        @Override
+        public NamespacePath read(JsonReader reader) throws IOException
+        {
+            if (reader.peek() == JsonToken.NULL)
+            {
+                reader.nextNull();
+                return null;
+            }
+            String path = reader.nextString();
+            return NamespacePath.of(path);
+        }
+    }
+
+    public static class NamespacePathJsonDeserializer implements JsonDeserializer<NamespacePath>
+    {
+        @Override
+        public NamespacePath deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
+        {
+            if (json.isJsonPrimitive())
+            {
+                var str_json = (JsonPrimitive)json;
+                if (str_json.isString())
+                {
+                    return NamespacePath.of(str_json.getAsString());
+                }
+            }
+            throw new JsonParseException("");
+        }
+    }
+
+    public static class NamespacePathJsonSerializer implements JsonSerializer<NamespacePath>
+    {
+        @Override
+        public JsonElement serialize(NamespacePath src, Type typeOfSrc, JsonSerializationContext context)
+        {
+            return new JsonPrimitive(src.getFullPath());
+        }
     }
 }

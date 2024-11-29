@@ -19,9 +19,10 @@ package com.trs.hudman.confg;
 
 import com.trs.hudman.util.Vec2i;
 import java.util.List;
+import com.trs.hudman.util.NamespacePath;
 
 public record JsonConfigHudElement(
-        String elementId,
+        NamespacePath elementId,
         Vec2i cords,
         int width,
         int height,

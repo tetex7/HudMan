@@ -39,7 +39,7 @@ public final class CrashElement extends AbstractHudElement
                 Minecraft.getInstance(),
                 Vec2i.of(0, 0),
                 new JsonConfigHudElement(
-                        "",
+                        NamespacePath.pathOf("NAP"),
                         new Vec2i(0, 0),
                         0,
                         0,
