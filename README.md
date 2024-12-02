@@ -122,7 +122,7 @@ repositories {
 dependencies {
     ...
     //And then the mod
-    modImplementation("maven.modrinth:hudman:1.5.5-mc1.20.1")
+    modImplementation("maven.modrinth:hudman:1.5.6-mc1.20.1")
     ...
 }
 

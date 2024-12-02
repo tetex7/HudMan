@@ -17,7 +17,6 @@
 
 package com.trs.hudman;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.trs.hudman.confg.ConfigHelper;
 import com.trs.hudman.confg.JsonConfigHudFile;
@@ -39,9 +38,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.slf4j.Logger;
-
-
-import java.io.File;
 
 @Environment(EnvType.CLIENT)
 public class HudState
@@ -79,7 +75,7 @@ public class HudState
     public static final boolean jarDebug;
 
     static {
-        HudResetEvent.EVENT.register(() -> {
+        HudResetEvent.EVENT.register((client) -> {
             JsonConfigHudFile jconfig = getConfig();
             LOGGER.info("config_debug is " + jconfig.debug());
             configDebug = jconfig.debug();
@@ -105,7 +101,8 @@ public class HudState
         }
     }
 
-    private HudState() {
+    private HudState()
+    {
         throw new RuntimeException("WTF");
     }
 
@@ -119,13 +116,12 @@ public class HudState
 
     public static JsonConfigHudFile getConfig()
     {
-
         try
         {
             var gson = new GsonBuilder()
                     .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathAdapter())
-                    .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathJsonDeserializer())
-                    .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathJsonSerializer())
+                    /*.registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathJsonDeserializer())
+                    .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathJsonSerializer())*/
                     .create();
             String json = Files.readString(Paths.get(configPath), StandardCharsets.UTF_8);
             return gson.fromJson(json, JsonConfigHudFile.class);
