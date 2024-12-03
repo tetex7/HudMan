@@ -18,7 +18,6 @@
 package com.trs.hudman.util;
 
 import com.trs.hudman.util.exceptions.ImproperNamespaceRegisteredException;
-import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -53,6 +52,7 @@ public class ElementRegistry
      * To register an element to be rendered to the mod user HUD
      * @param namespacePath The namespace path for your mod e.g. {@code 'example:compass'}
      * @param newElementHandler A reference to the constructor of your element
+     * @throws ImproperNamespaceRegisteredException Exception is thrown if you try to register an element to an improper namespace e.g. hudman-namespace
      */
     public void register(@NotNull NamespacePath namespacePath, NewAbstractHudElementHandler newElementHandler)
     {
