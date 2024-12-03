@@ -131,10 +131,12 @@ public final class NamespacePath implements Comparable<NamespacePath>
         if (object instanceof ResourceLocation obj_path)
         {
             return this.resourceLocation.equals(obj_path);
-        } else if (object instanceof String obj_string)
+        }
+        else if (object instanceof String obj_string)
         {
             return this.resourceLocation.toString().equals(obj_string);
-        } else if (object instanceof NamespacePath obj_path)
+        }
+        else if (object instanceof NamespacePath obj_path)
         {
             return this.resourceLocation.equals(obj_path.resourceLocation);
         }

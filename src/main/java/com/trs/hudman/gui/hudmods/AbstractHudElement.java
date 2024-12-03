@@ -31,6 +31,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * The super class for all HUD elements
+ */
 @Environment(EnvType.CLIENT)
 public abstract class AbstractHudElement implements IRenderPrimitive
 {
@@ -42,6 +45,14 @@ public abstract class AbstractHudElement implements IRenderPrimitive
     private final UUID elementUUID = UUID.randomUUID();
     private final int intID = 0;
 
+    /**
+     *
+     * @param root Mostly time it's null and will probably be removed
+     * @param client The current Minecraft client
+     * @param cords The coordinates of the element on the user screen
+     * @param jsonElement The Jason config structure turned into a Java class
+     * @implSpec Your constructor using this super class must contain all four
+     */
     public AbstractHudElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfigHudElement jsonElement)
     {
         Objects.requireNonNull(client);
@@ -54,36 +65,68 @@ public abstract class AbstractHudElement implements IRenderPrimitive
         this.jsonElement = jsonElement;
     }
 
+    /**
+     * @return Provides a reference to the client
+     */
     public final Minecraft getClient()
     {
         return this.client;
     }
 
+    /**
+     * @return Provides a reference to the Jsonc onfig Element
+     * @see JsonConfigHudElement
+     */
     public final JsonConfigHudElement getJsonElement()
     {
         return this.jsonElement;
     }
 
+    /**
+     * Irrelevant do not use
+     * @deprecated
+     */
     public final AbstractHudElement getRoot()
     {
         return this.root;
     }
 
+    /**
+     * @return Provides information about the current user player
+     */
     public final LocalPlayer getPlayer()
     {
         return this.player;
     }
 
+    /**
+     * @return Coordinates where the element is to be rendered on the user screen
+     */
     public final Vec2i getCords()
     {
         return this.cords;
     }
 
+    /**
+     * UUID is used for element identification
+     * @return Provides the elements UID
+     */
     public final UUID getElementUUID()
     {
         return elementUUID;
     }
 
+    /**
+     * Where all your graphical code lies for your element
+     * @param partialTick The delta between ticks (I really don't know, and I've really never used this)
+     * @param guiGraphics Minecraft's facilities to render to the screen
+     * @param gui a reference to the player GUI
+     */
     public abstract void render(float partialTick, GuiGraphics guiGraphics, Gui gui);
+
+    /**
+     * A place for your elements logic
+     * @apiNote This function is run every gui tick
+     */
     public abstract void tick();
 }

@@ -17,6 +17,7 @@
 
 package com.trs.hudman.util;
 
+import com.trs.hudman.util.exceptions.ImproperNamespaceRegisteredException;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,22 +31,62 @@ public class ElementRegistry
 {
     private final HashMap<@NotNull NamespacePath, @NotNull NewAbstractHudElementHandler> elementMap = new HashMap<>();
 
+    private final static String  NAMESPACE_PACKAGE = "com.trs.hudman";
+
+
+    /**
+     * A function to check if an element is being improperly registered to this mods namespace from an external package
+     * @param newElementHandler Element constructor To be checked
+     * @throws ImproperNamespaceRegisteredException If being registered improperly
+     * @since 1.5.7
+     */
+    private static void checkElementValidation(NewAbstractHudElementHandler newElementHandler)
+    {
+        final var pack = newElementHandler.getClass().getPackageName();
+        if (!pack.startsWith(NAMESPACE_PACKAGE))
+        {
+            throw new ImproperNamespaceRegisteredException(String.format("Improperly registered to namespace:'%s', from External package:'%s'", NamespacePath.MOD_NAMESPACE, pack));
+        }
+    }
+
+    /**
+     * To register an element to be rendered to the mod user HUD
+     * @param namespacePath The namespace path for your mod e.g. {@code 'example:compass'}
+     * @param newElementHandler A reference to the constructor of your element
+     */
     public void register(@NotNull NamespacePath namespacePath, NewAbstractHudElementHandler newElementHandler)
     {
+        if (namespacePath.getNamespace().equals(NamespacePath.MOD_NAMESPACE))
+        {
+            checkElementValidation(newElementHandler);
+        }
         elementMap.put(namespacePath, newElementHandler);
         HudState.LOGGER.info("Registered HudElement:'{}'", namespacePath.getFullPath());
     }
 
+    /**
+     * To register Collection element to be rendered to the mod user HUD
+     * @param elementsMap It's just a map of a namespacePath and a constructor reference
+     */
     public void register(@NotNull Map<NamespacePath, NewAbstractHudElementHandler> elementsMap)
     {
         for (Map.Entry<NamespacePath, NewAbstractHudElementHandler> entry : elementsMap.entrySet())
         {
+            if (entry.getKey().getNamespace().equals(NamespacePath.MOD_NAMESPACE))
+            {
+                checkElementValidation(entry.getValue());
+            }
             elementMap.put(entry.getKey(), entry.getValue());
 
             HudState.LOGGER.info("Registered HudElement:'{}'", entry.getKey().getFullPath());
         }
     }
 
+    /**
+     * Un recommended use this but if you really want to these removes an element from the registry
+     * @param namespacePath Name space path for the element you want to get rid of
+     * @deprecated Please don't use this
+     */
     public void unregister(@NotNull NamespacePath namespacePath)
     {
         if (this.hasElement(namespacePath))
@@ -58,11 +99,24 @@ public class ElementRegistry
         }
     }
 
+    /**
+     * Queries  the registry if an element exists
+     * @param namespacePath A namespace path to an element to check if exists
+     * @return Returns true if the element exists returns false otherwise
+     */
     public boolean hasElement(@NotNull NamespacePath namespacePath)
     {
         return elementMap.containsKey(namespacePath);
     }
 
+    /**
+     * Gets a reference to the element constructor for use
+     * @param namespacePath Name space path to the element
+     * @return A reference to the element constructor which you have requested
+     * @throws NoSuchElementException Throws this when the element cannot be found<br>
+     * please use {@link #hasElement(NamespacePath)} beforehand
+     * @implNote The {@link NoSuchElementException} is not referencing the hudElement itself but the back end {@link HashMap}
+     */
     public @NotNull NewAbstractHudElementHandler get(@NotNull NamespacePath namespacePath)
     {
         if (this.hasElement(namespacePath))
@@ -75,6 +129,10 @@ public class ElementRegistry
         }
     }
 
+    /**
+     * Returns a read only view of the registry map might prove useful
+     * @return Read only view of the registry map
+     */
     public final @NotNull Map<NamespacePath, NewAbstractHudElementHandler> getElementMap()
     {
         return elementMap;

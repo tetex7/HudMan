@@ -19,26 +19,26 @@ package com.trs.bobbuilder;
 
 import com.trs.qlang.Qlang;
 import com.trs.qlang.QlangInstruction;
+
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.gradle.language.jvm.tasks.ProcessResources;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
+
 import java.util.Random;
 
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.Paths;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.regex.Pattern;
 
-import groovy.text.SimpleTemplateEngine;
+import org.jetbrains.annotations.NotNull;
 
 public class ReleaseUtils
 {
@@ -88,11 +88,17 @@ public class ReleaseUtils
     }
     """;
 
-    public static String getRandomName(final long seed) {
+    private static byte[] mkVendorBytes()
+    {
+        return ByteBuffer.allocate(8).putLong(mkVendorId()).array();
+    }
+
+    public static String getRandomName(final long seed)
+    {
         Random random = new Random(seed);
         String prefix = RELEASE_PREFIXES[random.nextInt(RELEASE_PREFIXES.length-1)];
         String suffix = RELEASE_SUFFIXES[random.nextInt(RELEASE_SUFFIXES.length-1)];
-        return prefix + '-' + suffix;
+        return (prefix + '-' + suffix).toLowerCase();
     }
 
     public static long mkVendorId()
@@ -103,11 +109,12 @@ public class ReleaseUtils
         return (ret < 0) ? -ret : ret;
     }
 
-    public static void mkJsonMark(ProcessResources processResources) throws IOException
+    public static void mkJsonMark(@NotNull ProcessResources processResources) throws IOException
     {
         final var sep = File.separatorChar;
         final var META_INF_PATH = new File(processResources.getDestinationDir().getPath() + sep + "META-INF");
         final var BUILD_STAMP_JSON_PATH = new File(META_INF_PATH.getPath() + sep + "buildStamp.json");
+        final var VENDOR_STAMP_PATH = new File(META_INF_PATH.getPath() + sep + processResources.getProject().getName().toLowerCase() + ".VendorStamp.bin");
 
         final String ver = (String)processResources.getProject().getVersion();
         final String date = String.valueOf(LocalDate.now().getMonthValue()) + '/' + LocalDate.now().getDayOfMonth() + '/' + LocalDate.now().getYear();
@@ -124,6 +131,7 @@ public class ReleaseUtils
                 ImmutablePair.of(Pattern.compile("%bid%"), QlangInstruction.of((a, b) -> String.valueOf(fbid))),
                 ImmutablePair.of(Pattern.compile("%buid%"), QlangInstruction.of((a, b) -> String.valueOf(vid)))
         );
+
         if (!META_INF_PATH.exists())
         {
             META_INF_PATH.mkdir();
@@ -136,6 +144,21 @@ public class ReleaseUtils
             try (FileWriter s = new FileWriter(BUILD_STAMP_JSON_PATH))
             {
                 s.write(Qlang.builder().AddTagLibrary(instructions).build().parse(BUILD_STAMP_JSON).outputString());
+            }
+            catch (Throwable e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+
+        if (!VENDOR_STAMP_PATH.exists())
+        {
+            VENDOR_STAMP_PATH.createNewFile();
+
+            try (FileOutputStream s = new FileOutputStream(VENDOR_STAMP_PATH))
+            {
+                s.write("VID".getBytes(StandardCharsets.US_ASCII));
+                s.write(mkVendorBytes());
             }
             catch (Throwable e)
             {

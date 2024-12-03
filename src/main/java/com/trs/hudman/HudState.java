@@ -39,6 +39,11 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.slf4j.Logger;
 
+/**
+ * an essential class for this mod holding state flags
+ * And essential data
+ * @since 1.0
+ */
 @Environment(EnvType.CLIENT)
 public class HudState
 {
@@ -80,23 +85,6 @@ public class HudState
             errorNotification = jconfig.errorNotification();
             return true;
         });
-
-        /*try
-        {
-            var bytes = Objects.requireNonNull(NamespacePath.class.getClassLoader().getResourceAsStream("hudman.debug.flag")).readAllBytes();
-            if (bytes.length == 1)
-            {
-                jarDebug = bytes[0] == 0x01;
-                LOGGER.info("DEBUG mode active");
-            }
-            else
-            {
-                jarDebug = false;
-            }
-        } catch (Throwable e)
-        {
-            throw new RuntimeException(e);
-        }*/
     }
 
     private HudState()

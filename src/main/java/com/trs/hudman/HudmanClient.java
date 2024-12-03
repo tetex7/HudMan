@@ -140,6 +140,11 @@ public class HudmanClient implements ClientModInitializer
             throw new IllegalStateException("Error: 'NamespacePath::equals' function failed self test");
         }
 
+        if (NamespacePath.pathOf("test").hashCode() != NamespacePath.pathOf("test").getResourceLocation().hashCode())
+        {
+            throw new IllegalStateException("Error: 'NamespacePath::equals' function failed self test");
+        }
+
         File conf = new File(HudState.configPath);
         if (!conf.exists())
         {

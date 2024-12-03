@@ -110,25 +110,8 @@ tasks.processResources pr@{
         )
     }
 
-    val date = "${LocalDate.now().monthValue}/${LocalDate.now().dayOfMonth}/${LocalDate.now().year}"
-    val time = "${LocalTime.now().hour}:${LocalTime.now().minute}:${LocalTime.now().second}"
-    val rbid = "${project.version}$date$time".hashCode()
-    val fbid = if (rbid < 0) -rbid else rbid
-
     doLast {
         ReleaseUtils.mkJsonMark(this@pr)
-        /*val sep = File.separatorChar
-        println("$destinationDir${sep}hudman.debug.flag")
-        val debugMark = File("$destinationDir${sep}hudman.debug.flag")
-        debugMark.createNewFile()
-        if (debug)
-        {
-            debugMark.writeBytes(byteArrayOf(0x01))
-        }
-        else
-        {
-            debugMark.writeBytes(byteArrayOf(0x00))
-        }*/
     }
 }
 

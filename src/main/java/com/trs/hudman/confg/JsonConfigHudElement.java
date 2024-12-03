@@ -21,6 +21,17 @@ import com.trs.hudman.util.Vec2i;
 import java.util.List;
 import com.trs.hudman.util.NamespacePath;
 
+/**
+ * A container for Element config information from a Json file
+ * @param elementId The namespace path to an element
+ * @param cords Coordinate information to render the element to the user screen
+ * @param width Not used currently Please set to zero
+ * @param height Not used currently Please set to zero
+ * @param scale Scale to render the element (element specific implementation)
+ * @param pairGameHudElement The built-in game element to pair this element to (Which game UI element do you want this rendered with)
+ * @param enable Determines if this element is to be put onto the element stack for rendering
+ * @param strings Extra config information (element specific implementation)
+ */
 public record JsonConfigHudElement(
         NamespacePath elementId,
         Vec2i cords,
