@@ -23,15 +23,17 @@ import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 import java.time.LocalDate;
 import java.time.LocalTime
-import java.util.Random
-
+import com.trs.bobbuilder.ReleaseUtils
 
 plugins {
     //kotlin("jvm") version "2.0.20"
     id("fabric-loom") version "1.7.1"
     id("maven-publish")
-    //id("bobbuilder")
+    //id("com.trs.bobbuilder")
 }
+
+
+//apply<BobBuilderPlugin>()
 
 val debug = ((project.property("debug") as String) == "y" || (project.property("debug") as String) == "yes")
 
@@ -113,18 +115,8 @@ tasks.processResources pr@{
     val rbid = "${project.version}$date$time".hashCode()
     val fbid = if (rbid < 0) -rbid else rbid
 
-    filesMatching("buildStamp.json")
-    {
-        expand(
-            "version" to project.version,
-            "date" to date,
-            "time" to time,
-            "bid" to fbid,
-            "BuildName" to getRandomName(),
-            "buid" to ((System.getProperty("user.name").hashCode() * (420/88))).toUInt()
-        )
-    }
     doLast {
+        ReleaseUtils.mkJsonMark(this@pr)
         val sep = File.separatorChar
         println("$destinationDir${sep}hudman.debug.flag")
         val debugMark = File("$destinationDir${sep}hudman.debug.flag")
@@ -232,51 +224,5 @@ publishing {
         // The repositories here will be used for publishing your artifact, not for
         // retrieving dependencies.
     }
-}
-
-
-
-val release_prefixes = arrayOf(
-    "Slow", "Quick", "Bright", "Dark", "Fast", "Blue", "Star", "Sun", "Wind",
-    "Thunder", "Soft", "Hard", "High", "Low", "Night", "Day", "Cloud",
-    "Fire", "Frost", "Sweet", "Earth", "Sky", "Golden", "Silver", "Shadow",
-    "Swift", "Bold", "Iron", "Steel", "Mystic", "Electric", "Storm", "Rain",
-    "Snow", "Crimson", "Emerald", "Ruby", "Amber", "Lunar", "Solar",
-    "Cosmic", "Ocean", "Wave", "Echo", "Silent", "Ancient", "Frozen",
-    "Burning", "Clever", "Gentle", "Wild", "Free", "Majestic", "Brightest",
-    "Darkest", "Fierce", "Shining", "Blazing", "Soaring", "Falling",
-    "Glowing", "Hidden", "Distant", "Endless", "Brave", "Calm", "Goldenrod",
-    "Velvet", "Starlit", "Stormy", "Dew", "Drift", "Feather", "Gale",
-    "Ironclad", "Pebble", "Radiant", "Shimmer", "Silentwood", "Spire",
-    "Stoneheart", "Verdant", "Zephyr", "Hollow", "Whispering", "Boldest",
-    "Ethereal", "Frosty", "Horizon", "Infinity", "Jagged", "Kindred",
-    "Lucid", "Meadow", "Noble", "Primal", "Quiet", "Restless", "Serene",
-    "Tenacious", "Umbra", "Valiant", "Wistful", "Zenith"
-)
-
-val release_suffixes = arrayOf(
-    "rabbit", "bird", "fox", "wolf", "cat", "tree", "stone", "flower", "river",
-    "heart", "wing", "leaf", "song", "light", "shadow", "runner", "hunter",
-    "dream", "whisper", "keeper", "flame", "claw", "paw", "fang", "mist",
-    "thorn", "blossom", "breeze", "storm", "wave", "crystal", "guardian",
-    "spark", "seer", "weaver", "dancer", "watcher", "seeker", "speaker",
-    "herald", "builder", "wanderer", "explorer", "defender", "champion",
-    "singer", "glow", "beam", "path", "star", "orb", "flare", "trail",
-    "veil", "mark", "howl", "roar", "songbird", "shade", "spear", "quill",
-    "shard", "echo", "ember", "flint", "ridge", "forge", "grove", "crown",
-    "hearth", "wild", "spirit", "bringer", "sentinel", "skyline", "keeper",
-    "caster", "chaser", "stalker", "protector", "dreamer", "tracker",
-    "soarer", "guardian", "glider", "screecher", "wisp", "flitter",
-    "sprint", "sparkle", "relic", "strider", "vision", "whirl", "zephyr",
-    "arbor", "pillar", "cascade", "spire", "whisperer"
-)
-
-
-fun getRandomName(): String
-{
-    val random = Random();
-    val prefix = release_prefixes[random.nextInt(release_suffixes.size-1)]
-    val suffix = release_suffixes[random.nextInt(release_suffixes.size-1)]
-    return "$prefix$suffix"
 }
 
