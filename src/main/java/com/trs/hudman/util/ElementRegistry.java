@@ -73,13 +73,7 @@ public class ElementRegistry
     {
         for (Map.Entry<NamespacePath, NewAbstractHudElementHandler> entry : elementsMap.entrySet())
         {
-            if (entry.getKey().getNamespace().equals(NamespacePath.MOD_NAMESPACE))
-            {
-                checkElementValidation(entry.getValue());
-            }
-            elementMap.put(entry.getKey(), entry.getValue());
-
-            HudState.LOGGER.info("Registered HudElement:'{}'", entry.getKey().getFullPath());
+            this.register(entry.getKey(), entry.getValue());
         }
     }
 
