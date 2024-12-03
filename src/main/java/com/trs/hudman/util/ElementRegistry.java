@@ -67,6 +67,7 @@ public class ElementRegistry
     /**
      * To register Collection element to be rendered to the mod user HUD
      * @param elementsMap It's just a map of a namespacePath and a constructor reference
+     * @see #register(NamespacePath, NewAbstractHudElementHandler)
      */
     public void register(@NotNull Map<NamespacePath, NewAbstractHudElementHandler> elementsMap)
     {
