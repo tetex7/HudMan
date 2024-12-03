@@ -72,8 +72,6 @@ public class HudState
 
     private static boolean errorNotification = true;
 
-    public static final boolean jarDebug;
-
     static {
         HudResetEvent.EVENT.register((client) -> {
             JsonConfigHudFile jconfig = getConfig();
@@ -83,7 +81,7 @@ public class HudState
             return true;
         });
 
-        try
+        /*try
         {
             var bytes = Objects.requireNonNull(NamespacePath.class.getClassLoader().getResourceAsStream("hudman.debug.flag")).readAllBytes();
             if (bytes.length == 1)
@@ -98,7 +96,7 @@ public class HudState
         } catch (Throwable e)
         {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
     private HudState()

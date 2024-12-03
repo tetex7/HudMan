@@ -35,9 +35,9 @@ plugins {
 
 //apply<BobBuilderPlugin>()
 
-val debug = ((project.property("debug") as String) == "y" || (project.property("debug") as String) == "yes")
+//val debug = ((project.property("debug") as String) == "y" || (project.property("debug") as String) == "yes")
 
-version = "${(project.property("mod_version") as String)}${if (debug) "-debug" else ""}-mc${project.property("minecraft_version")}"
+version = "${(project.property("mod_version") as String)}-mc${project.property("minecraft_version")}"
 
 group = project.property("maven_group") as String
 
@@ -117,7 +117,7 @@ tasks.processResources pr@{
 
     doLast {
         ReleaseUtils.mkJsonMark(this@pr)
-        val sep = File.separatorChar
+        /*val sep = File.separatorChar
         println("$destinationDir${sep}hudman.debug.flag")
         val debugMark = File("$destinationDir${sep}hudman.debug.flag")
         debugMark.createNewFile()
@@ -128,7 +128,7 @@ tasks.processResources pr@{
         else
         {
             debugMark.writeBytes(byteArrayOf(0x00))
-        }
+        }*/
     }
 }
 

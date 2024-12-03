@@ -66,25 +66,6 @@ public class HudmanClient implements ClientModInitializer
             "key.categories.hudman"
     ));
 
-    private static final KeyMapping HUDMAN_DEBUG_MENU;
-
-    static
-    {
-        if (HudState.jarDebug)
-        {
-            HUDMAN_DEBUG_MENU = KeyBindingHelper.registerKeyBinding(new KeyMapping(
-                    "key.hudman.huddebug",
-                    InputConstants.Type.KEYSYM,
-                    GLFW.GLFW_KEY_F10,
-                    "key.categories.hudman"
-            ));
-        }
-        else
-        {
-            HUDMAN_DEBUG_MENU = null;
-        }
-    }
-
     private static ClientLevel lastWorld = null;
     private static boolean worldGood = false;
 
@@ -117,15 +98,7 @@ public class HudmanClient implements ClientModInitializer
                 }
             }
 
-            if (HUDMAN_DEBUG_MENU != null)
-            {
-                if (HUDMAN_DEBUG_MENU.consumeClick())
-                {
-                    HudState.LOGGER.info("debugUI");
-                }
-            }
-
-            ClientLevel currentWorld = Minecraft.getInstance().level;
+            ClientLevel currentWorld = client.level;
 
             // Detect if a world has been loaded
             if (currentWorld != null && lastWorld == null)
