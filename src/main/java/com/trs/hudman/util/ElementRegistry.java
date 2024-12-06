@@ -82,6 +82,7 @@ public class ElementRegistry
      * @param namespacePath Name space path for the element you want to get rid of
      * @deprecated Please don't use this
      */
+    @Deprecated
     public void unregister(@NotNull NamespacePath namespacePath)
     {
         if (this.hasElement(namespacePath))

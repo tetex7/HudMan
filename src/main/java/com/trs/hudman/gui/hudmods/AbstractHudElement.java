@@ -86,6 +86,7 @@ public abstract class AbstractHudElement implements IRenderPrimitive
      * Irrelevant do not use
      * @deprecated
      */
+    @Deprecated(forRemoval = true)
     public final AbstractHudElement getRoot()
     {
         return this.root;

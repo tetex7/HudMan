@@ -26,16 +26,9 @@ import java.time.LocalTime
 import com.trs.bobbuilder.ReleaseUtils
 
 plugins {
-    //kotlin("jvm") version "2.0.20"
     id("fabric-loom") version "1.7.1"
     id("maven-publish")
-    //id("com.trs.bobbuilder")
 }
-
-
-//apply<BobBuilderPlugin>()
-
-//val debug = ((project.property("debug") as String) == "y" || (project.property("debug") as String) == "yes")
 
 version = "${(project.property("mod_version") as String)}-mc${project.property("minecraft_version")}"
 
@@ -62,12 +55,6 @@ repositories {
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
     maven(url = "https://maven.parchmentmc.org")
-    //maven("https://maven.gegy.dev")
-    //maven(url = "https://server.bbkr.space/artifactory/libs-release")
-    /*maven(
-        name = "ParchmentMC",
-        url = "https://maven.parchmentmc.org"
-    )*/
 }
 
 

@@ -17,10 +17,11 @@
 
 package com.trs.bobbuilder;
 
-import com.trs.qlang.Qlang;
-import com.trs.qlang.QlangInstruction;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.gradle.language.jvm.tasks.ProcessResources;
 
 import java.io.File;
@@ -77,17 +78,6 @@ public class ReleaseUtils
             "arbor", "pillar", "cascade", "spire", "whisperer"
     };
 
-    private static final String BUILD_STAMP_JSON = """
-    {
-        "version": "%version%",
-        "builtDate": "%date%",
-        "builtTime": "%time%",
-        "BuildName": "%BuildName%",
-        "builtID": %bid%,
-        "VendorID": %buid%
-    }
-    """;
-
     private static byte[] mkVendorBytes()
     {
         return ByteBuffer.allocate(8).putLong(mkVendorId()).array();
@@ -113,7 +103,7 @@ public class ReleaseUtils
     {
         final var sep = File.separatorChar;
         final var META_INF_PATH = new File(processResources.getDestinationDir().getPath() + sep + "META-INF");
-        final var BUILD_STAMP_JSON_PATH = new File(META_INF_PATH.getPath() + sep + "buildStamp.json");
+        final var BUILD_STAMP_JSON_PATH = new File(META_INF_PATH.getPath() + sep + processResources.getProject().getName().toLowerCase() + ".BuildStamp.json");
         final var VENDOR_STAMP_PATH = new File(META_INF_PATH.getPath() + sep + processResources.getProject().getName().toLowerCase() + ".VendorStamp.bin");
 
         final String ver = (String)processResources.getProject().getVersion();
@@ -123,13 +113,13 @@ public class ReleaseUtils
         final int fbid = (rbid < 0) ? -rbid : rbid;
         long vid = mkVendorId();
 
-        final List<ImmutablePair<Pattern, QlangInstruction>> instructions = List.of(
-                ImmutablePair.of(Pattern.compile("%version%"), QlangInstruction.of((a, b) -> ver)),
-                ImmutablePair.of(Pattern.compile("%date%"), QlangInstruction.of((a, b) -> date)),
-                ImmutablePair.of(Pattern.compile("%time%"), QlangInstruction.of((a, b) -> time)),
-                ImmutablePair.of(Pattern.compile("%BuildName%"), QlangInstruction.of((a, b) -> getRandomName(vid))),
-                ImmutablePair.of(Pattern.compile("%bid%"), QlangInstruction.of((a, b) -> String.valueOf(fbid))),
-                ImmutablePair.of(Pattern.compile("%buid%"), QlangInstruction.of((a, b) -> String.valueOf(vid)))
+        final BuildStamp stamp = new BuildStamp(
+                ver,
+                date,
+                time,
+                getRandomName(vid),
+                fbid,
+                vid
         );
 
         if (!META_INF_PATH.exists())
@@ -143,7 +133,8 @@ public class ReleaseUtils
 
             try (FileWriter s = new FileWriter(BUILD_STAMP_JSON_PATH))
             {
-                s.write(Qlang.builder().AddTagLibrary(instructions).build().parse(BUILD_STAMP_JSON).outputString());
+                //s.write(Qlang.builder().AddTagLibrary(instructions).build().parse(BUILD_STAMP_JSON).outputString());
+                s.write(prettyPrintWithIndent(new Gson().toJson(stamp), 4));
             }
             catch (Throwable e)
             {
@@ -165,5 +156,41 @@ public class ReleaseUtils
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    private static String prettyPrintWithIndent(String json, int indentSize)
+    {
+        JsonElement jsonElement = JsonParser.parseString(json);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        // Step 1: Convert JSON to a pretty-printed version with default indentation
+        String prettyJson = gson.toJson(jsonElement);
+
+        // Step 2: Define the custom indentation string
+        String indent = " ".repeat(indentSize);
+
+        // Step 3: Use StringBuilder to construct the final string with custom indentation
+        StringBuilder indentedJson = new StringBuilder();
+        int currentIndentLevel = 0;
+
+        // Split the JSON into lines and apply custom indentation per line
+        for (String line : prettyJson.split("\n")) {
+            String trimmedLine = line.trim();
+
+            // Decrease indent level for closing braces/brackets
+            if (trimmedLine.startsWith("}") || trimmedLine.startsWith("]")) {
+                currentIndentLevel--;
+            }
+
+            // Apply current indentation and add line
+            indentedJson.append(indent.repeat(currentIndentLevel)).append(trimmedLine).append("\n");
+
+            // Increase indent level after opening braces/brackets
+            if (trimmedLine.endsWith("{") || trimmedLine.endsWith("[")) {
+                currentIndentLevel++;
+            }
+        }
+
+        return indentedJson.toString().trim();
     }
 }
