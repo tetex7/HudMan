@@ -69,8 +69,7 @@ dependencies {
     })
     modImplementation("net.fabricmc:fabric-loader:${project.property("loader_version")}")
 
-    /*modImplementation(include("io.github.cottonmc:LibGui:8.1.0+1.20.1") ?: "")
-    modImplementation(include("dev.lambdaurora:spruceui:5.0.0+1.20") ?: "")*/
+    implementation(include("org.luaj:luaj-jse:3.0.1") ?: "org.luaj:luaj-jse:3.0.1")
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.property("fabric_version")}")

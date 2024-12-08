@@ -21,6 +21,7 @@ import com.google.gson.GsonBuilder;
 import com.trs.hudman.confg.ConfigHelper;
 import com.trs.hudman.confg.JsonConfigHudFile;
 import com.trs.hudman.util.NamespacePath;
+import com.trs.hudman.util.ScriptEnvironment;
 import net.minecraft.client.Minecraft;
 import org.slf4j.LoggerFactory;
 
@@ -59,6 +60,8 @@ public class HudState
     public static boolean showHud = true;
 
     private static boolean configDebug = false;
+
+    private static Map<NamespacePath, ScriptEnvironment> scripts = null;
 
     public static final Map<String, ResourceLocation> gameHudElements = Map.of(
             "hotbar", new ResourceLocation(ResourceLocation.DEFAULT_NAMESPACE, "hotbar"),
@@ -106,8 +109,6 @@ public class HudState
         {
             var gson = new GsonBuilder()
                     .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathAdapter())
-                    /*.registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathJsonDeserializer())
-                    .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathJsonSerializer())*/
                     .create();
             String json = Files.readString(Paths.get(configPath), StandardCharsets.UTF_8);
             return gson.fromJson(json, JsonConfigHudFile.class);
