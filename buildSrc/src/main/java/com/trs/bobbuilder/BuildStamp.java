@@ -28,7 +28,7 @@ public record BuildStamp(
 
 
 /*
-"version": "%version%",
+        "version": "%version%",
         "builtDate": "%date%",
         "builtTime": "%time%",
         "buildName": "%BuildName%",

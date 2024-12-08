@@ -22,6 +22,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+import org.gradle.api.Project;
 import org.gradle.language.jvm.tasks.ProcessResources;
 
 import java.io.File;
@@ -29,15 +30,13 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 import java.util.Random;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.regex.Pattern;
+import org.apache.commons.lang3.SystemUtils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -83,7 +82,12 @@ public class ReleaseUtils
         return ByteBuffer.allocate(8).putLong(mkVendorId()).array();
     }
 
-    public static String getRandomName(final long seed)
+    public static void setUpBuildEnvironment(@NotNull Project project)
+    {
+
+    }
+
+    private static String getRandomName(final long seed)
     {
         Random random = new Random(seed);
         String prefix = RELEASE_PREFIXES[random.nextInt(RELEASE_PREFIXES.length-1)];
@@ -93,10 +97,9 @@ public class ReleaseUtils
 
     public static long mkVendorId()
     {
-        long un = System.getProperty("user.name").hashCode();
-        long rn = "In the beginning God created the heavens and the Earth".hashCode();
-        long ret = (un + rn);
-        return (ret < 0) ? -ret : ret;
+        long un = Math.abs(SystemUtils.getUserName().hashCode());
+        long rn = Math.abs(SystemUtils.getHostName().hashCode());
+        return (un + rn) + rn;
     }
 
     public static void mkJsonMark(@NotNull ProcessResources processResources) throws IOException
@@ -109,8 +112,7 @@ public class ReleaseUtils
         final String ver = (String)processResources.getProject().getVersion();
         final String date = String.valueOf(LocalDate.now().getMonthValue()) + '/' + LocalDate.now().getDayOfMonth() + '/' + LocalDate.now().getYear();
         final String time = String.valueOf(LocalTime.now().getHour()) + ':' + LocalTime.now().getHour() + ':' + LocalTime.now().getSecond();
-        final int rbid = (ver + date + time).hashCode();
-        final int fbid = (rbid < 0) ? -rbid : rbid;
+        final int fbid = Math.abs((ver + date + time).hashCode());
         long vid = mkVendorId();
 
         final BuildStamp stamp = new BuildStamp(
@@ -150,6 +152,7 @@ public class ReleaseUtils
             {
                 s.write("VID".getBytes(StandardCharsets.US_ASCII));
                 s.write(mkVendorBytes());
+                s.write("TRS".getBytes(StandardCharsets.US_ASCII));
             }
             catch (Throwable e)
             {
