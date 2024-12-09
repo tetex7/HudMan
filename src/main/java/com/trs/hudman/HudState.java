@@ -21,13 +21,14 @@ import com.google.gson.GsonBuilder;
 import com.trs.hudman.confg.ConfigHelper;
 import com.trs.hudman.confg.JsonConfigHudFile;
 import com.trs.hudman.util.NamespacePath;
-import com.trs.hudman.util.ScriptEnvironment;
+import com.trs.hudman.util.scripting.ScriptEnvironment;
 import net.minecraft.client.Minecraft;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import com.trs.hudman.events.HudResetEvent;
@@ -61,7 +62,7 @@ public class HudState
 
     private static boolean configDebug = false;
 
-    public static Map<NamespacePath, ScriptEnvironment> scripts = null;
+    public static final Map<NamespacePath, Path> scripts;
 
     public static final Map<String, ResourceLocation> gameHudElements = Map.of(
             "hotbar", new ResourceLocation(ResourceLocation.DEFAULT_NAMESPACE, "hotbar"),
@@ -80,6 +81,8 @@ public class HudState
 
     private static boolean errorNotification = true;
 
+    public static final boolean allowLuaScript;
+
     static {
         HudResetEvent.EVENT.register((client) -> {
             JsonConfigHudFile jconfig = getConfig();
@@ -88,6 +91,16 @@ public class HudState
             errorNotification = jconfig.errorNotification();
             return true;
         });
+        allowLuaScript = getConfig().allowLuaScripts();
+        if (allowLuaScript)
+        {
+            scripts = ConfigHelper.setupScripts();
+        }
+        else
+        {
+            scripts = null;
+        }
+
     }
 
     private HudState()

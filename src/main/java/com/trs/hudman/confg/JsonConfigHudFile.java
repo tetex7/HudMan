@@ -23,5 +23,6 @@ public record JsonConfigHudFile(
         String ver,
         List<JsonConfigHudElement> elements,
         boolean debug,
-        boolean errorNotification
+        boolean errorNotification,
+        boolean allowLuaScripts
 ){}

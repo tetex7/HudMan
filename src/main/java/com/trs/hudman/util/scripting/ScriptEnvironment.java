@@ -15,15 +15,35 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.trs.hudman.util;
+/*
+ * Copyright (C) 2024  Tete
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package com.trs.hudman.util.scripting;
 
 import com.trs.hudman.gui.hudmods.AbstractHudElement;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
 import org.luaj.vm2.*;
 import org.luaj.vm2.compiler.LuaC;
-import org.luaj.vm2.lib.*;
+import org.luaj.vm2.lib.Bit32Lib;
+import org.luaj.vm2.lib.PackageLib;
+import org.luaj.vm2.lib.StringLib;
+import org.luaj.vm2.lib.TableLib;
 import org.luaj.vm2.lib.jse.*;
 
 public class ScriptEnvironment
@@ -32,13 +52,14 @@ public class ScriptEnvironment
 
     public static Globals se_standardGlobals() {
         Globals globals = new Globals();
-        /*globals.load(new JseBaseLib());
+        globals.load(new JseBaseLib());
         globals.load(new PackageLib());
         globals.load(new Bit32Lib());
         globals.load(new TableLib());
         globals.load(new StringLib());
         globals.load(new JseMathLib());
-        globals.load(new LuajavaLib());*/
+        //globals.load(new LuajavaLib());
+        globals.load(new WidgetLib());
         LoadState.install(globals);
         LuaC.install(globals);
         return globals;
@@ -91,6 +112,7 @@ public class ScriptEnvironment
     public ScriptEnvironment(String scriptText)
     {
         this.scriptText = scriptText;
+        exposeValue("Component", Component.class);
         globals.load(scriptText).call();
         this.render = getFunction("render", globals);
         this.tick = getFunction("tick", globals);

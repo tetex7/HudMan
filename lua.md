@@ -23,8 +23,9 @@ I am proud to say I believe it's a success
 ---@param gui userdata
 function render(delta, guiGraphics, gui)
     s = this:getJsonElement():strings():size()
-    guiGraphics:drawCenteredString(gui:getFont(), "Hello from Lua", 100, 200, 0xFFFFFF)
+    guiGraphics:drawCenteredString(gui:getFont(),  Component:literal("Hello from Lua"), 100, 200, 0xFFFFFF)
     guiGraphics:drawCenteredString(gui:getFont(), this:getJsonElement():strings():get(s-1), 100, 210, 0xFFFFFF)
+    guiGraphics:drawCenteredString(gui:getFont(), type(guiGraphics) .. ' '.. type(gui:getFont()), 100, 220, 0xFFFFFF)
 end
 
 function tick()
@@ -32,7 +33,7 @@ function tick()
 end
 
 function init()
-    LOGGER:info("Hello from Lua")
+    return
 end
 ```
 This here is an example Lewis script to render hello from Lua into your Minecraft screen<br>

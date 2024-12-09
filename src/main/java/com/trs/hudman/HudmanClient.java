@@ -165,7 +165,8 @@ public class HudmanClient implements ClientModInitializer
                             )
                     ),
                     false,
-                    true
+                    true,
+                    false
             );
             HudState.LOGGER.info(conf.toString());
             try (FileWriter writer = new FileWriter(conf, StandardCharsets.UTF_8))
@@ -181,7 +182,6 @@ public class HudmanClient implements ClientModInitializer
             }
 
         }
-        ConfigHelper.setupScripts();
     }
 
     private static String prettyPrintWithIndent(String json, int indentSize)

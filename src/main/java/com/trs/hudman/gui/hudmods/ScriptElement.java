@@ -20,7 +20,7 @@ package com.trs.hudman.gui.hudmods;
 import com.trs.hudman.HudState;
 import com.trs.hudman.confg.JsonConfigHudElement;
 import com.trs.hudman.util.NamespacePath;
-import com.trs.hudman.util.ScriptEnvironment;
+import com.trs.hudman.util.scripting.ScriptEnvironment;
 import com.trs.hudman.util.Vec2i;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -30,11 +30,12 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+
 public class ScriptElement extends AbstractHudElement
 {
     private final ScriptEnvironment script;
-
-    private final Logger logger;
 
     /**
      * @param root        Mostly time it's null and will probably be removed
@@ -53,9 +54,14 @@ public class ScriptElement extends AbstractHudElement
         NamespacePath path = NamespacePath.of(getJsonElement().strings().get(getJsonElement().strings().size()-1));
         if (!HudState.scripts.isEmpty() && HudState.scripts.containsKey(path))
         {
-            logger = LoggerFactory.getLogger("Hudman/Lua/"+path.getNamespace());
-            script = HudState.scripts.get(path);
-            script.exposeValue("LOGGER", logger);
+            try
+            {
+                script = new ScriptEnvironment(Files.readString(HudState.scripts.get(path), StandardCharsets.UTF_8));
+            }
+            catch (Throwable throwable)
+            {
+                throw new RuntimeException(throwable);
+            }
             script.registerElementThis(this);
             script.callInit();
         }

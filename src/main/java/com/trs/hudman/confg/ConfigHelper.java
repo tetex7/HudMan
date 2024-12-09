@@ -18,9 +18,8 @@
 package com.trs.hudman.confg;
 
 import com.trs.hudman.gui.hudmods.*;
-import com.trs.hudman.util.CrashElement;
 import com.trs.hudman.util.NamespacePath;
-import com.trs.hudman.util.ScriptEnvironment;
+import com.trs.hudman.util.scripting.ScriptEnvironment;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
@@ -30,14 +29,12 @@ import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -125,10 +122,14 @@ public final class ConfigHelper
                         NamespacePath.pathOf("text"), TextElement::new,
                         NamespacePath.pathOf("compass"), CompassElement::new,
                         NamespacePath.pathOf("velocity_vector"), VelocityVectorElement::new,
-                        NamespacePath.pathOf("fps"), FPSElement::new,
-                        NamespacePath.pathOf("lua"), ScriptElement::new
+                        NamespacePath.pathOf("fps"), FPSElement::new
                 )
         );
+
+        if (HudState.allowLuaScript)
+        {
+            HudState.elementRegistry.register(NamespacePath.pathOf("lua"), ScriptElement::new);
+        }
 
         HudState.LOGGER.info("Registered all HudElement");
     }
@@ -186,7 +187,7 @@ public final class ConfigHelper
         minecraft.getToasts().addToast(new SystemToast(SystemToast.SystemToastIds.PACK_LOAD_FAILURE, titleComponent, messageComponent));
     }
 
-    public static void setupScripts()
+    public static Map<NamespacePath, Path> setupScripts()
     {
         try
         {
@@ -196,7 +197,7 @@ public final class ConfigHelper
                 scripps.mkdirs();
             }
 
-            HashMap<NamespacePath, ScriptEnvironment> script_map = new HashMap<>();
+            HashMap<NamespacePath, Path> script_map = new HashMap<>();
 
             Path script_path = Path.of(scripps.getPath());
             Files.walk(script_path)
@@ -209,14 +210,7 @@ public final class ConfigHelper
                             if (name.contains("@"))
                             {
                                 String[] sp = name.split("@");
-
-                                try
-                                {
-                                    script_map.put(NamespacePath.of(sp[0], sp[1]), new ScriptEnvironment(Files.readString(path)));
-                                } catch (IOException e)
-                                {
-                                    throw new RuntimeException(e);
-                                }
+                                script_map.put(NamespacePath.of(sp[0], sp[1]), path);
                             }
                             else
                             {
@@ -224,7 +218,7 @@ public final class ConfigHelper
                             }
                         }
                     });
-            HudState.scripts = script_map;
+            return script_map;
         } catch (Throwable e)
         {
             throw new RuntimeException(e);
