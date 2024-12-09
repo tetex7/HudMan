@@ -17,19 +17,34 @@
 
 package com.trs.hudman.util;
 
+import com.trs.hudman.gui.hudmods.AbstractHudElement;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import org.luaj.vm2.Globals;
-import org.luaj.vm2.LuaFunction;
-import org.luaj.vm2.LuaUserdata;
-import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.luaj.vm2.lib.jse.JsePlatform;
+import org.luaj.vm2.*;
+import org.luaj.vm2.compiler.LuaC;
+import org.luaj.vm2.lib.*;
+import org.luaj.vm2.lib.jse.*;
 
 public class ScriptEnvironment
 {
     public final String scriptText;
-    Globals globals = JsePlatform.standardGlobals();
+
+    public static Globals se_standardGlobals() {
+        Globals globals = new Globals();
+        /*globals.load(new JseBaseLib());
+        globals.load(new PackageLib());
+        globals.load(new Bit32Lib());
+        globals.load(new TableLib());
+        globals.load(new StringLib());
+        globals.load(new JseMathLib());
+        globals.load(new LuajavaLib());*/
+        LoadState.install(globals);
+        LuaC.install(globals);
+        return globals;
+    }
+
+    Globals globals = se_standardGlobals();
 
     private static LuaFunction getFunction(String name, Globals globals)
     {
@@ -47,15 +62,30 @@ public class ScriptEnvironment
 
     private final LuaFunction render;
     private final LuaFunction tick;
+    private final LuaFunction init;
 
-    public void callRender(Font font, GuiGraphics guiGraphics, float delta)
+    public void registerElementThis(AbstractHudElement element)
     {
-        render.call(CoerceJavaToLua.coerce(font), CoerceJavaToLua.coerce(guiGraphics), LuaValue.valueOf(delta));
+        exposeValue("this", element);
+    }
+
+    public void exposeValue(String name, Object obj)
+    {
+        globals.set(name, CoerceJavaToLua.coerce(obj));
+    }
+
+    public void callRender(float delta, GuiGraphics guiGraphics, Gui gui)
+    {
+        render.call(LuaValue.valueOf(delta), CoerceJavaToLua.coerce(guiGraphics), CoerceJavaToLua.coerce(gui));
     }
 
     public void callTick()
     {
         tick.call();
+    }
+    public void callInit()
+    {
+        init.call();
     }
 
     public ScriptEnvironment(String scriptText)
@@ -64,5 +94,6 @@ public class ScriptEnvironment
         globals.load(scriptText).call();
         this.render = getFunction("render", globals);
         this.tick = getFunction("tick", globals);
+        this.init = getFunction("init", globals);
     }
 }

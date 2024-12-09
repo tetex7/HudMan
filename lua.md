@@ -18,16 +18,21 @@ along with this program.  If not, see "https://www.gnu.org/licenses/"
 I am proud to say I believe it's a success 
 
 ```lua
----comment
----@param font userdata
----@param guiGraphics userdata
 ---@param delta number
-function render(font, guiGraphics, delta)
-    guiGraphics:drawCenteredString(font, "Hello from Lua", 100, 200, 0xFFFFFF)
+---@param guiGraphics userdata
+---@param gui userdata
+function render(delta, guiGraphics, gui)
+    s = this:getJsonElement():strings():size()
+    guiGraphics:drawCenteredString(gui:getFont(), "Hello from Lua", 100, 200, 0xFFFFFF)
+    guiGraphics:drawCenteredString(gui:getFont(), this:getJsonElement():strings():get(s-1), 100, 210, 0xFFFFFF)
 end
 
 function tick()
     return
+end
+
+function init()
+    LOGGER:info("Hello from Lua")
 end
 ```
 This here is an example Lewis script to render hello from Lua into your Minecraft screen<br>
@@ -61,9 +66,9 @@ Using this example configuration
 
 <br>
 
-There are limitations For now<br>
-Some of the very useful features baked into the element class cannot be accessed at this moment<br>
-A remedy is planned<br><br>
+There are some limitations For now<br>
+There's not easy access to widgets that plans be remedied<br>
+No access to Lua Standard Library this was done on purpose 
 
 ### Where to even put your scripts
 Navigate to 'Game folder'/config/hudman/scripts

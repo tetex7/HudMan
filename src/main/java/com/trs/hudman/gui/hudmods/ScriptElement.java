@@ -27,10 +27,14 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ScriptElement extends AbstractHudElement
 {
     private final ScriptEnvironment script;
+
+    private final Logger logger;
 
     /**
      * @param root        Mostly time it's null and will probably be removed
@@ -49,7 +53,11 @@ public class ScriptElement extends AbstractHudElement
         NamespacePath path = NamespacePath.of(getJsonElement().strings().get(getJsonElement().strings().size()-1));
         if (!HudState.scripts.isEmpty() && HudState.scripts.containsKey(path))
         {
+            logger = LoggerFactory.getLogger("Hudman/Lua/"+path.getNamespace());
             script = HudState.scripts.get(path);
+            script.exposeValue("LOGGER", logger);
+            script.registerElementThis(this);
+            script.callInit();
         }
         else
         {
@@ -60,7 +68,7 @@ public class ScriptElement extends AbstractHudElement
     @Override
     public void render(float partialTick, GuiGraphics guiGraphics, Gui gui)
     {
-        script.callRender(gui.getFont(), guiGraphics, partialTick);
+        script.callRender(partialTick, guiGraphics, gui);
     }
 
     @Override
