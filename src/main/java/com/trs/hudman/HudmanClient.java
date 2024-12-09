@@ -74,7 +74,7 @@ public class HudmanClient implements ClientModInitializer
     {
         ConfigHelper.registerAll();
         HudResetEvent.EVENT.register((client) -> {
-            ConfigHelper.mkHud(client);
+            ConfigHelper.mkHud(Minecraft.getInstance());
             return true;
         });
 
@@ -179,7 +179,9 @@ public class HudmanClient implements ClientModInitializer
                 category.setDetail("Config File Path", conf.getAbsolutePath());
                 throw new ReportedException(crashReport);
             }
+
         }
+        ConfigHelper.setupScripts();
     }
 
     private static String prettyPrintWithIndent(String json, int indentSize)

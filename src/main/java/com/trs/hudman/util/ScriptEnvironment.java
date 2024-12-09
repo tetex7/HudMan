@@ -17,11 +17,13 @@
 
 package com.trs.hudman.util;
 
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaFunction;
 import org.luaj.vm2.LuaUserdata;
 import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 
 public class ScriptEnvironment
@@ -46,9 +48,9 @@ public class ScriptEnvironment
     private final LuaFunction render;
     private final LuaFunction tick;
 
-    public void callRender(GuiGraphics guiGraphics, float delta)
+    public void callRender(Font font, GuiGraphics guiGraphics, float delta)
     {
-        render.call(new LuaUserdata(guiGraphics), LuaValue.valueOf(delta));
+        render.call(CoerceJavaToLua.coerce(font), CoerceJavaToLua.coerce(guiGraphics), LuaValue.valueOf(delta));
     }
 
     public void callTick()

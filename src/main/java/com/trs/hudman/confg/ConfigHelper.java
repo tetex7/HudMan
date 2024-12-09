@@ -20,6 +20,7 @@ package com.trs.hudman.confg;
 import com.trs.hudman.gui.hudmods.*;
 import com.trs.hudman.util.CrashElement;
 import com.trs.hudman.util.NamespacePath;
+import com.trs.hudman.util.ScriptEnvironment;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
@@ -33,8 +34,12 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Map;
 import com.trs.hudman.HudState;
 
@@ -120,7 +125,8 @@ public final class ConfigHelper
                         NamespacePath.pathOf("text"), TextElement::new,
                         NamespacePath.pathOf("compass"), CompassElement::new,
                         NamespacePath.pathOf("velocity_vector"), VelocityVectorElement::new,
-                        NamespacePath.pathOf("fps"), FPSElement::new
+                        NamespacePath.pathOf("fps"), FPSElement::new,
+                        NamespacePath.pathOf("lua"), ScriptElement::new
                 )
         );
 
@@ -178,5 +184,50 @@ public final class ConfigHelper
         Component messageComponent = Component.literal(message).withStyle(ChatFormatting.ITALIC, ChatFormatting.GOLD);
         // Create and add the toast to the toast manager
         minecraft.getToasts().addToast(new SystemToast(SystemToast.SystemToastIds.PACK_LOAD_FAILURE, titleComponent, messageComponent));
+    }
+
+    public static void setupScripts()
+    {
+        try
+        {
+            File scripps = new File(HudState.configDirPath + "/hudman/scripts");
+            if (!scripps.exists())
+            {
+                scripps.mkdirs();
+            }
+
+            HashMap<NamespacePath, ScriptEnvironment> script_map = new HashMap<>();
+
+            Path script_path = Path.of(scripps.getPath());
+            Files.walk(script_path)
+                    .sorted(Comparator.reverseOrder())
+                    .forEach((path) -> {
+                        if (com.google.common.io.Files.getFileExtension(path.getFileName().toString()).equalsIgnoreCase("lua"))
+                        {
+                            String name = com.google.common.io.Files.getNameWithoutExtension(path.getFileName().toString());
+
+                            if (name.contains("@"))
+                            {
+                                String[] sp = name.split("@");
+
+                                try
+                                {
+                                    script_map.put(NamespacePath.of(sp[0], sp[1]), new ScriptEnvironment(Files.readString(path)));
+                                } catch (IOException e)
+                                {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                            else
+                            {
+                                throw new RuntimeException("Malformed file name");
+                            }
+                        }
+                    });
+            HudState.scripts = script_map;
+        } catch (Throwable e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 }

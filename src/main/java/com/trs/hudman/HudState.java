@@ -61,7 +61,7 @@ public class HudState
 
     private static boolean configDebug = false;
 
-    private static Map<NamespacePath, ScriptEnvironment> scripts = null;
+    public static Map<NamespacePath, ScriptEnvironment> scripts = null;
 
     public static final Map<String, ResourceLocation> gameHudElements = Map.of(
             "hotbar", new ResourceLocation(ResourceLocation.DEFAULT_NAMESPACE, "hotbar"),
