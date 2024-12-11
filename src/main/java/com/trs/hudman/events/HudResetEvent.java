@@ -24,9 +24,9 @@ import net.minecraft.client.Minecraft;
 public interface HudResetEvent
 {
     Event<HudResetEvent> EVENT = EventFactory.createArrayBacked(HudResetEvent.class,
-            (listeners) -> (Minecraft client) -> {
+            (listeners) -> () -> {
                 for (HudResetEvent listener : listeners) {
-                    boolean result = listener.interact(client);
+                    boolean result = listener.interact();
 
                     if(!result) {
                         return false;
@@ -36,10 +36,10 @@ public interface HudResetEvent
                 return true;
             });
 
-    static void call(Minecraft client)
+    static void call()
     {
-        HudResetEvent.EVENT.invoker().interact(null);
+        HudResetEvent.EVENT.invoker().interact();
     }
 
-    boolean interact(Minecraft client);
+    boolean interact();
 }

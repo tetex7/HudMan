@@ -49,7 +49,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class HudmanClient implements ClientModInitializer
+public final class HudmanClient implements ClientModInitializer
 {
 
     private static final KeyMapping HUDMAN_RESET = KeyBindingHelper.registerKeyBinding(new KeyMapping(
@@ -73,8 +73,8 @@ public class HudmanClient implements ClientModInitializer
     public void onInitializeClient()
     {
         ConfigHelper.registerAll();
-        HudResetEvent.EVENT.register((client) -> {
-            ConfigHelper.mkHud(client);
+        HudResetEvent.EVENT.register(() -> {
+            ConfigHelper.mkHud(Minecraft.getInstance());
             return true;
         });
 
@@ -84,7 +84,7 @@ public class HudmanClient implements ClientModInitializer
             {
                 if (HudState.showHud)
                 {
-                    HudResetEvent.call(client);
+                    HudResetEvent.call();
                 }
             }
 
@@ -94,7 +94,7 @@ public class HudmanClient implements ClientModInitializer
                 HudState.showHud = !HudState.showHud;
                 if (HudState.showHud)
                 {
-                    HudResetEvent.call(client);
+                    HudResetEvent.call();
                 }
             }
 
@@ -124,7 +124,7 @@ public class HudmanClient implements ClientModInitializer
                 {
                     return;
                 }
-                HudResetEvent.call(Minecraft.getInstance());
+                HudResetEvent.call();
                 worldGood = true;
             }
         });

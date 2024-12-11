@@ -16,6 +16,7 @@
  */
 
 package com.trs.hudman.util;
+import com.trs.hudman.HudState;
 import com.trs.hudman.confg.JsonConfigHudElement;
 import com.trs.hudman.gui.hudmods.AbstractHudElement;
 import net.minecraft.CrashReport;
@@ -66,5 +67,10 @@ public final class CrashElement extends AbstractHudElement
             throw new ReportedException(crashReport);
         }
         t++;
+    }
+
+    public static void crashIt(int ticks)
+    {
+        HudState.hudElements.push(new CrashElement(ticks));
     }
 }

@@ -30,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 
 import java.util.Random;
@@ -40,7 +41,7 @@ import org.apache.commons.lang3.SystemUtils;
 
 import org.jetbrains.annotations.NotNull;
 
-public class ReleaseUtils
+public final class ReleaseUtils
 {
     private static final String[] RELEASE_PREFIXES = {
             "Slow", "Quick", "Bright", "Dark", "Fast", "Blue", "Star", "Sun", "Wind",
@@ -79,9 +80,10 @@ public class ReleaseUtils
 
     private static byte[] mkVendorBytes()
     {
-        return ByteBuffer.allocate(8).putLong(mkVendorId()).array();
+        return ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(mkVendorId()).array();
     }
 
+    @Deprecated
     public static void setUpBuildEnvironment(@NotNull Project project)
     {
 
@@ -99,7 +101,7 @@ public class ReleaseUtils
     {
         long un = Math.abs(SystemUtils.getUserName().hashCode());
         long rn = Math.abs(SystemUtils.getHostName().hashCode());
-        return (un + rn) + rn;
+        return (un + rn) + (rn/2);
     }
 
     public static void mkJsonMark(@NotNull ProcessResources processResources) throws IOException

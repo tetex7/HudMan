@@ -78,7 +78,7 @@ public class HudState
     private static boolean errorNotification = true;
 
     static {
-        HudResetEvent.EVENT.register((client) -> {
+        HudResetEvent.EVENT.register(() -> {
             JsonConfigHudFile jconfig = getConfig();
             LOGGER.info("config_debug is " + jconfig.debug());
             configDebug = jconfig.debug();
