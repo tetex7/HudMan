@@ -129,7 +129,7 @@ public class ElementRegistry
      * Returns a read only view of the registry map might prove useful
      * @return Read only view of the registry map
      */
-    public final @NotNull Map<NamespacePath, NewAbstractHudElementHandler> getElementMap()
+    public final @NotNull Map<NamespacePath, NewAbstractHudElementHandler> getRegistryMap()
     {
         return elementMap;
     }

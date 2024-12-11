@@ -72,7 +72,7 @@ public class HudState
 
     public static final String configDirPath = Minecraft.getInstance().gameDirectory.toString() + "/config";
 
-    @Deprecated(forRemoval = true, since = "1.0")
+    @Deprecated
     public static final HashMap<String, INamespaceHandler> namespaceHandlers = new HashMap<>();
 
     private static boolean errorNotification = true;

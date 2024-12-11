@@ -17,14 +17,20 @@
 
 package com.trs.hudman.util;
 
-import com.trs.hudman.confg.JsonConfigHudElement;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.NotNull;
 
-@Environment(EnvType.CLIENT)
-@FunctionalInterface
-@Deprecated
-public interface INamespaceHandler
+import java.util.HashMap;
+import java.util.Map;
+
+public interface IRegistry<T>
 {
-    boolean work(JsonConfigHudElement element);
+
+    void register(@NotNull NamespacePath namespacePath, T value);
+    void register(@NotNull Map<NamespacePath, T> values);
+    boolean hasElement(@NotNull NamespacePath namespacePath);
+    @NotNull T get(@NotNull NamespacePath namespacePath);
+    @NotNull Map<NamespacePath, T> getRegistryMap();
+
+    @Deprecated
+    void unregister(@NotNull NamespacePath namespacePath);
 }
