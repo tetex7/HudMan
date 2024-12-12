@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see "https://www.gnu.org/licenses/"
 --?>
 # Hud Manager
-a client side minecraft mod that I’ve created in my free time for mc1.20.1<br>
+a client side minecraft mod that I’ve created in my free time for mc1.21.4<br>
 the main feature of the mod is To allow the user to create custom HUD using a config file written in Json.<br>
 This mod is quite small, only having one dependency and that is the Fabric API and technically Minecraft itself.<br>
 This mod is also expandable by external plug-in mods using the Element registry system.<br>
@@ -122,7 +122,7 @@ repositories {
 dependencies {
     ...
     //And then the mod
-    modImplementation("maven.modrinth:hudman:1.5.6-mc1.20.1")
+    modImplementation("maven.modrinth:hudman:1.6.0-mc1.21.4")
     ...
 }
 

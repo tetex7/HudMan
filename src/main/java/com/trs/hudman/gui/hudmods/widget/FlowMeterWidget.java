@@ -21,6 +21,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
@@ -30,8 +31,8 @@ import com.trs.hudman.HudState;
 
 public final class FlowMeterWidget extends AbstractHudWidget
 {
-    public static final ResourceLocation FLOW_METER_BODY_LOCATION = new ResourceLocation(HudState.MODID, "textures/gui/hudmods/widget/flow_meter_widget/flow_meter_body.png");
-    public static final ResourceLocation FLOW_METER_POINT_LOCATION = new ResourceLocation(HudState.MODID, "textures/gui/hudmods/widget/flow_meter_widget/flow_meter_point.png");
+    public static final ResourceLocation FLOW_METER_BODY_LOCATION = ResourceLocation.fromNamespaceAndPath(HudState.MODID, "textures/gui/hudmods/widget/flow_meter_widget/flow_meter_body.png");
+    public static final ResourceLocation FLOW_METER_POINT_LOCATION = ResourceLocation.fromNamespaceAndPath(HudState.MODID, "textures/gui/hudmods/widget/flow_meter_widget/flow_meter_point.png");
 
     private int value = 0;
 
@@ -60,12 +61,14 @@ public final class FlowMeterWidget extends AbstractHudWidget
 
         RenderSystem.enableBlend();
         guiGraphics.blit(
+                RenderType::guiTextured,
                 FLOW_METER_BODY_LOCATION,
                 this.getX(),
                 this.getY(),
                 0,0, 22, 62, 22, 62
         );
         guiGraphics.blit(
+                RenderType::guiTextured,
                 FLOW_METER_POINT_LOCATION,
                 this.getX() + 5,
                 ((this.getY() + 25) - value),

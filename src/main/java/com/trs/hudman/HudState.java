@@ -61,9 +61,9 @@ public class HudState
     private static boolean configDebug = false;
 
     public static final Map<String, ResourceLocation> gameHudElements = Map.of(
-            "hotbar", new ResourceLocation(ResourceLocation.DEFAULT_NAMESPACE, "hotbar"),
-            "effectbar", new ResourceLocation(ResourceLocation.DEFAULT_NAMESPACE, "effectbar"),
-            "healthbar", new ResourceLocation(ResourceLocation.DEFAULT_NAMESPACE, "healthbar")
+            "hotbar", ResourceLocation.fromNamespaceAndPath(ResourceLocation.DEFAULT_NAMESPACE, "hotbar"),
+            "effectbar", ResourceLocation.fromNamespaceAndPath(ResourceLocation.DEFAULT_NAMESPACE, "effectbar"),
+            "healthbar", ResourceLocation.fromNamespaceAndPath(ResourceLocation.DEFAULT_NAMESPACE, "healthbar")
     );
 
     public static final ElementRegistry elementRegistry = new ElementRegistry();

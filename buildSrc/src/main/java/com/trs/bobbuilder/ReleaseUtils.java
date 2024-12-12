@@ -62,20 +62,23 @@ public final class ReleaseUtils
     };
 
     private static final String[] RELEASE_SUFFIXES = {
-            "rabbit", "bird", "fox", "wolf", "cat", "tree", "stone", "flower", "river",
-            "heart", "wing", "leaf", "song", "light", "shadow", "runner", "hunter",
-            "dream", "whisper", "keeper", "flame", "claw", "paw", "fang", "mist",
-            "thorn", "blossom", "breeze", "storm", "wave", "crystal", "guardian",
-            "spark", "seer", "weaver", "dancer", "watcher", "seeker", "speaker",
-            "herald", "builder", "wanderer", "explorer", "defender", "champion",
-            "singer", "glow", "beam", "path", "star", "orb", "flare", "trail",
-            "veil", "mark", "howl", "roar", "songbird", "shade", "spear", "quill",
-            "shard", "echo", "ember", "flint", "ridge", "forge", "grove", "crown",
-            "hearth", "wild", "spirit", "bringer", "sentinel", "skyline", "keeper",
-            "caster", "chaser", "stalker", "protector", "dreamer", "tracker",
-            "soarer", "guardian", "glider", "screecher", "wisp", "flitter",
-            "sprint", "sparkle", "relic", "strider", "vision", "whirl", "zephyr",
-            "arbor", "pillar", "cascade", "spire", "whisperer"
+            "Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard",
+            "Squirtle", "Wartortle", "Blastoise", "Caterpie", "Metapod", "Butterfree",
+            "Weedle", "Kakuna", "Beedrill", "Pidgey", "Pidgeotto", "Pidgeot",
+            "Rattata", "Raticate", "Spearow", "Fearow", "Ekans", "Arbok",
+            "Pikachu", "Raichu", "Sandshrew", "Sandslash", "Nidoran'F", "Nidorina",
+            "Nidoqueen", "Nidoran'M", "Nidorino", "Nidoking", "Clefairy", "Clefable",
+            "Vulpix", "Ninetales", "Jigglypuff", "Wigglytuff", "Zubat", "Golbat",
+            "Oddish", "Gloom", "Vileplume", "Paras", "Parasect", "Venonat",
+            "Venomoth", "Diglett", "Dugtrio", "Meowth", "Persian", "Psyduck",
+            "Golduck", "Mankey", "Primeape", "Growlithe", "Arcanine", "Poliwag",
+            "Poliwhirl", "Poliwrath", "Abra", "Kadabra", "Alakazam", "Machop",
+            "Machoke", "Machamp", "Bellsprout", "Weepinbell", "Victreebel", "Tentacool",
+            "Tentacruel", "Geodude", "Graveler", "Golem", "Ponyta", "Rapidash",
+            "Slowpoke", "Slowbro", "Magnemite", "Magneton", "Farfetch'd", "Doduo",
+            "Dodrio", "Seel", "Dewgong", "Grimer", "Muk", "Shellder",
+            "Cloyster", "Gastly", "Haunter", "Gengar", "Onix", "Drowzee",
+            "Hypno", "Krabby", "Kingler", "Voltorb", "Electrode", "Exeggcute"
     };
 
     private static byte[] mkVendorBytes()

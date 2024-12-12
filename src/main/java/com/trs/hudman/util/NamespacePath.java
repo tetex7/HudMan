@@ -72,7 +72,7 @@ public final class NamespacePath implements Comparable<NamespacePath>
 
     private NamespacePath(String namespace, String path)
     {
-        this(new ResourceLocation(namespace, path));
+        this(ResourceLocation.fromNamespaceAndPath(namespace, path));
     }
 
     private NamespacePath(@NotNull ResourceLocation resource)
@@ -83,7 +83,7 @@ public final class NamespacePath implements Comparable<NamespacePath>
     private NamespacePath(String fullPath)
     {
         this.fullPath = fullPath;
-        this.resourceLocation = new ResourceLocation(this.fullPath);
+        this.resourceLocation = ResourceLocation.parse(this.fullPath);
         this.namespace = this.resourceLocation.getNamespace();
         this.path = this.resourceLocation.getPath();
     }

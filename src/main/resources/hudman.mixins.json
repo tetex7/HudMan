@@ -8,7 +8,6 @@
     "client": [
         "OptionsScreenMixin",
         "PlayerGuiMixin",
-        "PlayerGuiMixinAccessor",
         "PlayerTabOverlayMixinAccessor"
     ],
     "injectors": {

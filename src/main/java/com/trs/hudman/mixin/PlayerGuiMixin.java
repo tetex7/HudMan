@@ -21,6 +21,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.trs.hudman.gui.hudmods.AbstractHudElement;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -49,14 +50,14 @@ public abstract class PlayerGuiMixin
 
     @Shadow protected abstract Player getCameraPlayer();
 
-    @Inject(method = "renderHotbar", at = @At("RETURN"))
-    private void injectRenderHotbar(float partialTick, GuiGraphics guiGraphics, CallbackInfo info)
+    @Inject(method = "renderItemHotbar", at = @At("RETURN"))
+    private void injectRenderHotbar(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo info)
     {
         if (this.getCameraPlayer() != null)
         {
             if (HudState.showHud)
             {
-                minecraft.getProfiler().push("HudMan Rendering Hotbar");
+                //minecraft.getProfiler().push("HudMan Rendering Hotbar");
                 Stack<AbstractHudElement> huds = HudState.hudElements;
                 if (!huds.isEmpty())
                 {
@@ -66,11 +67,11 @@ public abstract class PlayerGuiMixin
                         String pairGameHudElement = element.getJsonElement().pairGameHudElement();
                         if (pairGameHudElement.equals(HudState.gameHudElements.get("hotbar").toString()) || pairGameHudElement.isEmpty())
                         {
-                            element.render(partialTick, guiGraphics, (Gui)(Object)this);
+                            element.render(deltaTracker.getGameTimeDeltaPartialTick(false), guiGraphics, (Gui)(Object)this);
                         }
                     }
                 }
-                minecraft.getProfiler().pop();
+                //minecraft.getProfiler().pop();
             }
         }
     }
@@ -82,7 +83,7 @@ public abstract class PlayerGuiMixin
         {
             if (HudState.showHud)
             {
-                minecraft.getProfiler().push("HudMan Rendering Hotbar");
+                //minecraft.getProfiler().push("HudMan Rendering Hotbar");
                 Stack<AbstractHudElement> huds = HudState.hudElements;
                 if (!huds.isEmpty())
                 {
@@ -96,19 +97,19 @@ public abstract class PlayerGuiMixin
                         }
                     }
                 }
-                minecraft.getProfiler().pop();
+                //minecraft.getProfiler().pop();
             }
         }
     }
 
     @Inject(method = "renderEffects", at = @At("RETURN"))
-    private void injectRenderEffects(GuiGraphics guiGraphics, CallbackInfo info, @Local Collection<MobEffectInstance> collection)
+    private void injectRenderEffects(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo info, @Local Collection<MobEffectInstance> collection)
     {
         if (!collection.isEmpty())
         {
             if (HudState.showHud)
             {
-                minecraft.getProfiler().push("HudMan Rendering Effectbar");
+                //minecraft.getProfiler().push("HudMan Rendering Effectbar");
                 Stack<AbstractHudElement> huds = HudState.hudElements;
                 if (!huds.isEmpty())
                 {
@@ -117,7 +118,7 @@ public abstract class PlayerGuiMixin
                         String pairGameHudElement = element.getJsonElement().pairGameHudElement();
                         if (pairGameHudElement.equals(HudState.gameHudElements.get("effectbar").toString()))
                         {
-                            element.render(0, guiGraphics, (Gui)(Object)this);
+                            element.render(deltaTracker.getGameTimeDeltaPartialTick(false), guiGraphics, (Gui)(Object)this);
                         }
                     }
                 }
@@ -132,7 +133,7 @@ public abstract class PlayerGuiMixin
         {
             if (HudState.showHud)
             {
-                minecraft.getProfiler().push("HudMan Tick");
+                //minecraft.getProfiler().push("HudMan Tick");
                 Stack<AbstractHudElement> huds = HudState.hudElements;
 
                 if (!huds.isEmpty())
@@ -142,7 +143,7 @@ public abstract class PlayerGuiMixin
                         hud.tick();
                     }
                 }
-                minecraft.getProfiler().pop();
+                //minecraft.getProfiler().pop();
             }
         }
     }
