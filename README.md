@@ -14,6 +14,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see "https://www.gnu.org/licenses/"
 --?>
+> [!IMPORTANT]
+> Moving to 1.21.4<br>
+> Back ports might come back to 1.20.1 
+
+
 # Hud Manager
 a client side minecraft mod that I’ve created in my free time for mc1.20.1<br>
 the main feature of the mod is To allow the user to create custom HUD using a config file written in Json.<br>
