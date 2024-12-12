@@ -16,7 +16,8 @@ along with this program.  If not, see "https://www.gnu.org/licenses/"
 --?>
 
 > [!IMPORTANT]
-> This Port Minecraft 1.21.1 is still work in progress but is looking promising  
+> This Port to Minecraft 1.21.1 is Deprecated<br>
+> We're going straight to 1.21.4
 
 
 # Hud Manager
