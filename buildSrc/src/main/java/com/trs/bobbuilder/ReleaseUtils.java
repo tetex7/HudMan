@@ -100,7 +100,7 @@ public final class ReleaseUtils
         return (prefix + '-' + suffix).toLowerCase();
     }
 
-    public static long mkVendorId()
+    private static long mkVendorId()
     {
         long un = Math.abs(SystemUtils.getUserName().hashCode());
         long rn = Math.abs(SystemUtils.getHostName().hashCode());

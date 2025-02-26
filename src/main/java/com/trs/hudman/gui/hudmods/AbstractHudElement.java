@@ -55,14 +55,11 @@ public abstract class AbstractHudElement implements IRenderPrimitive
      */
     public AbstractHudElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfigHudElement jsonElement)
     {
-        Objects.requireNonNull(client);
-        Objects.requireNonNull(cords);
-        Objects.requireNonNull(jsonElement);
+        this.cords = Objects.requireNonNull(cords);
+        this.client = Objects.requireNonNull(client);
+        this.jsonElement = Objects.requireNonNull(jsonElement);
         this.root = root;
         this.player = client.player;
-        this.cords = cords;
-        this.client = client;
-        this.jsonElement = jsonElement;
     }
 
     /**
@@ -74,7 +71,7 @@ public abstract class AbstractHudElement implements IRenderPrimitive
     }
 
     /**
-     * @return Provides a reference to the Jsonc onfig Element
+     * @return Provides a reference to the Json config Element
      * @see JsonConfigHudElement
      */
     public final JsonConfigHudElement getJsonElement()

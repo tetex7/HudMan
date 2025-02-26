@@ -5,7 +5,7 @@
     "key.hudman.hudreset": "Hud Reset",
     "key.hudman.hudshow": "Hud Show",
     "key.categories.hudman":  "HudMan",
-    "string.hudman.hud_error": "%EDATA%: %STACKTRACE%",
-    "screen.hudman.hud_preset_meun": "Preset Menu",
-    "key.hudman.huddebug": "Debug Menu"
+    "string.hudman.mod_name": "Hudman",
+    "key.hudman.huddebug": "Debug Menu",
+    "screen.hudman.hud_preset_meun": "Preset Menu"
 }

@@ -78,7 +78,7 @@ dependencies {
 
 fun standardizedPath(path: String): String
 {
-    return path.replace('\\', '/')
+    return path.replace("\\", "/")
 }
 
 

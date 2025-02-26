@@ -16,16 +16,21 @@
  */
 
 package com.trs.hudman.mixin;
+import com.llamalad7.mixinextras.sugar.Local;
+import com.trs.hudman.gui.screens.HudManMenu;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.layouts.FrameLayout;
+import net.minecraft.client.gui.layouts.GridLayout;
+import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.screens.options.OptionsScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
 
 import java.util.function.Supplier;
 
@@ -34,19 +39,15 @@ public abstract class OptionsScreenMixin extends Screen
 {
     @Shadow protected abstract Button openScreenButton(Component text, Supplier<Screen> screenSupplier);
 
+    @Shadow @Final private HeaderAndFooterLayout layout;
+
     protected OptionsScreenMixin(Component title) {
         super(title);
     }
 
-    @Inject(method = "init", at = @At(value = "RETURN"))
-    void injectInit(CallbackInfo ci)
+    @Inject(method = "init", at = @At(value = "INVOKE", target ="Lnet/minecraft/client/gui/layouts/HeaderAndFooterLayout;addToContents(Lnet/minecraft/client/gui/layouts/LayoutElement;)Lnet/minecraft/client/gui/layouts/LayoutElement;", shift = At.Shift.BY))
+    void injectInit_add_button(CallbackInfo ci, @Local RowHelper rowHelper, @Local GridLayout gridLayout)
     {
-        /*Button s = super.addRenderableWidget(
-            this.openScreenButton(
-                Component.translatable("screen.hudman.hud_preset_meun"),
-                    () -> new ConfigPresetSelectionScreen(Component.translatable("screen.hudman.hud_preset_meun"),  (OptionsScreen)(Object)this)
-            )
-        );*/
-        //FrameLayout.alignInRectangle(s, 0, this.height - 25, this.width, this.height, 0.5F, 0.0F);
+        rowHelper.addChild(openScreenButton(Component.translatable("string.hudman.mod_name"), () -> new HudManMenu((OptionsScreen)(Object)this)));
     }
 }

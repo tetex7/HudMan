@@ -1,5 +1,5 @@
 <?--
-Copyright (C) 2024  Tete
+Copyright (C) 2025  Tete
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -126,7 +126,7 @@ repositories {
 dependencies {
     ...
     //And then the mod
-    modImplementation("maven.modrinth:hudman:1.6.0-mc1.21.4")
+    modImplementation("maven.modrinth:hudman:1.6.1-mc1.21.4")
     ...
 }
 
