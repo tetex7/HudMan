@@ -24,6 +24,7 @@ import com.trs.hudman.gui.hudmods.widget.ClusterWidget;
 import com.trs.hudman.gui.hudmods.widget.FlowMeterWidget;
 import com.trs.hudman.gui.hudmods.widget.TextWidget;
 import com.trs.hudman.util.Vec2i;
+import com.trs.hudman.util.annotation.RegistrableHudElement;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -39,6 +40,7 @@ import com.trs.hudman.HudState;
 
 import java.util.Map;
 
+@RegistrableHudElement(regName = "velocity_vector")
 @Environment(EnvType.CLIENT)
 public final class VelocityVectorElement extends AbstractHudElement
 {

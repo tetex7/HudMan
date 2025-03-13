@@ -17,7 +17,7 @@
 
 package com.trs.hudman.mixin;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.trs.hudman.gui.screens.HudManMenu;
+import com.trs.hudman.gui.screens.HudManMenuScreen;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
@@ -48,6 +48,6 @@ public abstract class OptionsScreenMixin extends Screen
     @Inject(method = "init", at = @At(value = "INVOKE", target ="Lnet/minecraft/client/gui/layouts/HeaderAndFooterLayout;addToContents(Lnet/minecraft/client/gui/layouts/LayoutElement;)Lnet/minecraft/client/gui/layouts/LayoutElement;", shift = At.Shift.BY))
     void injectInit_add_button(CallbackInfo ci, @Local RowHelper rowHelper, @Local GridLayout gridLayout)
     {
-        rowHelper.addChild(openScreenButton(Component.translatable("string.hudman.mod_name"), () -> new HudManMenu((OptionsScreen)(Object)this)));
+        //rowHelper.addChild(openScreenButton(Component.translatable("string.hudman.mod_name"), () -> new HudManMenuScreen((OptionsScreen)(Object)this)));
     }
 }

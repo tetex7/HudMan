@@ -27,6 +27,7 @@ import com.trs.hudman.confg.JsonConfigHudElement;
 import com.trs.hudman.confg.JsonConfigHudFile;
 import com.trs.hudman.events.ClientWorldEvent;
 import com.trs.hudman.events.HudResetEvent;
+import com.trs.hudman.util.FastRegistrar;
 import com.trs.hudman.util.NamespacePath;
 import com.trs.hudman.util.Vec2i;
 import net.fabricmc.api.ClientModInitializer;
@@ -72,7 +73,8 @@ public final class HudmanClient implements ClientModInitializer
     @Override
     public void onInitializeClient()
     {
-        ConfigHelper.registerAll();
+        //ConfigHelper.registerAll();
+        FastRegistrar.searchForRegistrables(NamespacePath.MOD_NAMESPACE, "com.trs.hudman.gui.hudmods");
         HudResetEvent.EVENT.register(() -> {
             ConfigHelper.mkHud(Minecraft.getInstance());
             return true;

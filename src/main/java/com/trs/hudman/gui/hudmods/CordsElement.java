@@ -19,6 +19,7 @@ package com.trs.hudman.gui.hudmods;
 
 import com.trs.hudman.confg.JsonConfigHudElement;
 import com.trs.hudman.util.Vec2i;
+import com.trs.hudman.util.annotation.RegistrableHudElement;
 import com.trs.qlang.Qlang;
 import com.trs.qlang.QlangInstruction;
 import net.minecraft.client.Minecraft;
@@ -26,7 +27,6 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Mth;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -34,6 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.regex.Pattern;
 
+@RegistrableHudElement(regName = "cords")
 public class CordsElement extends AbstractHudElement
 {
     private Vec3i cords;

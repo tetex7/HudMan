@@ -44,7 +44,7 @@ public final class ConfigHelper
     public static void mkHud(Minecraft minecraft)
     {
         HudState.hudElements.clear();
-        for (JsonConfigHudElement element : HudState.getConfig().elements())
+        for (final JsonConfigHudElement element : HudState.getConfig().elements())
         {
             if (element.enable())
             {
@@ -111,6 +111,7 @@ public final class ConfigHelper
         }
     }
 
+    @Deprecated
     public static void registerAll()
     {
         HudState.elementRegistry.register(

@@ -19,6 +19,7 @@ package com.trs.hudman.gui.hudmods;
 
 import com.trs.hudman.confg.JsonConfigHudElement;
 import com.trs.hudman.util.Vec2i;
+import com.trs.hudman.util.annotation.RegistrableHudElement;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -28,6 +29,7 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@RegistrableHudElement(regName = "fps")
 @Environment(EnvType.CLIENT)
 public final class FPSElement extends AbstractHudElement
 {

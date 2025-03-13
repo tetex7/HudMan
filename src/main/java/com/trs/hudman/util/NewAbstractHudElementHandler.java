@@ -23,8 +23,12 @@ import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.InvocationTargetException;
+
 @FunctionalInterface
 public interface NewAbstractHudElementHandler
 {
-    AbstractHudElement create(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfigHudElement jsonElement);
+    // The exceptions that it might throw most likely will never happen
+    // but them being there is a side effect of the news fastregistrar system
+    AbstractHudElement create(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfigHudElement jsonElement) throws InvocationTargetException, InstantiationException, IllegalAccessException;
 }

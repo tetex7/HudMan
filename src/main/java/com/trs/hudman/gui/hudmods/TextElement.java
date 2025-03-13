@@ -19,6 +19,7 @@ package com.trs.hudman.gui.hudmods;
 
 import com.trs.hudman.confg.JsonConfigHudElement;
 import com.trs.hudman.util.Vec2i;
+import com.trs.hudman.util.annotation.RegistrableHudElement;
 import com.trs.qlang.Qlang;
 import com.trs.qlang.QlangInstruction;
 import net.fabricmc.api.EnvType;
@@ -30,6 +31,7 @@ import net.minecraft.network.chat.Component;
 
 import java.util.regex.Pattern;
 
+@RegistrableHudElement(regName = "text")
 @Environment(EnvType.CLIENT)
 public class TextElement extends AbstractHudElement
 {

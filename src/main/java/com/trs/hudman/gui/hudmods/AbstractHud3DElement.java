@@ -28,6 +28,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * I don't know what to do with this anybody with any ideas are welcome
+ */
 @Environment(EnvType.CLIENT)
 public abstract class AbstractHud3DElement extends AbstractHudElement
 {

@@ -65,8 +65,10 @@ import com.trs.hudman.util.Vec2i;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-//Minecraft import's
+import com.trs.hudman.util.annotation.RegistrableHudElement;
 
+//Minecraft import's
+@RegistrableHudElement(regName = "test")
 public class Tester extends AbstractHudElement
 {
     private final FlowMeterWidget TEST_FLOW_METER = new FlowMeterWidget(getCords().x(), getCords().x(), 0.5f);
@@ -100,12 +102,13 @@ public class Tester extends AbstractHudElement
 
 And then the Register So it can be used in game
 ``` java
+import com.trs.hudman.util.FastRegistrar
 class ModClient implements ClientModInitializer
 {
     public final static MODID = "test";
     void onInitializeClient()
     {
-         HudState.elementRegistry.register(NamespacePath.of(MODID, "test_text"), Tester::new);
+         FastRegistrar.searchForRegistrables(MODID, "com.trs.hudtest.gui.hudmods");
     }
 }
 ```
@@ -117,17 +120,17 @@ class ModClient implements ClientModInitializer
 ## How to add this mod to dev environment
 ```kts
 repositories {
-    ...
+    //...
     //Add the modrinth repository 
     maven("https://api.modrinth.com/maven")
-    ...
+    //...
 }
 
 dependencies {
-    ...
+    //...
     //And then the mod
-    modImplementation("maven.modrinth:hudman:1.6.1-mc1.21.4")
-    ...
+    modImplementation("maven.modrinth:hudman:1.7.0-mc1.21.4")
+    //...
 }
 
 ```

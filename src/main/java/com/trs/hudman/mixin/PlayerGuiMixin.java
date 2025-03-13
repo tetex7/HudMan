@@ -62,7 +62,7 @@ public abstract class PlayerGuiMixin
                 if (!huds.isEmpty())
                 {
 
-                    for (AbstractHudElement element : huds)
+                    for (final AbstractHudElement element : huds)
                     {
                         String pairGameHudElement = element.getJsonElement().pairGameHudElement();
                         if (pairGameHudElement.equals(HudState.gameHudElements.get("hotbar").toString()) || pairGameHudElement.isEmpty())
@@ -88,7 +88,7 @@ public abstract class PlayerGuiMixin
                 if (!huds.isEmpty())
                 {
 
-                    for (AbstractHudElement element : huds)
+                    for (final AbstractHudElement element : huds)
                     {
                         String pairGameHudElement = element.getJsonElement().pairGameHudElement();
                         if (pairGameHudElement.equals(HudState.gameHudElements.get("healthbar").toString()))
@@ -113,7 +113,7 @@ public abstract class PlayerGuiMixin
                 Stack<AbstractHudElement> huds = HudState.hudElements;
                 if (!huds.isEmpty())
                 {
-                    for (AbstractHudElement element : huds)
+                    for (final AbstractHudElement element : huds)
                     {
                         String pairGameHudElement = element.getJsonElement().pairGameHudElement();
                         if (pairGameHudElement.equals(HudState.gameHudElements.get("effectbar").toString()))
