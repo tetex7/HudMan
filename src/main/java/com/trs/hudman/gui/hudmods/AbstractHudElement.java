@@ -28,7 +28,11 @@ import net.minecraft.client.player.LocalPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
+import java.io.StringBufferInputStream;
+import java.io.StringReader;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.UUID;
 
 /**
@@ -43,6 +47,7 @@ public abstract class AbstractHudElement implements IRenderPrimitive
     private final Minecraft client;
     private final JsonConfigHudElement jsonElement;
     private final UUID elementUUID = UUID.randomUUID();
+    private final Properties stringsProperties;
     private final int intID = 0;
 
     /**
@@ -60,12 +65,27 @@ public abstract class AbstractHudElement implements IRenderPrimitive
         this.jsonElement = Objects.requireNonNull(jsonElement);
         this.root = root;
         this.player = client.player;
+        this.stringsProperties = new Properties();
+
+        StringBuilder propStr = new StringBuilder();
+        for (final String str : jsonElement.strings())
+        {
+            propStr.append(str).append('\n');
+        }
+
+        try
+        {
+            stringsProperties.load(new StringReader(propStr.toString()));
+        } catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * @return Provides a reference to the client
      */
-    public final Minecraft getClient()
+    protected final Minecraft getClient()
     {
         return this.client;
     }
@@ -112,6 +132,11 @@ public abstract class AbstractHudElement implements IRenderPrimitive
     public final UUID getElementUUID()
     {
         return elementUUID;
+    }
+
+    protected final Properties getStringsProperties()
+    {
+        return stringsProperties;
     }
 
     /**

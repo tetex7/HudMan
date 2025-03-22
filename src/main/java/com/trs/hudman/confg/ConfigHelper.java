@@ -90,10 +90,17 @@ public final class ConfigHelper
                         }
                         else
                         {
-                            HudState.LOGGER.error("no Element by ElementName:'{}' on External Namespace:'{}'", path.getPath(), path.getNamespace());
-                            if (HudState.getErrorNotification())
+                            if (HudState.hudPresetMap.containsKey(path))
                             {
-                                showToast("Failure on Element Load", "no Element by ElementPath:'" + path.getFullPath() + '\'');
+                                HudState.hudElements.push(HudPresetClusterElement.fromHudPresetsJsonFile(minecraft, element, HudState.hudPresetMap.get(path)));
+                            }
+                            else
+                            {
+                                HudState.LOGGER.error("no Element by ElementName:'{}' on External Namespace:'{}'", path.getPath(), path.getNamespace());
+                                if (HudState.getErrorNotification())
+                                {
+                                    showToast("Failure on Element Load", "no Element by ElementPath:'" + path.getFullPath() + '\'');
+                                }
                             }
                         }
 

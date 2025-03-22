@@ -148,6 +148,13 @@ public final class HudmanClient implements ClientModInitializer
         }
 
         File conf = new File(HudState.configPath);
+
+        File presetsDir = new File(HudState.presetDirPath);
+        if (!presetsDir.exists())
+        {
+            presetsDir.mkdirs();
+        }
+
         if (!conf.exists())
         {
             JsonConfigHudFile congHud = new JsonConfigHudFile(

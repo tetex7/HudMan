@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 
 public class QlangInstruction
 {
+    private final int hash = ThreadLocalRandom.current().nextInt();
     public static QlangInstruction of(InstructionWork code)
     {
         return new QlangInstruction(code);
@@ -57,6 +58,6 @@ public class QlangInstruction
     @Override
     public int hashCode()
     {
-        return ThreadLocalRandom.current().nextInt();
+        return hash;
     }
 }

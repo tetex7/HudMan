@@ -20,10 +20,14 @@ package com.trs.hudman;
 import com.google.gson.GsonBuilder;
 import com.trs.hudman.confg.ConfigHelper;
 import com.trs.hudman.confg.JsonConfigHudFile;
+import com.trs.hudman.confg.JsonConfigHudPreset;
+import com.trs.hudman.confg.JsonConfigHudPresetsDefinitionsFile;
 import com.trs.hudman.util.NamespacePath;
 import net.minecraft.client.Minecraft;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -55,6 +59,8 @@ public class HudState
     @Internal
     public static final Logger LOGGER = LoggerFactory.getLogger("Hudman");
 
+    public static final HashMap<NamespacePath, JsonConfigHudPreset> hudPresetMap = new HashMap<>();
+
     @Internal
     public static boolean showHud = true;
 
@@ -68,14 +74,88 @@ public class HudState
 
     public static final ElementRegistry elementRegistry = new ElementRegistry();
 
-    public static final String configPath = Minecraft.getInstance().gameDirectory.toString() + "/config/hudman.json";
-
     public static final String configDirPath = Minecraft.getInstance().gameDirectory.toString() + "/config";
+
+    public static final String configPath = configDirPath + "/hudman.json";
+
+    public static final String presetDefinitionsPath = configDirPath + "/hudmanPresets.json";
+
+    public static final String presetDirPath = configDirPath + "/HudmanPresets";
 
     @Deprecated
     public static final HashMap<String, INamespaceHandler> namespaceHandlers = new HashMap<>();
 
     private static boolean errorNotification = true;
+
+    private static List<NamespacePath> readPresetsDefinitions()
+    {
+        try
+        {
+            var gson = new GsonBuilder()
+                    .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathAdapter())
+                    /*.registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathJsonDeserializer())
+                    .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathJsonSerializer())*/
+                    .create();
+            String json = Files.readString(Paths.get(presetDefinitionsPath), StandardCharsets.UTF_8);
+            return gson.fromJson(json, JsonConfigHudPresetsDefinitionsFile.class).hudPreset();
+        }
+        catch (IOException e)
+        {
+            LOGGER.error("Failed to load preset config from {}\n{}", presetDefinitionsPath, ConfigHelper.stackTraceString(e));
+            throw new RuntimeException("Critical error: Could not load preset configuration file at " + presetDefinitionsPath, e);
+        }
+    }
+
+    private static JsonConfigHudPreset readPresetJson(String path) throws FileNotFoundException
+    {
+        if (!new File(path).exists())
+        {
+            throw new FileNotFoundException(path);
+        }
+        try
+        {
+            var gson = new GsonBuilder()
+                    .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathAdapter())
+                    /*.registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathJsonDeserializer())
+                    .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathJsonSerializer())*/
+                    .create();
+            String json = Files.readString(Paths.get(path), StandardCharsets.UTF_8);
+            return gson.fromJson(json, JsonConfigHudPreset.class);
+        }
+        catch (IOException e)
+        {
+            LOGGER.error("Failed to load preset config from {}\n{}", path, ConfigHelper.stackTraceString(e));
+            throw new RuntimeException("Critical error: Could not load preset configuration file at " + path, e);
+        }
+    }
+
+    private static void setUpPresetConfigSystem()
+    {
+        hudPresetMap.clear();
+        if (!new File(HudState.presetDefinitionsPath).exists()) return;
+        List<NamespacePath> presets = readPresetsDefinitions();
+
+        for (final NamespacePath presetPath : presets)
+        {
+            if (presetPath.getNamespace().equals(NamespacePath.MINECRAFT_NAMESPACE) || presetPath.getNamespace().equals(NamespacePath.MOD_NAMESPACE))
+            {
+                throw new RuntimeException("You cannot use hudman namespace or minecraft's namespace for a preset");
+            }
+            try
+            {
+                hudPresetMap.put(presetPath, readPresetJson(presetDirPath + '/' + presetPath.getNamespace() + '/' + presetPath.getPath() + ".json"));
+                LOGGER.info(
+                        "loaded preset def namespacePath:'{}' file:'{}'",
+                        presetPath,
+                        presetPath.getNamespace() + '/' + presetPath.getPath() + ".json"
+                );
+            }
+            catch (FileNotFoundException e)
+            {
+                LOGGER.error("{} Not Found", presetDirPath + '/' + presetPath.getNamespace() + '/' + presetPath.getPath() + ".json");
+            }
+        }
+    }
 
     static {
         HudResetEvent.EVENT.register(() -> {
@@ -83,6 +163,7 @@ public class HudState
             LOGGER.info("config_debug is " + jconfig.debug());
             configDebug = jconfig.debug();
             errorNotification = jconfig.errorNotification();
+            setUpPresetConfigSystem();
             return true;
         });
     }

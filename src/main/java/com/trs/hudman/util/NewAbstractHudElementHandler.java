@@ -29,6 +29,6 @@ import java.lang.reflect.InvocationTargetException;
 public interface NewAbstractHudElementHandler
 {
     // The exceptions that it might throw most likely will never happen
-    // but them being there is a side effect of the news fastregistrar system
+    // but them being there is a side effect of the new fast registrar system
     AbstractHudElement create(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfigHudElement jsonElement) throws InvocationTargetException, InstantiationException, IllegalAccessException;
 }

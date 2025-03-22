@@ -18,10 +18,12 @@
 package com.trs.hudman.util;
 
 import com.trs.hudman.HudState;
+import com.trs.hudman.confg.ConfigHelper;
 import com.trs.hudman.confg.JsonConfigHudElement;
 import com.trs.hudman.gui.hudmods.AbstractHudElement;
-import com.trs.hudman.util.annotation.RegistrableHudElement;
+import com.trs.hudman.util.annotations.RegistrableHudElement;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.Container;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -29,6 +31,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import net.minecraft.ReportedException;
+import net.minecraft.CrashReport;
 
 public final class FastRegistrar
 {
@@ -44,18 +49,45 @@ public final class FastRegistrar
                 if (registrableHudElement == null) continue;
                 if (AbstractHudElement.class.isAssignableFrom(clazz))
                 {
-                    Constructor<AbstractHudElement> constructor = (Constructor<AbstractHudElement>) clazz.getConstructor(
-                            AbstractHudElement.class,
-                            Minecraft.class,
-                            Vec2i.class,
-                            JsonConfigHudElement.class
-                    );
-                    HudState.elementRegistry.register(NamespacePath.of(namespace, registrableHudElement.regName()), constructor::newInstance);
+                    try
+                    {
+                        Constructor<AbstractHudElement> constructor = (Constructor<AbstractHudElement>) clazz.getConstructor(
+                                AbstractHudElement.class,
+                                Minecraft.class,
+                                Vec2i.class,
+                                JsonConfigHudElement.class
+                        );
+                        HudState.elementRegistry.register(
+                                NamespacePath.of(namespace, registrableHudElement.regName()),
+                                constructor::newInstance
+                        );
+                    }
+                    catch (Exception e)
+                    {
+                        /*HudState.LOGGER.error("Exception on Registering HudElement class's in Class:'{}' for namespace {}\n{}",
+                                clazz.getName(),
+                                namespace,
+                                ConfigHelper.stackTraceString(e)
+                        );*/
+                        throw new ReportedException(
+                               CrashReport.forThrowable(e,
+                                       String.format("Exception on Registering HudElement class's in Class:'%s' for namespace %s\n%s",
+                                               clazz.getName(),
+                                               namespace,
+                                               ConfigHelper.stackTraceString(e)
+                                       )
+                               )
+                        );
+                    }
                 }
             }
         } catch (Exception e)
         {
-            throw new RuntimeException(e);
+            HudState.LOGGER.error("Exception on Registering HudElement class's in Package:'{}' for namespace {}\n{}",
+                    packagePath,
+                    namespace,
+                    ConfigHelper.stackTraceString(e)
+            );
         }
     }
 

@@ -19,7 +19,7 @@ package com.trs.hudman.gui.hudmods;
 
 import com.trs.hudman.confg.JsonConfigHudElement;
 import com.trs.hudman.util.Vec2i;
-import com.trs.hudman.util.annotation.RegistrableHudElement;
+import com.trs.hudman.util.annotations.RegistrableHudElement;
 import com.trs.qlang.Qlang;
 import com.trs.qlang.QlangInstruction;
 import net.minecraft.client.Minecraft;

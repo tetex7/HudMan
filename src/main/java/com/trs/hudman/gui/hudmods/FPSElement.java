@@ -19,7 +19,7 @@ package com.trs.hudman.gui.hudmods;
 
 import com.trs.hudman.confg.JsonConfigHudElement;
 import com.trs.hudman.util.Vec2i;
-import com.trs.hudman.util.annotation.RegistrableHudElement;
+import com.trs.hudman.util.annotations.RegistrableHudElement;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;

@@ -65,7 +65,7 @@ import com.trs.hudman.util.Vec2i;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.trs.hudman.util.annotation.RegistrableHudElement;
+import com.trs.hudman.util.annotations.RegistrableHudElement;
 
 //Minecraft import's
 @RegistrableHudElement(regName = "test")
@@ -73,14 +73,15 @@ public class Tester extends AbstractHudElement
 {
     private final FlowMeterWidget TEST_FLOW_METER = new FlowMeterWidget(getCords().x(), getCords().x(), 0.5f);
     private int v = -25;
+
     public Tester(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i rCords, @NotNull JsonConfigHudElement jsonElement)
     {
         super(root, client, rCords, jsonElement);
         TEST_FLOW_METER.addTickHandler((widget) -> {
-            FlowMeterWidget this_widget = (FlowMeterWidget)widget;
+            FlowMeterWidget this_widget = (FlowMeterWidget) widget;
 
             this_widget.setValue(this.v);
-            this.v = v >= 25 ? -25 : v+1;
+            this.v = v >= 25 ? -25 : v + 1;
         });
     }
 
@@ -129,7 +130,7 @@ repositories {
 dependencies {
     //...
     //And then the mod
-    modImplementation("maven.modrinth:hudman:1.7.0-mc1.21.4")
+    modImplementation("maven.modrinth:hudman:1.8.0-mc1.21.4")
     //...
 }
 
