@@ -64,14 +64,9 @@ public final class FastRegistrar
                     }
                     catch (Exception e)
                     {
-                        /*HudState.LOGGER.error("Exception on Registering HudElement class's in Class:'{}' for namespace {}\n{}",
-                                clazz.getName(),
-                                namespace,
-                                ConfigHelper.stackTraceString(e)
-                        );*/
                         throw new ReportedException(
                                CrashReport.forThrowable(e,
-                                       String.format("Exception on Registering HudElement class's in Class:'%s' for namespace %s\n%s",
+                                       String.format("Exception on Registering HudElement class's in Class:'%s' for Namespace:'%s'\n%s",
                                                clazz.getName(),
                                                namespace,
                                                ConfigHelper.stackTraceString(e)

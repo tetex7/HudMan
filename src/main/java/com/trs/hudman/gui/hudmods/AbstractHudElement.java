@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024  Tete
+ * Copyright (C) 2025  Tete
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,8 +48,8 @@ public abstract class AbstractHudElement implements IRenderPrimitive
     private final JsonConfigHudElement jsonElement;
     private final UUID elementUUID = UUID.randomUUID();
     private final Properties stringsProperties;
-    private final int intID = 0;
 
+    private final boolean elementDebugMode;
     /**
      *
      * @param root Mostly time it's null and will probably be removed
@@ -79,6 +79,15 @@ public abstract class AbstractHudElement implements IRenderPrimitive
         } catch (IOException e)
         {
             throw new RuntimeException(e);
+        }
+
+        if (!this.getStringsProperties().isEmpty() && this.getStringsProperties().containsKey("bDebug"))
+        {
+            this.elementDebugMode = Boolean.parseBoolean((String)this.getStringsProperties().get("bDebug"));
+        }
+        else
+        {
+            this.elementDebugMode = false;
         }
     }
 
@@ -137,6 +146,11 @@ public abstract class AbstractHudElement implements IRenderPrimitive
     protected final Properties getStringsProperties()
     {
         return stringsProperties;
+    }
+
+    public final boolean isElementDebugMode()
+    {
+        return elementDebugMode;
     }
 
     /**

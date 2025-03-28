@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024  Tete
+ * Copyright (C) 2025  Tete
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -137,13 +137,15 @@ public class HudState
 
         for (final NamespacePath presetPath : presets)
         {
+            final String path = presetDirPath + '/' + presetPath.getNamespace() + '/' + presetPath.getPath() + ".json";
             if (presetPath.getNamespace().equals(NamespacePath.MINECRAFT_NAMESPACE) || presetPath.getNamespace().equals(NamespacePath.MOD_NAMESPACE))
             {
                 throw new RuntimeException("You cannot use hudman namespace or minecraft's namespace for a preset");
             }
             try
             {
-                hudPresetMap.put(presetPath, readPresetJson(presetDirPath + '/' + presetPath.getNamespace() + '/' + presetPath.getPath() + ".json"));
+
+                hudPresetMap.put(presetPath, readPresetJson(path));
                 LOGGER.info(
                         "loaded preset def namespacePath:'{}' file:'{}'",
                         presetPath,
@@ -152,7 +154,7 @@ public class HudState
             }
             catch (FileNotFoundException e)
             {
-                LOGGER.error("{} Not Found", presetDirPath + '/' + presetPath.getNamespace() + '/' + presetPath.getPath() + ".json");
+                LOGGER.error("{} Not Found", path);
             }
         }
     }
@@ -198,6 +200,16 @@ public class HudState
             LOGGER.error("Failed to load config from {}\n{}", configPath, ConfigHelper.stackTraceString(e));
             throw new RuntimeException("Critical error: Could not load configuration file at " + configPath, e);
         }
+    }
+
+    public static String fastCat(Object... objs)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (final Object obj : objs)
+        {
+            stringBuilder.append(obj.toString());
+        }
+        return stringBuilder.toString();
     }
 }
 

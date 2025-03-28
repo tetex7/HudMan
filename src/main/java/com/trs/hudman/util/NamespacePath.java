@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024  Tete
+ * Copyright (C) 2025  Tete
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,15 +35,12 @@ import java.lang.reflect.Type;
  * a wrapper for the minecraft {@link ResourceLocation}
  */
 @Environment(EnvType.CLIENT)
-public final class NamespacePath implements Comparable<NamespacePath>
+public class NamespacePath implements Comparable<NamespacePath>
 {
     public static final String MOD_NAMESPACE = HudState.MODID;
     public static final String MINECRAFT_NAMESPACE = ResourceLocation.DEFAULT_NAMESPACE;
 
-    private final String fullPath;
     private final ResourceLocation resourceLocation;
-    private final String namespace;
-    private final String path;
 
     public static @NotNull NamespacePath pathMcOf(String path)
     {
@@ -70,32 +67,29 @@ public final class NamespacePath implements Comparable<NamespacePath>
         return new NamespacePath(resource);
     }
 
-    private NamespacePath(String namespace, String path)
+    protected NamespacePath(String namespace, String path)
     {
         this(ResourceLocation.fromNamespaceAndPath(namespace, path));
     }
 
-    private NamespacePath(@NotNull ResourceLocation resource)
+    protected NamespacePath(@NotNull ResourceLocation resource)
     {
         this(resource.toString());
     }
 
-    private NamespacePath(String fullPath)
+    protected NamespacePath(String fullPath)
     {
-        this.fullPath = fullPath;
-        this.resourceLocation = ResourceLocation.parse(this.fullPath);
-        this.namespace = this.resourceLocation.getNamespace();
-        this.path = this.resourceLocation.getPath();
+        this.resourceLocation = ResourceLocation.parse(fullPath);
     }
 
     public final String getNamespace()
     {
-        return namespace;
+        return this.resourceLocation.getNamespace();
     }
 
     public final String getFullPath()
     {
-        return fullPath;
+        return this.resourceLocation.toString();
     }
 
     public final ResourceLocation getResourceLocation()
@@ -105,7 +99,7 @@ public final class NamespacePath implements Comparable<NamespacePath>
 
     public final String getPath()
     {
-        return path;
+        return this.resourceLocation.getPath();
     }
 
     @Override
@@ -144,13 +138,13 @@ public final class NamespacePath implements Comparable<NamespacePath>
     }
 
     @Override
-    public int hashCode()
+    public final int hashCode()
     {
         return this.getResourceLocation().hashCode();
     }
 
 
-    public static class NamespacePathAdapter extends TypeAdapter<NamespacePath>
+    public static final class NamespacePathAdapter extends TypeAdapter<NamespacePath>
     {
         @Override
         public void write(JsonWriter writer, NamespacePath value) throws IOException
@@ -176,7 +170,7 @@ public final class NamespacePath implements Comparable<NamespacePath>
         }
     }
 
-    public static class NamespacePathJsonDeserializer implements JsonDeserializer<NamespacePath>
+    public final static class NamespacePathJsonDeserializer implements JsonDeserializer<NamespacePath>
     {
         @Override
         public NamespacePath deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
@@ -193,7 +187,7 @@ public final class NamespacePath implements Comparable<NamespacePath>
         }
     }
 
-    public static class NamespacePathJsonSerializer implements JsonSerializer<NamespacePath>
+    public final static class NamespacePathJsonSerializer implements JsonSerializer<NamespacePath>
     {
         @Override
         public JsonElement serialize(NamespacePath src, Type typeOfSrc, JsonSerializationContext context)

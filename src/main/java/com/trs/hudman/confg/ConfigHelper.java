@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024  Tete
+ * Copyright (C) 2025  Tete
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -118,7 +118,10 @@ public final class ConfigHelper
         }
     }
 
-    @Deprecated
+    /**
+     * Outdated use the fast registrar system instead
+     */
+    @Deprecated()
     public static void registerAll()
     {
         HudState.elementRegistry.register(

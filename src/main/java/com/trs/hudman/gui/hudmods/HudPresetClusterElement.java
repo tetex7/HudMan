@@ -92,7 +92,10 @@ public class HudPresetClusterElement extends AbstractHudElement
         {
             for (final AbstractHudElement element : subs)
             {
-                element.render(partialTick, guiGraphics, gui);
+                if (element.getJsonElement().enable())
+                {
+                    element.render(partialTick, guiGraphics, gui);
+                }
             }
         }
     }
@@ -104,7 +107,10 @@ public class HudPresetClusterElement extends AbstractHudElement
         {
             for (final AbstractHudElement element : subs)
             {
-                element.tick();
+                if (element.getJsonElement().enable())
+                {
+                    element.tick();
+                }
             }
         }
     }

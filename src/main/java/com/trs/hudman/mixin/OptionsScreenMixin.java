@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024  Tete
+ * Copyright (C) 2025  Tete
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@ package com.trs.hudman.mixin;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.trs.hudman.gui.screens.HudManMenuScreen;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.screens.options.OptionsScreen;
@@ -48,6 +49,9 @@ public abstract class OptionsScreenMixin extends Screen
     @Inject(method = "init", at = @At(value = "INVOKE", target ="Lnet/minecraft/client/gui/layouts/HeaderAndFooterLayout;addToContents(Lnet/minecraft/client/gui/layouts/LayoutElement;)Lnet/minecraft/client/gui/layouts/LayoutElement;", shift = At.Shift.BY))
     void injectInit_add_button(CallbackInfo ci, @Local RowHelper rowHelper, @Local GridLayout gridLayout)
     {
-        //rowHelper.addChild(openScreenButton(Component.translatable("string.hudman.mod_name"), () -> new HudManMenuScreen((OptionsScreen)(Object)this)));
+        Button hudmanButton = rowHelper.addChild(openScreenButton(Component.translatable("string.hudman.mod_name"), () -> new HudManMenuScreen((OptionsScreen)(Object)this)));
+        hudmanButton.active = false;
+        hudmanButton.setTooltip(Tooltip.create(Component.literal("Coming Soon(TM)")));
+        this.layout.addToContents(gridLayout);
     }
 }

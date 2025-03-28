@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024  Tete
+ * Copyright (C) 2025  Tete
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,8 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 
 import net.minecraft.client.gui.screens.inventory.tooltip.TooltipRenderUtil;
+import net.minecraft.network.chat.Component;
+
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -45,14 +47,12 @@ import java.util.Map;
 public final class VelocityVectorElement extends AbstractHudElement
 {
     private Vec3 player_velocity = new Vec3(0,0, 0);
-    private Vec3 player_cords = new Vec3(0, 0, 0);
-    private Vec3 dta_cords = new Vec3(0, 0, 0);
 
-    private final boolean doTooltip = !this.getJsonElement().strings().isEmpty() && this.getJsonElement().strings().get(this.getJsonElement().strings().size() - 1).equalsIgnoreCase("dotooltip");
+    private final boolean doTooltip; //= !this.getJsonElement().strings().isEmpty() && this.getJsonElement().strings().get(this.getJsonElement().strings().size() - 1).equalsIgnoreCase("dotooltip");
+    private final boolean debug;
 
-    /*private final FlowMeterWidget X_VECTOR_METER = new FlowMeterWidget(-25, 0, 0f);
-    private final FlowMeterWidget Y_VECTOR_METER = new FlowMeterWidget(0, 0, 0f);
-    private final FlowMeterWidget Z_VECTOR_METER = new FlowMeterWidget(25, 0, 0f);*/
+    private Component debugText = null;
+
 
     private final ClusterWidget METER_CLUSTER = new ClusterWidget(
             getCords().x(),
@@ -75,6 +75,25 @@ public final class VelocityVectorElement extends AbstractHudElement
     public VelocityVectorElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i rCords, @NotNull JsonConfigHudElement jsonElement)
     {
         super(root, client, rCords, jsonElement);
+
+        if (!super.getStringsProperties().isEmpty() && super.getStringsProperties().containsKey("bDoTooltip"))
+        {
+            this.doTooltip = Boolean.parseBoolean((String)super.getStringsProperties().get("bDoTooltip"));
+        }
+        else
+        {
+            this.doTooltip = false;
+        }
+
+
+        if (!super.getStringsProperties().isEmpty() && super.getStringsProperties().containsKey("bDebug"))
+        {
+            this.debug = Boolean.parseBoolean((String)super.getStringsProperties().get("bDebug"));
+        }
+        else
+        {
+            this.debug = false;
+        }
     }
 
     @Override
@@ -98,19 +117,35 @@ public final class VelocityVectorElement extends AbstractHudElement
         RenderSystem.disableBlend();
         METER_CLUSTER.render(guiGraphics, partialTick);
         poseStack.popPose();
+
+        if (debug && debugText != null)
+        {
+            guiGraphics.drawCenteredString(gui.getFont(), debugText, (guiGraphics.guiWidth()/2), (guiGraphics.guiHeight()/2) + 4, 0xFFFFFF);
+        }
+
     }
 
     @Override
     public void tick()
     {
         player_velocity = getPlayer().getDeltaMovement();
-        player_cords = new Vec3(getPlayer().getX(), getPlayer().getY(), getPlayer().getZ());
-        dta_cords = player_cords.add(player_velocity);
+        Vec3 player_cords = new Vec3(getPlayer().getX(), getPlayer().getY(), getPlayer().getZ());
+        //Vec3 dta_cords = player_cords.add(player_velocity);
         delta = getAmpDelta(player_velocity);
 
-        ((FlowMeterWidget)METER_CLUSTER.getWidget("X_VECTOR_METER")).setValue(Double.valueOf(delta.x()).intValue());
-        ((FlowMeterWidget)METER_CLUSTER.getWidget("Y_VECTOR_METER")).setValue(Double.valueOf(delta.y()).intValue());
-        ((FlowMeterWidget)METER_CLUSTER.getWidget("Z_VECTOR_METER")).setValue(Double.valueOf(delta.z()).intValue());
+        ((FlowMeterWidget) METER_CLUSTER.getWidget("X_VECTOR_METER")).setValue(Double.valueOf(delta.x()).intValue());
+        ((FlowMeterWidget) METER_CLUSTER.getWidget("Y_VECTOR_METER")).setValue(Double.valueOf(delta.y()).intValue());
+        ((FlowMeterWidget) METER_CLUSTER.getWidget("Z_VECTOR_METER")).setValue(Double.valueOf(delta.z()).intValue());
+
+        if (debug)
+        {
+            this.debugText = Component.literal(String.format(
+                    "X_VECTOR(%f), Y_VECTOR(%f), Z_VECTOR(%f)",
+                    clampToInt(delta.x),
+                    clampToInt(delta.y),
+                    clampToInt(delta.z)
+            ));
+        }
 
         METER_CLUSTER.widget_tick();
     }

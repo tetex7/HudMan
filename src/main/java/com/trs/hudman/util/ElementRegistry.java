@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024  Tete
+ * Copyright (C) 2025  Tete
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,9 +20,7 @@ package com.trs.hudman.util;
 import com.trs.hudman.util.exceptions.ImproperNamespaceRegisteredException;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 import com.trs.hudman.HudState;
 
@@ -42,6 +40,7 @@ public class ElementRegistry
     private static void checkElementValidation(NewAbstractHudElementHandler newElementHandler)
     {
         final var pack = newElementHandler.getClass().getPackageName();
+        HudState.LOGGER.info(pack);
         if (!pack.startsWith(NAMESPACE_PACKAGE))
         {
             throw new ImproperNamespaceRegisteredException(String.format("Improperly registered to namespace:'%s', from External package:'%s'", NamespacePath.MOD_NAMESPACE, pack));
@@ -103,6 +102,14 @@ public class ElementRegistry
     public boolean hasElement(@NotNull NamespacePath namespacePath)
     {
         return elementMap.containsKey(namespacePath);
+    }
+
+    /**
+     * @return Returns a set of registered elements
+     */
+    public final Set<Map.Entry<NamespacePath, NewAbstractHudElementHandler>> getRegisteredElements()
+    {
+        return elementMap.entrySet();
     }
 
     /**
