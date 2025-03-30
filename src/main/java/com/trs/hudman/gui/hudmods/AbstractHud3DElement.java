@@ -39,16 +39,15 @@ public abstract class AbstractHud3DElement extends AbstractHudElement
         super(root, client, rCords, jsonElement);
     }
 
-
     @Override
     public final void render(float partialTick, GuiGraphics guiGraphics, Gui gui)
     {
-        render3d(guiGraphics.pose(), guiGraphics, gui);
-        render2d(guiGraphics, gui);
+        render3d(partialTick, guiGraphics.pose(), guiGraphics, gui);
+        render2d(partialTick, guiGraphics, gui);
     }
 
-    public abstract void render3d(PoseStack matrixStack, GuiGraphics guiGraphics, Gui gui);
+    public abstract void render3d(float partialTick, PoseStack matrixStack, GuiGraphics guiGraphics, Gui gui);
 
 
-    public abstract void render2d(GuiGraphics guiGraphics, Gui gui);
+    public abstract void render2d(float partialTick, GuiGraphics guiGraphics, Gui gui);
 }

@@ -29,7 +29,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
-import java.io.StringBufferInputStream;
 import java.io.StringReader;
 import java.util.Objects;
 import java.util.Properties;
@@ -81,9 +80,9 @@ public abstract class AbstractHudElement implements IRenderPrimitive
             throw new RuntimeException(e);
         }
 
-        if (!this.getStringsProperties().isEmpty() && this.getStringsProperties().containsKey("bDebug"))
+        if (this.getStringsProperties().containsKey("bDebug"))
         {
-            this.elementDebugMode = Boolean.parseBoolean((String)this.getStringsProperties().get("bDebug"));
+            this.elementDebugMode = getStringOptionAs("bDebug", Boolean::parseBoolean);
         }
         else
         {
@@ -143,6 +142,10 @@ public abstract class AbstractHudElement implements IRenderPrimitive
         return elementUUID;
     }
 
+    /**
+     * Just in case you need access to the pre parsed properties
+     * @return A reference to the auto Parsed string properties form {@link JsonConfigHudElement#strings()}
+     */
     protected final Properties getStringsProperties()
     {
         return stringsProperties;
@@ -151,6 +154,43 @@ public abstract class AbstractHudElement implements IRenderPrimitive
     public final boolean isElementDebugMode()
     {
         return elementDebugMode;
+    }
+
+    public final float getScale()
+    {
+        return getJsonElement().scale();
+    }
+
+    /**
+     * an easier wrapper around the {@link Properties} parser
+     * {@snippet :
+     * // An example of how to use this function call
+     *     int testInt = getStringOptionAs("iTestInt", Integer::parseInt);
+     * }
+     * But do not use this on {@link String}s Use {@link AbstractHudElement#getStringOption(String)} instead
+     * @param key The name of the option you wish to parse
+     * @param parserCall The string parser to return a valid type e.g. {@link Boolean#parseBoolean(String)}
+     * @return A parsed version of the Option value string
+     * @param <T> The parser output type
+     */
+    protected final <T> T getStringOptionAs(String key, @NotNull StringOptionParser<T> parserCall)
+    {
+        return Objects.requireNonNull(parserCall).parse((String)getStringsProperties().get(key));
+    }
+
+    protected final boolean hasStringOption(String key)
+    {
+        return this.getStringsProperties().containsKey(key);
+    }
+
+    /**
+     * Returns the raw string value corresponding to the key
+     * @param key The name of the option you wish to parse
+     * @return Returns the raw string value
+     */
+    protected final String getStringOption(String key)
+    {
+        return (String)getStringsProperties().get(key);
     }
 
     /**
@@ -166,4 +206,10 @@ public abstract class AbstractHudElement implements IRenderPrimitive
      * @apiNote This function is run every gui tick
      */
     public abstract void tick();
+
+    @FunctionalInterface
+    protected interface StringOptionParser<T>
+    {
+        T parse(String text);
+    }
 }

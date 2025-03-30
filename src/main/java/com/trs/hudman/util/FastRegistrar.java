@@ -78,6 +78,11 @@ public final class FastRegistrar
             }
         } catch (Exception e)
         {
+            if (e instanceof ReportedException)
+            {
+                throw (ReportedException)e;
+            }
+
             HudState.LOGGER.error("Exception on Registering HudElement class's in Package:'{}' for namespace {}\n{}",
                     packagePath,
                     namespace,
