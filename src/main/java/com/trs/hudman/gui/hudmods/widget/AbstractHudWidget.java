@@ -51,7 +51,7 @@ public abstract class AbstractHudWidget
 
     protected abstract void tick();
 
-    public final void widget_tick()
+    public final void widgetTick()
     {
         for (OnTickHandler handler : tickHandlers)
         {
