@@ -41,7 +41,7 @@ public abstract class AbstractHudWidget
     private WidgetMetaData metaData;
 
 
-    AbstractHudWidget(int x, int y, float scale, int rotation)
+    public AbstractHudWidget(int x, int y, float scale, int rotation)
     {
         this.x = x;
         this.y = y;

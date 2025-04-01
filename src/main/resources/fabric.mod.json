@@ -22,6 +22,8 @@
         ]
   },
 
+  "accessWidener" : "hudman.accesswidener",
+
   "mixins": [
     "hudman.mixins.json"
   ],

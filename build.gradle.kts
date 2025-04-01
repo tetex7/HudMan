@@ -177,6 +177,10 @@ tasks.clean.get().doLast {
     }
 }
 
+loom {
+    accessWidenerPath = file("src/main/resources/hudman.accesswidener")
+}
+
 // configure the maven publication
 publishing {
     publications {
