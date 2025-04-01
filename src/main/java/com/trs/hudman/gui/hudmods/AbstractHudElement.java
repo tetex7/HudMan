@@ -163,16 +163,25 @@ public abstract class AbstractHudElement implements IElementRenderPrimitive
         return stringsProperties;
     }
 
+    /**
+     * @return Returns the {@code bDebug} value if present if not it's false
+     */
     public final boolean isElementDebugMode()
     {
         return elementDebugMode;
     }
 
+    /**
+     * @return Return the scale value provided by the configuration
+     */
     public final float getScale()
     {
         return getJsonElement().scale();
     }
 
+    /**
+     * @return Returns a rudimentary RGB value from the {@code iColor} key
+     */
     public final ColorRGB getConfColor()
     {
         return confColor;
@@ -195,6 +204,11 @@ public abstract class AbstractHudElement implements IElementRenderPrimitive
         return Objects.requireNonNull(parserCall).parse((String)getStringsProperties().get(key));
     }
 
+    /**
+     * A easy wrapper around the {@link Properties} system
+     * @param key the name of the option you wish to parse
+     * @return The raw value string
+     */
     protected final boolean hasStringOption(String key)
     {
         return this.getStringsProperties().containsKey(key);

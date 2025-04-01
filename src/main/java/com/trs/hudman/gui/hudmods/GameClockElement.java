@@ -43,7 +43,7 @@ public class GameClockElement extends AbstractHudElement
     public GameClockElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfigHudElement jsonElement)
     {
         super(root, client, cords, jsonElement);
-        this.gclock = new ItemWidget(getCords().x(), getCords().y(), getScale()+1.4f, Items.CLOCK);
+        this.gclock = new ItemWidget(getCords().x(), getCords().y(), getScale()+1.5f, Items.CLOCK);
     }
 
     @Override

@@ -22,6 +22,5 @@ public final class ImproperNamespaceRegisteredException extends RuntimeException
     public ImproperNamespaceRegisteredException(String message)
     {
         super(message);
-
     }
 }

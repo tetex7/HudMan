@@ -34,6 +34,12 @@ import net.minecraft.network.chat.Component;
 
 import java.util.function.Supplier;
 
+/*
+I hate making UIs for minecraft
+The most clunky thing I've ever worked with
+It is definitely some of the older bits of their code base
+And most of the helper libraries are too much and that's just another dependency
+ */
 @Environment(EnvType.CLIENT)
 public class HudManMenuScreen extends Screen
 {
