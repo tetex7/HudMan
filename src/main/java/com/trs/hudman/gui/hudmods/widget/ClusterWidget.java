@@ -18,9 +18,6 @@
 package com.trs.hudman.gui.hudmods.widget;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
-import com.trs.hudman.gui.hudmods.FPSElement;
-import com.trs.hudman.util.NewAbstractHudElementHandler;
 import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
 
@@ -97,7 +94,7 @@ public class ClusterWidget extends AbstractHudWidget
     {
         for (AbstractHudWidget widget : widgetHashMap.values())
         {
-            widget.widget_tick();
+            widget.widgetTick();
         }
     }
 

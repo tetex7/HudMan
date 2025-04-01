@@ -18,6 +18,7 @@
 package com.trs.hudman;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.Strictness;
 import com.trs.hudman.confg.ConfigHelper;
 import com.trs.hudman.confg.JsonConfigHudFile;
 import com.trs.hudman.confg.JsonConfigHudPreset;
@@ -26,9 +27,7 @@ import com.trs.hudman.util.NamespacePath;
 import net.minecraft.client.Minecraft;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -93,6 +92,7 @@ public class HudState
         {
             var gson = new GsonBuilder()
                     .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathAdapter())
+                    .setStrictness(Strictness.LENIENT)
                     /*.registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathJsonDeserializer())
                     .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathJsonSerializer())*/
                     .create();
@@ -116,6 +116,7 @@ public class HudState
         {
             var gson = new GsonBuilder()
                     .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathAdapter())
+                    .setStrictness(Strictness.LENIENT)
                     /*.registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathJsonDeserializer())
                     .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathJsonSerializer())*/
                     .create();
@@ -156,6 +157,66 @@ public class HudState
             {
                 LOGGER.error("{} Not Found", path);
             }
+        }
+        loadPresetFormPack();
+    }
+
+    public static String getStringFromReader(BufferedReader reader) throws IOException
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        String line = "";
+        while ((line = reader.readLine()) != null)
+        {
+            stringBuilder.append(line).append('\n');
+        }
+        return stringBuilder.toString();
+    }
+
+    private static void loadPresetFormPack()
+    {
+        Map<ResourceLocation, net.minecraft.server.packs.resources.Resource> resData = Minecraft.getInstance().getResourceManager().listResources("hudman_presets", (resourceLocation)->
+        {
+            final NamespacePath namespacePath = NamespacePath.of(resourceLocation);
+            if (namespacePath.getPath().endsWith(".json"))
+            {
+                return true;
+            }
+            return false;
+        });
+        try
+        {
+            if (resData.isEmpty()) return;
+            for (final Map.Entry<ResourceLocation, net.minecraft.server.packs.resources.Resource> resPreset : resData.entrySet())
+            {
+                final NamespacePath namespacePath = NamespacePath.of(resPreset.getKey());
+                var gson = new GsonBuilder()
+                        .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathAdapter())
+                        .setStrictness(Strictness.LENIENT)
+                        /*.registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathJsonDeserializer())
+                        .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathJsonSerializer())*/
+                        .create();
+                JsonConfigHudPreset jhudPreset = gson.fromJson(
+                        getStringFromReader(resPreset.getValue().openAsReader()),
+                        JsonConfigHudPreset.class
+                );
+
+                var presetPath = NamespacePath.of(namespacePath.getNamespace(), Paths.get(namespacePath.getPath())
+                        .getFileName()
+                        .toString()
+                        .replaceFirst("[.][^.]+$", ""));
+                hudPresetMap.put(
+                        presetPath,
+                        jhudPreset
+                );
+                LOGGER.info(
+                        "loaded preset form pack namespacePath:'{}' Pack location:'{}'",
+                        presetPath,
+                        resPreset.getKey().toString()
+                );
+            }
+        } catch (Exception e)
+        {
+            throw new RuntimeException(e);
         }
     }
 

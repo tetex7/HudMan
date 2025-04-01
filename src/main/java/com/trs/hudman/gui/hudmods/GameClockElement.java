@@ -18,37 +18,43 @@
 package com.trs.hudman.gui.hudmods;
 
 import com.trs.hudman.confg.JsonConfigHudElement;
+import com.trs.hudman.gui.hudmods.widget.ItemWidget;
 import com.trs.hudman.util.Vec2i;
 import com.trs.hudman.util.annotations.RegistrableHudElement;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@RegistrableHudElement(regName = "fps")
-@Environment(EnvType.CLIENT)
-public final class FPSElement extends AbstractHudElement
+@RegistrableHudElement(regName = "game_clock")
+public class GameClockElement extends AbstractHudElement
 {
-    private int fps = 0;
+    final ItemWidget gclock;
 
-    public FPSElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfigHudElement jsonElement)
+    /**
+     * @param root        Mostly time it's null and will probably be removed
+     * @param client      The current Minecraft client
+     * @param cords       The coordinates of the element on the user screen
+     * @param jsonElement The Jason config structure turned into a Java class
+     * @implSpec Your constructor using this super class must contain all four
+     */
+    public GameClockElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfigHudElement jsonElement)
     {
         super(root, client, cords, jsonElement);
+        this.gclock = new ItemWidget(getCords().x(), getCords().y(), getScale()+1.4f, Items.CLOCK);
     }
 
     @Override
-    public void render(float partialTick, @NotNull GuiGraphics guiGraphics, @NotNull Gui gui)
+    public void render(float partialTick, GuiGraphics guiGraphics, Gui gui)
     {
-        guiGraphics.drawCenteredString(gui.getFont(), Component.literal("FPS: " + fps), getCords().x(), getCords().y(), getConfColor().toRgbInt());
+        gclock.render(guiGraphics, partialTick);
     }
 
     @Override
     public void tick()
     {
-        fps = getClient().getFps();
+        gclock.widgetTick();
     }
 }

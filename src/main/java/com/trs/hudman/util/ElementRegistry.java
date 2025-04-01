@@ -40,7 +40,7 @@ public class ElementRegistry
     private static void checkElementValidation(NewAbstractHudElementHandler newElementHandler)
     {
         final var pack = newElementHandler.getClass().getPackageName();
-        HudState.LOGGER.info(pack);
+        //HudState.LOGGER.info(pack);
         if (!pack.startsWith(NAMESPACE_PACKAGE))
         {
             throw new ImproperNamespaceRegisteredException(String.format("Improperly registered to namespace:'%s', from External package:'%s'", NamespacePath.MOD_NAMESPACE, pack));

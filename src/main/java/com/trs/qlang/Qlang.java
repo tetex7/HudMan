@@ -24,7 +24,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Stack;
-import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,19 +32,19 @@ public class Qlang
 
     public static final class Builder
     {
-        private final Vector<ImmutablePair<Pattern, QlangInstruction>> ints = new Vector<>();
+        private final Stack<ImmutablePair<Pattern, QlangInstruction>> instructions = new Stack<>();
         private boolean hasSTD = false;
 
         @SafeVarargs
         public final Builder AddAllInstructions(ImmutablePair<Pattern, QlangInstruction>... intss)
         {
-            ints.addAll(List.of(intss));
+            instructions.addAll(List.of(intss));
             return this;
         }
 
         public Builder AddAllInstructions(List<ImmutablePair<Pattern, QlangInstruction>> itss)
         {
-            ints.addAll(itss);
+            instructions.addAll(itss);
             return this;
         }
 
@@ -62,19 +61,19 @@ public class Qlang
 
         public Builder AddInstruction(ImmutablePair<Pattern, QlangInstruction> inst)
         {
-            ints.add(inst);
+            instructions.add(inst);
             return this;
         }
 
         public Builder AddInstruction(Pattern pattern, QlangInstruction inst)
         {
-            ints.add(ImmutablePair.of(pattern, inst));
+            instructions.add(ImmutablePair.of(pattern, inst));
             return this;
         }
 
         public Builder AddInstruction(String tag, QlangInstruction inst)
         {
-            ints.add(ImmutablePair.of(Pattern.compile(tag), inst));
+            instructions.add(ImmutablePair.of(Pattern.compile(tag), inst));
             return this;
         }
 
@@ -94,18 +93,24 @@ public class Qlang
     public record WorkOutput(
        String outputString,
        boolean didWork
-    ){}
+    ){
+        public static WorkOutput of(String outputString, boolean didWork)
+        {
+            return new WorkOutput(
+                    outputString,
+                    didWork
+            );
+        }
+    }
 
 
     public WorkOutput parse(final String text)
     {
-        WorkOutput workOuput = null;
         String work_string = text;
-        boolean dw = false;
-        for (ImmutablePair<Pattern, QlangInstruction> work_pair : instructionStack)
+        for (final ImmutablePair<Pattern, QlangInstruction> work_pair : instructionStack)
         {
             final Matcher cm = work_pair.getKey().matcher(work_string);
-            final String pw = work_pair.getRight().run(work_pair.left.pattern(), work_pair.left, null);
+            final String pw = work_pair.getRight().work(work_pair.left.pattern(), work_pair.left);
             if (pw != null)
             {
                 work_string = cm.replaceAll(pw);
@@ -113,12 +118,12 @@ public class Qlang
         }
         if (work_string.equals(text))
         {
-            return new WorkOutput(
+            return WorkOutput.of(
                     text,
                     false
             );
         }
-        return new WorkOutput(
+        return WorkOutput.of(
                 work_string,
                 true
         );
@@ -146,10 +151,59 @@ public class Qlang
 
     Qlang(@NotNull Builder builder)
     {
-        this.instructionStack.addAll(builder.ints);
+        this.instructionStack.addAll(builder.instructions);
         if (builder.hasSTD)
         {
             addStandardLibrary(this);
         }
+    }
+
+
+    @SafeVarargs
+    public final Qlang AddAllInstructions(ImmutablePair<Pattern, QlangInstruction>... intss)
+    {
+        instructionStack.addAll(List.of(intss));
+        return this;
+    }
+
+    public Qlang AddAllInstructions(List<ImmutablePair<Pattern, QlangInstruction>> itss)
+    {
+        instructionStack.addAll(itss);
+        return this;
+    }
+
+    public Qlang AddTagLibrary(List<ImmutablePair<Pattern, QlangInstruction>> itss)
+    {
+        return AddAllInstructions(itss);
+    }
+
+    public Qlang includeStandardLibrary()
+    {
+        addStandardLibrary(this);
+        return this;
+    }
+
+    public Qlang AddInstruction(ImmutablePair<Pattern, QlangInstruction> inst)
+    {
+        instructionStack.add(inst);
+        return this;
+    }
+
+    public Qlang AddInstruction(Pattern pattern, QlangInstruction inst)
+    {
+        instructionStack.add(ImmutablePair.of(pattern, inst));
+        return this;
+    }
+
+    public Qlang AddInstruction(String tag, QlangInstruction inst)
+    {
+        instructionStack.add(ImmutablePair.of(Pattern.compile(tag), inst));
+        return this;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return instructionStack.hashCode() ^ instructionStack.size();
     }
 }

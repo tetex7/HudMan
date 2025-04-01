@@ -18,6 +18,7 @@
 package com.trs.hudman.gui.hudmods;
 
 import com.trs.hudman.confg.JsonConfigHudElement;
+import com.trs.hudman.util.ColorRGB;
 import com.trs.hudman.util.Vec2i;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -38,7 +39,7 @@ import java.util.UUID;
  * The super class for all HUD elements
  */
 @Environment(EnvType.CLIENT)
-public abstract class AbstractHudElement implements IRenderPrimitive
+public abstract class AbstractHudElement implements IElementRenderPrimitive
 {
     private final AbstractHudElement root;
     private final LocalPlayer player;
@@ -47,14 +48,15 @@ public abstract class AbstractHudElement implements IRenderPrimitive
     private final JsonConfigHudElement jsonElement;
     private final UUID elementUUID = UUID.randomUUID();
     private final Properties stringsProperties;
-
+    private final ColorRGB confColor;
     private final boolean elementDebugMode;
+
     /**
      *
      * @param root Mostly time it's null and will probably be removed
      * @param client The current Minecraft client
      * @param cords The coordinates of the element on the user screen
-     * @param jsonElement The Jason config structure turned into a Java class
+     * @param jsonElement The Json config structure turned into a Java class
      * @implSpec Your constructor using this super class must contain all four
      */
     public AbstractHudElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfigHudElement jsonElement)
@@ -65,17 +67,11 @@ public abstract class AbstractHudElement implements IRenderPrimitive
         this.root = root;
         this.player = client.player;
         this.stringsProperties = new Properties();
-
-        StringBuilder propStr = new StringBuilder();
-        for (final String str : jsonElement.strings())
-        {
-            propStr.append(str).append('\n');
-        }
-
         try
         {
-            stringsProperties.load(new StringReader(propStr.toString()));
-        } catch (IOException e)
+            stringsProperties.load(new StringReader(String.join("\n", jsonElement.strings())));
+        }
+        catch (IOException e)
         {
             throw new RuntimeException(e);
         }
@@ -87,6 +83,22 @@ public abstract class AbstractHudElement implements IRenderPrimitive
         else
         {
             this.elementDebugMode = false;
+        }
+
+
+        if (this.getStringsProperties().containsKey("iColor") && getStringOption("iColor").startsWith("0x"))
+        {
+            this.confColor = ColorRGB.ofInt(
+                    Integer.parseInt(
+                            getStringOption("iColor")
+                                    .replace("0x", ""),
+                            16
+                    )
+            );
+        }
+        else
+        {
+            this.confColor = ColorRGB.WHITE;
         }
     }
 
@@ -159,6 +171,11 @@ public abstract class AbstractHudElement implements IRenderPrimitive
     public final float getScale()
     {
         return getJsonElement().scale();
+    }
+
+    public final ColorRGB getConfColor()
+    {
+        return confColor;
     }
 
     /**

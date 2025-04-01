@@ -49,7 +49,6 @@ public final class VelocityVectorElement extends AbstractHudElement
     private Vec3 player_velocity = new Vec3(0,0, 0);
 
     private final boolean doTooltip; //= !this.getJsonElement().strings().isEmpty() && this.getJsonElement().strings().get(this.getJsonElement().strings().size() - 1).equalsIgnoreCase("dotooltip");
-    private final boolean debug;
 
     private Component debugText = null;
 
@@ -76,23 +75,13 @@ public final class VelocityVectorElement extends AbstractHudElement
     {
         super(root, client, rCords, jsonElement);
 
-        if (!super.getStringsProperties().isEmpty() && super.getStringsProperties().containsKey("bDoTooltip"))
+        if (super.hasStringOption("bDoTooltip"))
         {
-            this.doTooltip = Boolean.parseBoolean((String)super.getStringsProperties().get("bDoTooltip"));
+            this.doTooltip = getStringOptionAs("bDoTooltip", Boolean::parseBoolean);
         }
         else
         {
             this.doTooltip = false;
-        }
-
-
-        if (!super.getStringsProperties().isEmpty() && super.getStringsProperties().containsKey("bDebug"))
-        {
-            this.debug = Boolean.parseBoolean((String)super.getStringsProperties().get("bDebug"));
-        }
-        else
-        {
-            this.debug = false;
         }
     }
 
@@ -118,7 +107,7 @@ public final class VelocityVectorElement extends AbstractHudElement
         METER_CLUSTER.render(guiGraphics, partialTick);
         poseStack.popPose();
 
-        if (debug && debugText != null)
+        if (isElementDebugMode() && debugText != null)
         {
             guiGraphics.drawCenteredString(gui.getFont(), debugText, (guiGraphics.guiWidth()/2), (guiGraphics.guiHeight()/2) + 4, 0xFFFFFF);
         }
@@ -137,7 +126,7 @@ public final class VelocityVectorElement extends AbstractHudElement
         ((FlowMeterWidget) METER_CLUSTER.getWidget("Y_VECTOR_METER")).setValue(Double.valueOf(delta.y()).intValue());
         ((FlowMeterWidget) METER_CLUSTER.getWidget("Z_VECTOR_METER")).setValue(Double.valueOf(delta.z()).intValue());
 
-        if (debug)
+        if (isElementDebugMode())
         {
             this.debugText = Component.literal(String.format(
                     "X_VECTOR(%f), Y_VECTOR(%f), Z_VECTOR(%f)",
@@ -147,7 +136,7 @@ public final class VelocityVectorElement extends AbstractHudElement
             ));
         }
 
-        METER_CLUSTER.widget_tick();
+        METER_CLUSTER.widgetTick();
     }
 
     private static @NotNull Vec3 getAmpDelta(Vec3 cord_mov)

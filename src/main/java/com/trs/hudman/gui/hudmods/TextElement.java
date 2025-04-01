@@ -22,6 +22,7 @@ import com.trs.hudman.util.Vec2i;
 import com.trs.hudman.util.annotations.RegistrableHudElement;
 import com.trs.qlang.Qlang;
 import com.trs.qlang.QlangInstruction;
+import com.trs.qlang.QlangString;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -37,21 +38,52 @@ public class TextElement extends AbstractHudElement
 {
 
     private final boolean isCenter;
-    private final String text;
-
-    Qlang parser = Qlang.builder()
-            .includeStandardLibrary()
-            .AddInstruction("%USER%", QlangInstruction.of((String tag, Pattern pattern) -> getClient().getUser().getName()))
-            .build();
+    private final QlangString text;
 
     public TextElement(AbstractHudElement root, Minecraft client, Vec2i rCords, JsonConfigHudElement jsonElement)
     {
         super(root, client, rCords, jsonElement);
 
         // Initialize isCenter by checking if "center" is in jsonElement's strings
-        this.isCenter = !getJsonElement().strings().isEmpty() && getJsonElement().strings().get(getJsonElement().strings().size() - 1).equalsIgnoreCase("center");
+        //this.isCenter = !getJsonElement().strings().isEmpty() && getJsonElement().strings().get(getJsonElement().strings().size() - 1).equalsIgnoreCase("center");
 
-        boolean badStringFlag = (getJsonElement().strings().size() == 1) && getJsonElement().strings().get(0).equalsIgnoreCase("center");
+
+        if (super.hasStringOption("bCenter"))
+        {
+            this.isCenter = getStringOptionAs("bCenter", Boolean::parseBoolean);
+        }
+        else
+        {
+            this.isCenter = false;
+        }
+
+        this.text = getElementConfigText();
+        text.getQLangInterpreter().AddInstruction(
+                "%USER%",
+                    QlangInstruction.of((String tag, Pattern pattern) -> getClient().getUser().getName()
+                )
+        );
+    }
+
+    @Override
+    public void render(float partialTick, GuiGraphics guiGraphics, Gui gui)
+    {
+        int x = isCenter ? guiGraphics.guiWidth() / 2 : getCords().x();
+        int y = getCords().y();
+        guiGraphics.drawCenteredString(gui.getFont(), Component.literal(text.toString()), x, y, getConfColor().toRgbInt());
+    }
+
+    @Override
+    public void tick() {}
+
+    public final QlangString getElementConfigText()
+    {
+        if (hasStringOption("sText"))
+        {
+            return QlangString.ofLiteral(getStringOption("sText"));
+        }
+
+        boolean badStringFlag = (getJsonElement().strings().size() == 1) && getJsonElement().strings().get(0).startsWith("bCenter");
 
         // Initialize text with the first string in jsonElement or a default if not present
         String tempText;
@@ -70,19 +102,7 @@ public class TextElement extends AbstractHudElement
                 tempText = "%USER% 'NO STR'";
             }
         }
-        this.text = tempText;
-    }
-
-    @Override
-    public void render(float partialTick, GuiGraphics guiGraphics, Gui gui)
-    {
-        int x = isCenter ? guiGraphics.guiWidth() / 2 : getCords().x();
-        int y = getCords().y();
-        guiGraphics.drawCenteredString(gui.getFont(), Component.literal(parser.parse(text).outputString()), x, y, 0xFFFFFF);
-    }
-
-    @Override
-    public void tick() {
+        return QlangString.ofLiteral(tempText);
     }
 }
 

@@ -1,0 +1,35 @@
+{
+    "presetName": "test",
+    "subElements": [
+        {
+            "elementId": "hudman:velocity_vector",
+            "cords": {
+                "x": 0,
+                "y": 0
+            },
+            "width": 0,
+            "height": 0,
+            "scale": 0.75,
+            "pairGameHudElement": "",
+            "enable": true,
+            "strings": [
+                "bDoTooltip = false"
+            ]
+        },
+        {
+            "elementId": "hudman:text",
+            "cords": {
+                "x": -40,
+                "y": 4
+            },
+            "width": 0,
+            "height": 0,
+            "scale": 0.75,
+            "pairGameHudElement": "",
+            "enable": true,
+            "strings": [
+                "bDoTooltip = false"
+            ]
+        }
+    ]
+}

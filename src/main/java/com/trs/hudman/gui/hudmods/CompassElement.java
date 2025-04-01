@@ -33,31 +33,31 @@ import net.minecraft.network.chat.Component;
 @Environment(EnvType.CLIENT)
 public class CompassElement extends AbstractHudElement
 {
-    public Component text = Component.literal("test");
+    public Component text = Component.empty();
 
-    protected boolean center = false;
-    protected boolean raw = true;
+    protected final boolean center;
+    protected final boolean raw;
 
     public CompassElement(AbstractHudElement root, Minecraft client, Vec2i rCords, JsonConfigHudElement jsonElement)
     {
         super(root, client, rCords, jsonElement);
 
-        if (!this.getJsonElement().strings().isEmpty())
+        if (super.hasStringOption("bCenter"))
         {
-            // Initialize noCenter flag based on jsonElement's strings
-            this.center = super.getJsonElement().strings().get(0).equals("center");
+            this.center = getStringOptionAs("bCenter", Boolean::parseBoolean);
+        }
+        else
+        {
+            this.center = true;
+        }
 
-            // Initialize raw flag by checking if "raw" is in the strings list
-            boolean rawFlag = false;
-            for (String str : super.getJsonElement().strings())
-            {
-                if (str.equals("raw"))
-                {
-                    rawFlag = true;
-                    break;
-                }
-            }
-            this.raw = rawFlag;
+        if (super.hasStringOption("bRaw"))
+        {
+            this.raw = getStringOptionAs("bRaw", Boolean::parseBoolean);
+        }
+        else
+        {
+            this.raw = true;
         }
     }
 

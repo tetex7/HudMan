@@ -84,8 +84,8 @@ class ItemInfoWidget extends AbstractHudWidget
             );
 
 
-            ItemWidget itemWidget = new ItemWidget(this.getX(), this.getY(), this.getScale());
-            itemWidget.setItemStack(itemStack);
+            //ItemWidget itemWidget = new ItemWidget(this.getX(), this.getY(), this.getScale(), );
+            //itemWidget.setItemStack(itemStack);
 
             RenderSystem.disableBlend();
             poseStack.popPose();

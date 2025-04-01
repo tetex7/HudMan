@@ -20,6 +20,7 @@ package com.trs.hudman.gui.hudmods.widget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,16 +32,12 @@ public final class ItemWidget extends AbstractHudWidget
         return itemStack;
     }
 
-    public void setItemStack(ItemStack itemStack)
-    {
-        this.itemStack = itemStack;
-    }
+    private final ItemStack itemStack;
 
-    private ItemStack itemStack = ItemStack.EMPTY;
-
-    public ItemWidget(int x, int y, float scale)
+    public ItemWidget(int x, int y, float scale, Item item)
     {
         super(x, y, scale, 0);
+        this.itemStack = new ItemStack(item);
     }
 
     @Override
@@ -58,7 +55,7 @@ public final class ItemWidget extends AbstractHudWidget
             poseStack.pushPose();
             RenderSystem.enableBlend();
             poseStack.scale(this.getScale(), this.getScale(), this.getScale());
-            guiGraphics.renderFakeItem(itemStack, this.getX(), this.getY());
+            guiGraphics.renderItem(itemStack, this.getX(), this.getY());
             RenderSystem.disableBlend();
             poseStack.popPose();
         }

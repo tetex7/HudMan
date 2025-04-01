@@ -15,21 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.trs.hudman.confg;
+package com.trs.qlang;
 
-import com.trs.hudman.util.Vec2i;
+import java.util.regex.Pattern;
 
-import java.util.List;
-
-public record JsonConfigHudPreset(
-        String presetName,
-        @Deprecated(forRemoval = true) Vec2i cords,
-        List<JsonConfigHudElement> subElements
-){
-    @SuppressWarnings("removal")
-    @Deprecated(forRemoval = true)
-    public Vec2i cords()
-    {
-        return cords;
-    }
+@FunctionalInterface
+public interface QlangInstructionWork
+{
+    String work(String tag, Pattern pattern);
 }

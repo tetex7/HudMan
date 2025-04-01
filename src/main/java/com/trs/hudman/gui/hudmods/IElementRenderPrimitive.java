@@ -19,7 +19,7 @@ package com.trs.hudman.gui.hudmods;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 
-public interface IRenderPrimitive
+public interface IElementRenderPrimitive
 {
     void tick();
     void render(float partialTick, GuiGraphics guiGraphics, Gui gui);

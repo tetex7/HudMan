@@ -22,6 +22,7 @@ import com.trs.hudman.util.Vec2i;
 import com.trs.hudman.util.annotations.RegistrableHudElement;
 import com.trs.qlang.Qlang;
 import com.trs.qlang.QlangInstruction;
+import com.trs.qlang.QlangString;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -31,6 +32,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -39,44 +41,37 @@ public class CordsElement extends AbstractHudElement
 {
     private Vec3i cords;
 
-    private final String raw_sting;
+    private final QlangString raw_sting;
     Component Text = Component.literal("test");
 
     public static String X_TAG = "%X%";
     public static String Y_TAG = "%Y%";
     public static String Z_TAG = "%Z%";
 
-    boolean isCenter;
+    final boolean isCenter;
 
-    private final Qlang parser = Qlang.builder().AddAllInstructions(
+    private final List<ImmutablePair<Pattern, QlangInstruction>> coordinateTaglibrary = List.of(
             ImmutablePair.of(Pattern.compile(X_TAG), QlangInstruction.of((tag, pattern) -> Integer.toString(cords.getX()))),
             ImmutablePair.of(Pattern.compile(Y_TAG), QlangInstruction.of((tag, pattern) -> Integer.toString(cords.getY()))),
             ImmutablePair.of(Pattern.compile(Z_TAG), QlangInstruction.of((tag, pattern) -> Integer.toString(cords.getZ())))
-    ).build();
+    );
 
     public CordsElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfigHudElement jsonElement)
     {
         super(root, client, cords, jsonElement);
 
-        List<String> strings = getJsonElement().strings();
+        this.raw_sting = getConfigCordNotation();
 
-        if (strings.isEmpty() || strings.get(0).equalsIgnoreCase("center") || strings.get(0).isEmpty())
+        if (super.hasStringOption("bCenter"))
         {
-            raw_sting = "X(%X%), Z(%Z%), Y(%Y%)";
+            this.isCenter = getStringOptionAs("bCenter", Boolean::parseBoolean);
         }
         else
         {
-            raw_sting = strings.get(0);
+            this.isCenter = false;
         }
 
-        for(String string : getJsonElement().strings())
-        {
-            if (string.equalsIgnoreCase("center"))
-            {
-                isCenter = true;
-                break;
-            }
-        }
+        raw_sting.getQLangInterpreter().AddAllInstructions(coordinateTaglibrary);
     }
 
     @Override
@@ -95,12 +90,23 @@ public class CordsElement extends AbstractHudElement
     @Override
     public void tick()
     {
-
         cords = new Vec3i(
                 (int)getPlayer().getX(),
                 (int)getPlayer().getY(),
                 (int)getPlayer().getZ()
         );
-        Text = Component.literal(parser.parse(raw_sting).outputString());
+        Text = Component.literal(raw_sting.toString());
+    }
+
+    private QlangString getConfigCordNotation()
+    {
+        if (getJsonElement().strings().isEmpty() || getJsonElement().strings().get(0).startsWith("bCenter") || getJsonElement().strings().get(0).isEmpty())
+        {
+            return QlangString.ofLiteral("X(%X%), Z(%Z%), Y(%Y%)");
+        }
+        else
+        {
+            return QlangString.ofLiteral(getJsonElement().strings().get(0));
+        }
     }
 }

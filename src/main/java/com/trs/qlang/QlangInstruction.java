@@ -17,31 +17,27 @@
 
 package com.trs.qlang;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
-public class QlangInstruction
+public class QlangInstruction implements QlangInstructionWork
 {
-    private final int hash = ThreadLocalRandom.current().nextInt();
-    public static QlangInstruction of(InstructionWork code)
+    public static QlangInstruction of(QlangInstructionWork code)
     {
         return new QlangInstruction(code);
     }
 
-    @FunctionalInterface
-    public interface InstructionWork
-    {
-        String work(String tag, Pattern pattern);
-    }
-
-    protected final InstructionWork getCode()
+    protected final @Nullable QlangInstructionWork getCode()
     {
         return code;
     }
 
-    private final InstructionWork code;
+    private final @Nullable QlangInstructionWork code;
 
-    public String run(String tag, Pattern pattern, String ctxt)
+    @Override
+    public String work(String tag, Pattern pattern)
     {
         if (code == null)
         {
@@ -50,7 +46,7 @@ public class QlangInstruction
         return code.work(tag, pattern);
     }
 
-    public QlangInstruction(InstructionWork code)
+    public QlangInstruction(@Nullable QlangInstructionWork code)
     {
         this.code = code;
     }
@@ -58,6 +54,7 @@ public class QlangInstruction
     @Override
     public int hashCode()
     {
-        return hash;
+        if (code != null) return code.hashCode();
+        else return System.identityHashCode(this);
     }
 }

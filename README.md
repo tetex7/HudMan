@@ -96,7 +96,7 @@ public class Tester extends AbstractHudElement
     @Override
     public void tick()
     {
-        TEST_FLOW_METER.widget_tick();
+        TEST_FLOW_METER.widgetTick();
     }
 }
 ```

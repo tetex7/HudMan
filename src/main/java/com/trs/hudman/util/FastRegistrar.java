@@ -47,15 +47,15 @@ public final class FastRegistrar
             {
                 RegistrableHudElement registrableHudElement = clazz.getAnnotation(RegistrableHudElement.class);
                 if (registrableHudElement == null) continue;
-                if (AbstractHudElement.class.isAssignableFrom(clazz))
+                if (AbstractHudElement.class.isAssignableFrom(clazz)) // Checking if inherited from the AbstractHudElement class
                 {
                     try
                     {
                         Constructor<AbstractHudElement> constructor = (Constructor<AbstractHudElement>) clazz.getConstructor(
-                                AbstractHudElement.class,
-                                Minecraft.class,
-                                Vec2i.class,
-                                JsonConfigHudElement.class
+                                AbstractHudElement.class, //root Mostly time it's null and will probably be removed
+                                Minecraft.class, //client The current Minecraft client
+                                Vec2i.class, //cords The coordinates of the element on the user screen
+                                JsonConfigHudElement.class //jsonElement The Jason config structure turned into a Java class
                         );
                         HudState.elementRegistry.register(
                                 NamespacePath.of(namespace, registrableHudElement.regName()),
@@ -78,9 +78,9 @@ public final class FastRegistrar
             }
         } catch (Exception e)
         {
-            if (e instanceof ReportedException)
+            if (e instanceof ReportedException reportedException)
             {
-                throw (ReportedException)e;
+                throw reportedException; // Ooh, scary but this was done on purpose to allow crashes to occur
             }
 
             HudState.LOGGER.error("Exception on Registering HudElement class's in Package:'{}' for namespace {}\n{}",

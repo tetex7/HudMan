@@ -48,12 +48,12 @@ public record JsonConfigHudElement(
     public static JsonConfigHudElement copy(JsonConfigHudElement element)
     {
         return new JsonConfigHudElement(
-                (element.elementId),
-                new Vec2i(element.cords.x(), element.cords.y()),
+                NamespacePath.of(element.elementId.toString()),
+                element.cords,
                 element.width,
                 element.height,
                 element.scale,
-                (element.pairGameHudElement),
+                element.pairGameHudElement,
                 element.enable,
                 List.copyOf(element.strings)
         );
