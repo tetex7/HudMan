@@ -1,0 +1,5 @@
+Currently, known bugs
+
+
+B01: Scaling values higher than one messing up coordinate placing of an HUD element
+    Fix will be made eventually
