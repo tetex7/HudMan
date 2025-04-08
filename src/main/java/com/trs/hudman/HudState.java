@@ -73,7 +73,7 @@ public class HudState
 
     public static final ElementRegistry elementRegistry = new ElementRegistry();
 
-    public static final String configDirPath = Minecraft.getInstance().gameDirectory.toString() + "/config";
+    public static final String configDirPath = Minecraft.getInstance().gameDirectory + "/config";
 
     public static final String configPath = configDirPath + "/hudman.json";
 
@@ -85,6 +85,8 @@ public class HudState
     public static final HashMap<String, INamespaceHandler> namespaceHandlers = new HashMap<>();
 
     private static boolean errorNotification = true;
+
+    public static final boolean inDevEnvironment;
 
     private static List<NamespacePath> readPresetsDefinitions()
     {
@@ -164,7 +166,7 @@ public class HudState
     public static String getStringFromReader(BufferedReader reader) throws IOException
     {
         StringBuilder stringBuilder = new StringBuilder();
-        String line = "";
+        String line;
         while ((line = reader.readLine()) != null)
         {
             stringBuilder.append(line).append('\n');
@@ -177,11 +179,7 @@ public class HudState
         Map<ResourceLocation, net.minecraft.server.packs.resources.Resource> resData = Minecraft.getInstance().getResourceManager().listResources("hudman_presets", (resourceLocation)->
         {
             final NamespacePath namespacePath = NamespacePath.of(resourceLocation);
-            if (namespacePath.getPath().endsWith(".json"))
-            {
-                return true;
-            }
-            return false;
+            return namespacePath.getPath().endsWith(".json");
         });
         try
         {
@@ -221,6 +219,15 @@ public class HudState
     }
 
     static {
+        String devenvStr = System.getProperty("com.trs.hudman.devenv");
+        if (devenvStr != null)
+        {
+            inDevEnvironment = Boolean.parseBoolean(devenvStr);
+        }
+        else
+        {
+            inDevEnvironment = false;
+        }
         HudResetEvent.EVENT.register(() -> {
             JsonConfigHudFile jconfig = getConfig();
             LOGGER.info("config_debug is " + jconfig.debug());
