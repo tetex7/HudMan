@@ -19,6 +19,8 @@ package com.trs.hudman.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.trs.hudman.gui.hudmods.AbstractHudElement;
+import com.trs.hudman.util.ColorRGB;
+import com.trs.hudman.util.NamespacePath;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.DeltaTracker;
@@ -146,5 +148,31 @@ public abstract class PlayerGuiMixin
                 //minecraft.getProfiler().pop();
             }
         }
+    }
+
+    @Inject(method = "renderChat", at = @At("RETURN"))
+    private  void injectRender(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo info)
+    {
+        /*if (this.getCameraPlayer() != null)
+        {
+            if (HudState.showHud)
+            {
+                //minecraft.getProfiler().push("HudMan Rendering Hotbar");
+                Stack<AbstractHudElement> huds = HudState.hudElements;
+                if (!huds.isEmpty())
+                {
+
+                    for (final AbstractHudElement element : huds)
+                    {
+                        String pairGameHudElement = element.getJsonElement().pairGameHudElement();
+                        if (pairGameHudElement.equals(NamespacePath.pathOf("render_test").toString()))
+                        {
+                            element.render(deltaTracker.getGameTimeDeltaPartialTick(false), guiGraphics, (Gui)(Object)this);
+                        }
+                    }
+                }
+                //minecraft.getProfiler().pop();
+            }
+        }*/
     }
 }

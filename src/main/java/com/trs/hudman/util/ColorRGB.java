@@ -49,4 +49,9 @@ public record ColorRGB(int red, int green, int blue)
     {
         return ARGB.color(alpha, red, green, blue);
     }
+
+    public int toArgbInt()
+    {
+        return toArgbInt(255);
+    }
 }

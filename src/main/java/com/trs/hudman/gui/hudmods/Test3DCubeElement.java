@@ -19,21 +19,19 @@ package com.trs.hudman.gui.hudmods;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Axis;
 import com.trs.hudman.confg.JsonConfigHudElement;
+import com.trs.hudman.util.ColorRGB;
 import com.trs.hudman.util.Vec2i;
 import com.trs.hudman.util.annotations.RegistrableHudElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import net.minecraft.client.renderer.GameRenderer;
 import org.joml.Matrix4f;
-
-import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
 
 @SuppressWarnings("unused")
 @RegistrableHudElement(regName = "test_3d_cube")
@@ -48,23 +46,23 @@ public final class Test3DCubeElement extends AbstractHud3DElement
     }
 
     @Override
-    public void render3d(float partialTick, PoseStack matrixStack, GuiGraphics guiGraphics, Gui gui)
+    public void render3d(MultiBufferSource bufferSource, PoseStack matrixStack, float partialTick, GuiGraphics guiGraphics, Gui gui)
     {
-        rotationAngle += partialTick * 2;
+        rotationAngle += partialTick * 0.25f;
         matrixStack.pushPose();
-        //VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.debugLineStrip(1.0));
+        Matrix4f matrix = matrixStack.last().pose();
 
-        //guiGraphics.drawCenteredString(gui.getFont(), String.valueOf(ThreadLocalRandom.current().nextInt()), 100, 100, 0xFFFFFF);
-        Matrix4f matrix4f = matrixStack.last().pose();
-        //matrixStack.translate(getCords().x(), getCords().y(), 10);
+        matrixStack.translate(getCords().x(), getCords().y(), 0);
 
-        matrixStack.scale(getScale(), getScale(), getScale()); // Scale to fit GUI
-        BufferBuilder buffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
+        matrixStack.scale(getScale(), getScale(), 0); // Scale to fit GUI
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.debugQuads());
 
-        drawCube(buffer);
-        BufferUploader.draw(Objects.requireNonNull(buffer.build()));
+        drawCube(vertexConsumer, matrix);
 
         matrixStack.popPose();
+
+        guiGraphics.flush();
+
     }
 
     @Override
@@ -78,7 +76,8 @@ public final class Test3DCubeElement extends AbstractHud3DElement
     {
     }
 
-    private void drawCube(BufferBuilder buffer)
+
+    private void drawCube(VertexConsumer buffer,  Matrix4f matrix)
     {
         // Define cube vertices and colors
         //buffer.addVertex(getCords().x(), getCords().y() +4, -1).setColor(255, 0, 0, 255);
@@ -86,9 +85,11 @@ public final class Test3DCubeElement extends AbstractHud3DElement
         //buffer.addVertex( 1,  1, -1).setColor(0, 0, 255, 255);
         //buffer.addVertex(-1,  1, -1).setColor(255, 255, 0, 255);
         // Other faces...
-
-        buffer.addVertex(getCords().x(), getCords().y(), 2).setColor(0xFF, 0, 0, 0).setNormal(0, 0, 1);
-        buffer.addVertex(getCords().x()+24, getCords().y(), 0).setColor(0xFF, 0, 0, 0).setNormal(0, 0, 1);
-        buffer.addVertex(getCords().x(), getCords().y()+24, -2).setColor(0xFF, 0, 0, 0).setNormal(0, 0, 1);
+        buffer.addVertex(matrix, getCords().x(), getCords().y(), 0).setColor(ColorRGB.RED.toArgbInt());
+        buffer.addVertex(matrix, getCords().x()+24, getCords().y(), 0).setColor(ColorRGB.RED.toArgbInt());
+        buffer.addVertex(matrix, getCords().x(), getCords().y()+4, 0).setColor(ColorRGB.RED.toArgbInt());
+        buffer.addVertex(matrix, getCords().x()+24, getCords().y()+4, 0).setColor(ColorRGB.RED.toArgbInt());
+        //buffer.addVertex(getCords().x(), getCords().y()+24, 0).setColor(ColorRGB.RED.toArgbInt());
+        //buffer.addVertex(matrix, getCords().x(), getCords().y()+24, 0).setColor(ColorRGB.RED.toArgbInt(256));
     }
 }
