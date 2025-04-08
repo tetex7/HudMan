@@ -111,7 +111,7 @@ class ModClient implements ClientModInitializer
     public final static MODID = "test";
     void onInitializeClient()
     {
-         FastRegistrar.searchForRegistrables(MODID, "com.trs.hudtest.gui.hudmods");
+         FastRegistrar.searchForRegistrables(MODID, "the.package.to.the.hud.element"); // e.g. com.trs.hudtest.gui.hudmods
     }
 }
 ```
