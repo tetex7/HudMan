@@ -17,6 +17,7 @@
 
 package com.trs.hudman.gui.hudmods;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.trs.hudman.confg.JsonConfigHudElement;
 import com.trs.hudman.util.ColorRGB;
 import com.trs.hudman.util.Vec2i;
@@ -242,5 +243,11 @@ public abstract class AbstractHudElement implements IElementRenderPrimitive
     protected interface StringOptionParser<T>
     {
         T parse(String text);
+    }
+
+    protected void doProperElementScaling(PoseStack poseStack)
+    {
+        poseStack.translate(getCords().x(), getCords().y(), 0);
+        poseStack.scale(getScale(), getScale(), getScale());
     }
 }

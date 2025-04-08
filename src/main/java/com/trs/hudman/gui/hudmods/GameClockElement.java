@@ -17,6 +17,7 @@
 
 package com.trs.hudman.gui.hudmods;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.trs.hudman.confg.JsonConfigHudElement;
 import com.trs.hudman.gui.hudmods.widget.ItemWidget;
 import com.trs.hudman.util.Vec2i;
@@ -43,13 +44,17 @@ public class GameClockElement extends AbstractHudElement
     public GameClockElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfigHudElement jsonElement)
     {
         super(root, client, cords, jsonElement);
-        this.gclock = new ItemWidget(getCords().x(), getCords().y(), getScale()+1.5f, Items.CLOCK);
+        this.gclock = new ItemWidget(0, 0, 1, Items.CLOCK);
     }
 
     @Override
     public void render(float partialTick, GuiGraphics guiGraphics, Gui gui)
     {
+        PoseStack poseStack = guiGraphics.pose();
+        poseStack.pushPose();
+        doProperElementScaling(poseStack);
         gclock.render(guiGraphics, partialTick);
+        poseStack.popPose();
     }
 
     @Override
