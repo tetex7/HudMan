@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025  Tete
+ * Copyright (C) 2025  Tetex7
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,11 +17,14 @@
 
 package com.trs.bobbuilder;
 
+import java.util.UUID;
+
 public record BuildStamp(
         String version,
         String builtDate,
         String builtTime,
         String builtName,
+        UUID builtUUID,
         int builtID,
         long vendorID
 ){}

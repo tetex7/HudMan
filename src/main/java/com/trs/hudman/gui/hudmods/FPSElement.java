@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025  Tete
+ * Copyright (C) 2025  Tetex7
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ public final class FPSElement extends AbstractHudElement
     @Override
     public void render(float partialTick, @NotNull GuiGraphics guiGraphics, @NotNull Gui gui)
     {
-        guiGraphics.drawCenteredString(gui.getFont(), Component.literal("FPS: " + fps), getCords().x(), getCords().y(), getConfColor().toRgbInt());
+        guiGraphics.drawCenteredString(gui.getFont(), Component.literal(STR."FPS: \{fps}"), getCords().x(), getCords().y(), getConfColor().toRgbInt());
     }
 
     @Override

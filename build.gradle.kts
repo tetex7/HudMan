@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025  Tete
+ * Copyright (C) 2025  Tetex7
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ import com.trs.bobbuilder.ReleaseUtils
 plugins {
     id("fabric-loom") version "1.9-SNAPSHOT"
     id("maven-publish")
+    //id("com.trs.bobbuilder")
 }
 
 version = "${(project.property("mod_version") as String)}-mc${project.property("minecraft_version") as String}"
@@ -74,13 +75,17 @@ dependencies {
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.property("fabric_version")}")
+
+    //implementation("org.apache.groovy:groovy:4.0.26")
+
+    //annotationProcessor(project(":HudElementProcessor"))
+
 }
 
 fun standardizedPath(path: String): String
 {
     return path.replace("\\", "/")
 }
-
 
 tasks.processResources pr@{
     inputs.property("version", project.version)
@@ -147,6 +152,9 @@ tasks.withType<JavaCompile>().configureEach {
     // this fixes some edge cases with special characters not displaying correctly
     // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
     // If Javadoc is generated, this must be specified in that task too.
+    options.compilerArgs.add("--enable-preview")
+    options.compilerArgs.add("-Xlint:preview")
+
     options.encoding = "UTF-8"
     options.release.set(targetJavaVersion)
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025  Tete
+ * Copyright (C) 2025  Tetex7
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,22 +82,22 @@ public class NamespacePath implements Comparable<NamespacePath>
         this.resourceLocation = ResourceLocation.parse(fullPath);
     }
 
-    public final String getNamespace()
+    public String getNamespace()
     {
         return this.resourceLocation.getNamespace();
     }
 
-    public final String getFullPath()
+    public String getFullPath()
     {
         return this.resourceLocation.toString();
     }
 
-    public final ResourceLocation getResourceLocation()
+    public ResourceLocation getResourceLocation()
     {
         return resourceLocation;
     }
 
-    public final String getPath()
+    public String getPath()
     {
         return this.resourceLocation.getPath();
     }
@@ -134,7 +134,7 @@ public class NamespacePath implements Comparable<NamespacePath>
         {
             return this.resourceLocation.equals(obj_path.resourceLocation);
         }
-        return super.equals(object);
+        return resourceLocation.toString().equals(object.toString());
     }
 
     @Override
@@ -142,7 +142,6 @@ public class NamespacePath implements Comparable<NamespacePath>
     {
         return this.getResourceLocation().hashCode();
     }
-
 
     public static final class NamespacePathAdapter extends TypeAdapter<NamespacePath>
     {

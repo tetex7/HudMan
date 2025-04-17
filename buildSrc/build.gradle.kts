@@ -18,6 +18,8 @@
 
 plugins {
     `java-library`
+    `kotlin-dsl`
+    //`java-gradle-plugin`
 }
 
 repositories {
@@ -31,6 +33,15 @@ dependencies {
 }
 
 java {
-    val targetJavaVersion = 17
+    val targetJavaVersion = 21
     toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
 }
+
+/*gradlePlugin {
+    plugins {
+        create("bobbuilder") {
+            id = "com.trs.bobbuilder"
+            implementationClass = "com.trs.bobbuilder.BobBuilderPlugin"
+        }
+    }
+}*/

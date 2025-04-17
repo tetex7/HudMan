@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025  Tete
+ * Copyright (C) 2025  Tetex7
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -100,7 +100,7 @@ public final class VelocityVectorElement extends AbstractHudElement
         if (doTooltip)
         {
             guiGraphics.flush();
-            TooltipRenderUtil.renderTooltipBackground(guiGraphics, this.getCords().x() - 25, this.getCords().y(), 72, 74, -1, null);
+            TooltipRenderUtil.renderTooltipBackground(guiGraphics, this.getCords().x() - 25, this.getCords().y(), 72, 74, 0, null);
             guiGraphics.flush();
         }
         RenderSystem.disableBlend();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025  Tete
+ * Copyright (C) 2025  Tetex7
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@ package com.trs.hudman.gui.hudmods.widget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import com.trs.hudman.util.NamespacePath;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -31,8 +32,8 @@ import com.trs.hudman.HudState;
 
 public final class FlowMeterWidget extends AbstractHudWidget
 {
-    public static final ResourceLocation FLOW_METER_BODY_LOCATION = ResourceLocation.fromNamespaceAndPath(HudState.MODID, "textures/gui/hudmods/widget/flow_meter_widget/flow_meter_body.png");
-    public static final ResourceLocation FLOW_METER_POINT_LOCATION = ResourceLocation.fromNamespaceAndPath(HudState.MODID, "textures/gui/hudmods/widget/flow_meter_widget/flow_meter_point.png");
+    public static final NamespacePath FLOW_METER_BODY_LOCATION = NamespacePath.pathOf("textures/gui/hudmods/widget/flow_meter_widget/flow_meter_body.png");
+    public static final NamespacePath FLOW_METER_POINT_LOCATION = NamespacePath.pathOf("textures/gui/hudmods/widget/flow_meter_widget/flow_meter_point.png");
 
     private int value = 0;
 
@@ -50,8 +51,6 @@ public final class FlowMeterWidget extends AbstractHudWidget
         //poseStack.translate((this.getX() - 11), (this.getY() - 32), 0);
         poseStack.scale(this.getScale(), this.getScale(), this.getScale());
 
-
-
         float angle = super.getRotation(); // Rotation angle in degrees
         float pointX = 0; // X-coordinate of the rotation center
         float pointY = 0; // Y-coordinate of the rotation center
@@ -62,14 +61,14 @@ public final class FlowMeterWidget extends AbstractHudWidget
         RenderSystem.enableBlend();
         guiGraphics.blit(
                 RenderType::guiTextured,
-                FLOW_METER_BODY_LOCATION,
+                FLOW_METER_BODY_LOCATION.getResourceLocation(),
                 this.getX(),
                 this.getY(),
                 0,0, 22, 62, 22, 62
         );
         guiGraphics.blit(
                 RenderType::guiTextured,
-                FLOW_METER_POINT_LOCATION,
+                FLOW_METER_POINT_LOCATION.getResourceLocation(),
                 this.getX() + 5,
                 ((this.getY() + 25) - value),
                 0,0, 12, 12, 12, 12

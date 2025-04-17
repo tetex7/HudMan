@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025  Tete
+ * Copyright (C) 2025  Tetex7
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,18 +25,18 @@ import com.google.gson.JsonParser;
 import org.gradle.api.Project;
 import org.gradle.language.jvm.tasks.ProcessResources;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
+
 import org.apache.commons.lang3.SystemUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -113,6 +113,7 @@ public final class ReleaseUtils
         final var META_INF_PATH = new File(processResources.getDestinationDir().getPath() + sep + "META-INF");
         final var BUILD_STAMP_JSON_PATH = new File(META_INF_PATH.getPath() + sep + processResources.getProject().getName().toLowerCase() + ".BuildStamp.json");
         final var VENDOR_STAMP_PATH = new File(META_INF_PATH.getPath() + sep + processResources.getProject().getName().toLowerCase() + ".VendorStamp.bin");
+        final var AUX_STAMP_PATH = new File(META_INF_PATH.getPath() + sep + processResources.getProject().getName().toLowerCase() + ".AuxStamp.bin");
 
         final String ver = (String)processResources.getProject().getVersion();
         final String date = String.valueOf(LocalDate.now().getMonthValue()) + '/' + LocalDate.now().getDayOfMonth() + '/' + LocalDate.now().getYear();
@@ -125,6 +126,7 @@ public final class ReleaseUtils
                 date,
                 time,
                 getRandomName(vid),
+                UUID.randomUUID(),
                 fbid,
                 vid
         );
@@ -164,6 +166,36 @@ public final class ReleaseUtils
                 throw new RuntimeException(e);
             }
         }
+
+
+        if (!AUX_STAMP_PATH.exists())
+        {
+            AUX_STAMP_PATH.createNewFile();
+            int stapHash = 0;
+
+            try (FileInputStream s = new FileInputStream(BUILD_STAMP_JSON_PATH))
+            {
+                stapHash = Arrays.hashCode(s.readAllBytes());
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+
+            try (FileOutputStream s = new FileOutputStream(AUX_STAMP_PATH))
+            {
+                byte[] auxBuff = ByteBuffer.allocate(Integer.BYTES)
+                        .order(ByteOrder.LITTLE_ENDIAN)
+                        .putInt(stapHash)
+                        .array();
+                s.write(auxBuff);
+                s.write("TRS".getBytes(StandardCharsets.US_ASCII));
+            }
+            catch (Throwable e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private static String prettyPrintWithIndent(String json, int indentSize)
@@ -182,11 +214,13 @@ public final class ReleaseUtils
         int currentIndentLevel = 0;
 
         // Split the JSON into lines and apply custom indentation per line
-        for (String line : prettyJson.split("\n")) {
+        for (String line : prettyJson.split("\n"))
+        {
             String trimmedLine = line.trim();
 
             // Decrease indent level for closing braces/brackets
-            if (trimmedLine.startsWith("}") || trimmedLine.startsWith("]")) {
+            if (trimmedLine.startsWith("}") || trimmedLine.startsWith("]"))
+            {
                 currentIndentLevel--;
             }
 
@@ -194,7 +228,8 @@ public final class ReleaseUtils
             indentedJson.append(indent.repeat(currentIndentLevel)).append(trimmedLine).append("\n");
 
             // Increase indent level after opening braces/brackets
-            if (trimmedLine.endsWith("{") || trimmedLine.endsWith("[")) {
+            if (trimmedLine.endsWith("{") || trimmedLine.endsWith("["))
+            {
                 currentIndentLevel++;
             }
         }
