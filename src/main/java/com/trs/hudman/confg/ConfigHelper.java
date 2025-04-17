@@ -156,6 +156,7 @@ public final class ConfigHelper
         return sw.toString();
     }
 
+    //Not used
     public static void osWarn()
     {
         if (Util.getPlatform() == Util.OS.LINUX)

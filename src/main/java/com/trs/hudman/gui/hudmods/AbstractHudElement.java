@@ -217,7 +217,7 @@ public abstract class AbstractHudElement implements IElementRenderPrimitive
 
     /**
      * Returns the raw string value corresponding to the key
-     * @param key The name of the option you wish to parse
+     * @param key The name of the option you wish to get
      * @return Returns the raw string value
      */
     protected final String getStringOption(String key)
@@ -239,6 +239,10 @@ public abstract class AbstractHudElement implements IElementRenderPrimitive
      */
     public abstract void tick();
 
+    /**
+     * This exists To provide a lambda pattern for parser functions
+     * As you can ignore this by instead of using {@link AbstractHudElement#getStringOptionAs(String, StringOptionParser)} you can use instead {@link AbstractHudElement#getStringOption(String)}
+     */
     @FunctionalInterface
     protected interface StringOptionParser<T>
     {
