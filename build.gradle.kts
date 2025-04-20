@@ -31,7 +31,7 @@ plugins {
     //id("com.trs.bobbuilder")
 }
 
-version = "${(project.property("mod_version") as String)}-mc${project.property("minecraft_version") as String}"
+version = "${(project.property("mod_version") as String)}-mc${project.property("minecraft_version") as String}${if (true) "" else ""}"
 
 group = project.property("maven_group") as String
 
@@ -82,16 +82,17 @@ dependencies {
 
 }
 
-fun standardizedPath(path: String): String
-{
-    return path.replace("\\", "/")
-}
-
 tasks.processResources pr@{
     inputs.property("version", project.version)
     inputs.property("minecraft_version", project.property("minecraft_version"))
     inputs.property("loader_version", project.property("loader_version"))
     filteringCharset = "UTF-8"
+
+    fun standardizedPath(path: String): String
+    {
+        return path.replace("\\", "/")
+    }
+
 
     filesMatching("fabric.mod.json") {
         expand(
@@ -152,8 +153,9 @@ tasks.withType<JavaCompile>().configureEach {
     // this fixes some edge cases with special characters not displaying correctly
     // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
     // If Javadoc is generated, this must be specified in that task too.
-    options.compilerArgs.add("--enable-preview")
-    options.compilerArgs.add("-Xlint:preview")
+    //options.compilerArgs.add("--enable-preview")
+    //options.compilerArgs.add("-Xlint:preview")
+    //enabled = false
 
     options.encoding = "UTF-8"
     options.release.set(targetJavaVersion)

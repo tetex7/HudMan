@@ -15,20 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.trs.hudman.util.annotations;
+package com.trs.hudman.gui.hudmods;
 
-import com.trs.hudman.util.NamespacePath;
-import org.intellij.lang.annotations.Pattern;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.trs.hudman.util.Vec2i;
+import net.minecraft.client.gui.GuiGraphics;
+import org.jetbrains.annotations.NotNull;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface RegistrableHudElement
+/*
+ * TODO: Actually implement it
+ */
+public abstract class HudCommonEnvironment
 {
-    @Pattern(NamespacePath.ALLOWED_CHAR_REGEX)
-    String regName();
+
 }

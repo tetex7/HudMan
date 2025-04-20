@@ -24,6 +24,8 @@ import com.google.gson.stream.JsonWriter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
+import org.intellij.lang.annotations.Language;
+import org.intellij.lang.annotations.Pattern;
 import org.jetbrains.annotations.NotNull;
 
 import com.trs.hudman.HudState;
@@ -40,24 +42,27 @@ public class NamespacePath implements Comparable<NamespacePath>
     public static final String MOD_NAMESPACE = HudState.MODID;
     public static final String MINECRAFT_NAMESPACE = ResourceLocation.DEFAULT_NAMESPACE;
 
+    @Language("RegExp")
+    public static final String ALLOWED_CHAR_REGEX = "^[a-z0-9/._-]+$";
+
     private final ResourceLocation resourceLocation;
 
-    public static @NotNull NamespacePath pathMcOf(String path)
+    public static @NotNull NamespacePath pathMcOf(@Pattern(ALLOWED_CHAR_REGEX) String path)
     {
         return new NamespacePath(MINECRAFT_NAMESPACE, path);
     }
 
-    public static @NotNull NamespacePath pathOf(String path)
+    public static @NotNull NamespacePath pathOf(@Pattern(ALLOWED_CHAR_REGEX) String path)
     {
         return new NamespacePath(MOD_NAMESPACE, path);
     }
 
-    public static @NotNull NamespacePath of(String namespace, String path)
+    public static @NotNull NamespacePath of(@Pattern(ALLOWED_CHAR_REGEX) String namespace, @Pattern(ALLOWED_CHAR_REGEX) String path)
     {
         return new NamespacePath(namespace, path);
     }
 
-    public static @NotNull NamespacePath of(String fullPath)
+    public static @NotNull NamespacePath of(@Pattern(ALLOWED_CHAR_REGEX) String fullPath)
     {
         return new NamespacePath(fullPath);
     }

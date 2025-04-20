@@ -75,8 +75,9 @@ public final class HudmanClient implements ClientModInitializer
     {
         //ConfigHelper.registerAll();
         FastRegistrar.searchForRegistrables(NamespacePath.MOD_NAMESPACE, "com.trs.hudman.gui.hudmods");
-        HudResetEvent.EVENT.register(() -> {
-            ConfigHelper.mkHud(Minecraft.getInstance());
+        HudResetEvent.register((client) -> {
+            //assert client == null;
+            ConfigHelper.mkHud(client);
             return true;
         });
 
@@ -86,7 +87,7 @@ public final class HudmanClient implements ClientModInitializer
             {
                 if (HudState.showHud)
                 {
-                    HudResetEvent.call();
+                    HudResetEvent.call(Minecraft.getInstance());
                 }
             }
 
@@ -96,7 +97,7 @@ public final class HudmanClient implements ClientModInitializer
                 HudState.showHud = !HudState.showHud;
                 if (HudState.showHud)
                 {
-                    HudResetEvent.call();
+                    HudResetEvent.call(Minecraft.getInstance());
                 }
             }
 
@@ -126,7 +127,7 @@ public final class HudmanClient implements ClientModInitializer
                 {
                     return;
                 }
-                HudResetEvent.call();
+                HudResetEvent.call(Minecraft.getInstance());
                 worldGood = true;
             }
         });

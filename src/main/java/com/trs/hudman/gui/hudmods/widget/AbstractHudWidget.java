@@ -17,6 +17,7 @@
 
 package com.trs.hudman.gui.hudmods.widget;
 
+import com.trs.hudman.gui.hudmods.HudCommonEnvironment;
 import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.Stack;
 
-public abstract class AbstractHudWidget
+public abstract class AbstractHudWidget extends HudCommonEnvironment
 {
     private final Stack<OnTickHandler> tickHandlers = new Stack<>();
 

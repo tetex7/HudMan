@@ -21,12 +21,13 @@ import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.client.Minecraft;
 
+@FunctionalInterface
 public interface HudResetEvent
 {
     Event<HudResetEvent> EVENT = EventFactory.createArrayBacked(HudResetEvent.class,
-            (listeners) -> () -> {
+            (listeners) -> (client) -> {
                 for (HudResetEvent listener : listeners) {
-                    boolean result = listener.interact();
+                    boolean result = listener.interact(client);
 
                     if(!result) {
                         return false;
@@ -36,10 +37,15 @@ public interface HudResetEvent
                 return true;
             });
 
-    static void call()
+    static void register(HudResetEvent callback)
     {
-        HudResetEvent.EVENT.invoker().interact();
+        EVENT.register(callback);
     }
 
-    boolean interact();
+    static void call(Minecraft client)
+    {
+        HudResetEvent.EVENT.invoker().interact(client);
+    }
+
+    boolean interact(Minecraft client);
 }

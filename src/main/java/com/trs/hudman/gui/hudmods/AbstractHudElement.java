@@ -40,7 +40,7 @@ import java.util.UUID;
  * The super class for all HUD elements
  */
 @Environment(EnvType.CLIENT)
-public abstract class AbstractHudElement implements IElementRenderPrimitive
+public abstract class AbstractHudElement extends HudCommonEnvironment implements IElementRenderPrimitive
 {
     private final AbstractHudElement root;
     private final LocalPlayer player;
@@ -121,7 +121,9 @@ public abstract class AbstractHudElement implements IElementRenderPrimitive
     }
 
     /**
-     * Irrelevant do not use
+     * Irrelevant do not use<br>
+     * PS. This was originally so you could nest an element inside of one another<br>
+     * but as I built out the config system that idea kind of died
      * @deprecated
      */
     @Deprecated(forRemoval = true)
@@ -165,7 +167,7 @@ public abstract class AbstractHudElement implements IElementRenderPrimitive
     }
 
     /**
-     * @return Returns the {@code bDebug} value if present if not it's false
+     * @return Returns the {@code bDebug} value if present or is not it's false
      */
     public final boolean isElementDebugMode()
     {
@@ -194,7 +196,9 @@ public abstract class AbstractHudElement implements IElementRenderPrimitive
      * // An example of how to use this function call
      *     int testInt = getStringOptionAs("iTestInt", Integer::parseInt);
      * }
-     * But do not use this on {@link String}s Use {@link AbstractHudElement#getStringOption(String)} instead
+     * But do not use this on {@link String}s It's a waste of performance<br>
+     * Use {@link AbstractHudElement#getStringOption(String)} instead
+     *
      * @param key The name of the option you wish to parse
      * @param parserCall The string parser to return a valid type e.g. {@link Boolean#parseBoolean(String)}
      * @return A parsed version of the Option value string
@@ -235,9 +239,62 @@ public abstract class AbstractHudElement implements IElementRenderPrimitive
 
     /**
      * A place for your elements logic
-     * @apiNote This function is run every gui tick
+     * @apiNote This function is run every gui tick and can weigh down the players client if you don't know what you're doing
      */
     public abstract void tick();
+
+    /**
+     * This function was made to address a bug involving higher than one scaling factors messing up coordinates<br>
+     * Due to lack of translation<br>
+     * Please perform the appropriate {@link PoseStack} push and pop<br>
+     * see known_bugs.txt(B01)
+     * @param poseStack A reference to the {@link GuiGraphics} drawing contexts as {@link PoseStack}
+     */
+    protected void doProperElementScaling(@NotNull PoseStack poseStack)
+    {
+        poseStack.translate(getCords().x(), getCords().y(), 0);
+        poseStack.scale(getScale(), getScale(), getScale());
+    }
+
+    /**
+     * This function was made to address a bug involving higher than one scaling factors messing up coordinates<br>
+     * Due to lack of translation<br>
+     * Please perform the appropriate {@link PoseStack} push and pop<br>
+     * see known_bugs.txt(B01)
+     * @param guiGraphics A reference to the {@link GuiGraphics} drawing contexts
+     */
+    protected void doProperElementScaling(@NotNull GuiGraphics guiGraphics)
+    {
+        doProperElementScaling(guiGraphics.pose());
+    }
+
+    /**
+     * Performs a {@link PoseStack#pushPose()} then run your lambda Once done runs {@link PoseStack#popPose()}<br>
+     * This is done to help with remitting a known bug with scaling factors higher than one<br>
+     * see known_bugs.txt(B01) for more info
+     * @param guiGraphics A reference to the current gui context
+     * @param environment A lambda of code you wish to have run within the safe environment
+     */
+    void guiPoseStackSafeEnvironment(@NotNull GuiGraphics guiGraphics, @NotNull Runnable environment)
+    {
+        guiGraphics.pose().pushPose();
+        environment.run();
+        guiGraphics.pose().popPose();
+    }
+
+    /**
+     * A full remedy to a known bug with scaling factors higher than one<br>
+     * see known_bugs.txt(B01) for more info
+     * @param guiGraphics A reference to the current gui context
+     * @param environment A lambda of code you wish to have run within the scale safe environment
+     */
+    void doScaleSafeEnvironment(@NotNull GuiGraphics guiGraphics, @NotNull Runnable environment)
+    {
+        guiGraphics.pose().pushPose();
+        doProperElementScaling(guiGraphics);
+        environment.run();
+        guiGraphics.pose().popPose();
+    }
 
     /**
      * This exists To provide a lambda pattern for parser functions
@@ -247,11 +304,5 @@ public abstract class AbstractHudElement implements IElementRenderPrimitive
     protected interface StringOptionParser<T>
     {
         T parse(String text);
-    }
-
-    protected void doProperElementScaling(PoseStack poseStack)
-    {
-        poseStack.translate(getCords().x(), getCords().y(), 0);
-        poseStack.scale(getScale(), getScale(), getScale());
     }
 }

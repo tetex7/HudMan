@@ -228,7 +228,7 @@ public class HudState
         {
             inDevEnvironment = false;
         }
-        HudResetEvent.EVENT.register(() -> {
+        HudResetEvent.register((client) -> {
             JsonConfigHudFile jconfig = getConfig();
             LOGGER.info("config_debug is " + jconfig.debug());
             configDebug = jconfig.debug();
@@ -278,6 +278,14 @@ public class HudState
             stringBuilder.append(obj.toString());
         }
         return stringBuilder.toString();
+    }
+
+    public static void ifAssert(boolean expression, Runnable runnable)
+    {
+        if (expression)
+        {
+            runnable.run();
+        }
     }
 }
 
