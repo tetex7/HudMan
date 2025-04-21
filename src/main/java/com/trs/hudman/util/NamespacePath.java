@@ -26,9 +26,12 @@ import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 import org.intellij.lang.annotations.Language;
 import org.intellij.lang.annotations.Pattern;
+import org.intellij.lang.annotations.Subst;
 import org.jetbrains.annotations.NotNull;
 
 import com.trs.hudman.HudState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -44,6 +47,7 @@ public class NamespacePath implements Comparable<NamespacePath>
 
     @Language("RegExp")
     public static final String ALLOWED_CHAR_REGEX = "^[a-z0-9/._-]+$";
+    private static final Logger log = LoggerFactory.getLogger(NamespacePath.class);
 
     private final ResourceLocation resourceLocation;
 
@@ -124,6 +128,11 @@ public class NamespacePath implements Comparable<NamespacePath>
         return this.resourceLocation.compareTo(location);
     }
 
+    public static boolean validateStringViability(@NotNull String str)
+    {
+        return str.matches(ALLOWED_CHAR_REGEX);
+    }
+
     @Override
     public boolean equals(Object object)
     {
@@ -170,6 +179,7 @@ public class NamespacePath implements Comparable<NamespacePath>
                 return null;
             }
             String path = reader.nextString();
+            //noinspection PatternValidation
             return NamespacePath.of(path);
         }
     }

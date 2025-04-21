@@ -61,10 +61,7 @@ public class HudPresetClusterElement extends AbstractHudElement
                         subs.push(HudState.elementRegistry.get(element.elementId()).create(
                                 null,
                                 client,
-                                Vec2i.of(
-                                        element.cords().x() + cords.x(),
-                                        element.cords().y() + cords.y()
-                                ),
+                                element.cords().plus(cords),
                                 element
                         ));
                     }

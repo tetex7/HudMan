@@ -18,33 +18,24 @@
 package com.trs.bobbuilder;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-
-import org.gradle.api.Project;
+import org.apache.commons.lang3.SystemUtils;
 import org.gradle.language.jvm.tasks.ProcessResources;
 
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
-
-import java.util.Arrays;
-import java.util.Random;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.Random;
 import java.util.UUID;
 
-import org.apache.commons.lang3.SystemUtils;
+import static com.trs.bobbuilder.ReleaseUtils.prettyPrintWithIndent;
 
-import org.jetbrains.annotations.NotNull;
-
-public final class ReleaseUtils
+public class BuildMetadataBuilder
 {
-
-    /*private static final String[] RELEASE_PREFIXES = {
+    private static final String[] RELEASE_PREFIXES = {
             "Slow", "Quick", "Bright", "Dark", "Fast", "Blue", "Star", "Sun", "Wind",
             "Thunder", "Soft", "Hard", "High", "Low", "Night", "Day", "Cloud",
             "Fire", "Frost", "Sweet", "Earth", "Sky", "Golden", "Silver", "Shadow",
@@ -99,28 +90,40 @@ public final class ReleaseUtils
      * Create a unique mark Based off of the user's username and host name on their machine when they are building
      * @return A married hash of the username and host name
      */
-    /*private static long mkVendorId()
+    private static long mkVendorId()
     {
         long un = Math.abs(SystemUtils.getUserName().hashCode());
         long rn = Math.abs(SystemUtils.getHostName().hashCode());
         return (un + rn) + (rn/2);
-    }*/
+    }
 
-    public static void mkJsonMark(@NotNull ProcessResources processResources) throws IOException
+    private final char sep = File.separatorChar;
+
+    private final File META_INF_PATH;
+    private final File BUILD_STAMP_JSON_PATH;
+    private final File VENDOR_STAMP_PATH;
+    private final File AUX_STAMP_PATH;
+
+    private final ProcessResources processResources;
+
+    public BuildMetadataBuilder(ProcessResources processResources)
     {
-        /*final var sep = File.separatorChar;
-        final var META_INF_PATH = new File(processResources.getDestinationDir().getPath() + sep + "META-INF");
-        final var BUILD_STAMP_JSON_PATH = new File(META_INF_PATH.getPath() + sep + processResources.getProject().getName().toLowerCase() + ".BuildStamp.json");
-        final var VENDOR_STAMP_PATH = new File(META_INF_PATH.getPath() + sep + processResources.getProject().getName().toLowerCase() + ".VendorStamp.bin");
-        final var AUX_STAMP_PATH = new File(META_INF_PATH.getPath() + sep + processResources.getProject().getName().toLowerCase() + ".AuxStamp.bin");
+        this.processResources = processResources;
+        META_INF_PATH = new File(processResources.getDestinationDir().getPath() + sep + "META-INF");
+        BUILD_STAMP_JSON_PATH = new File(META_INF_PATH.getPath() + sep + processResources.getProject().getName().toLowerCase() + ".BuildStamp.json");
+        VENDOR_STAMP_PATH = new File(META_INF_PATH.getPath() + sep + processResources.getProject().getName().toLowerCase() + ".VendorStamp.bin");
+        AUX_STAMP_PATH = new File(META_INF_PATH.getPath() + sep + processResources.getProject().getName().toLowerCase() + ".AuxStamp.bin");
+    }
 
+    private BuildStamp mkBuildData()
+    {
         final String ver = (String)processResources.getProject().getVersion();
         final String date = String.valueOf(LocalDate.now().getMonthValue()) + '/' + LocalDate.now().getDayOfMonth() + '/' + LocalDate.now().getYear();
         final String time = String.valueOf(LocalTime.now().getHour()) + ':' + LocalTime.now().getHour() + ':' + LocalTime.now().getSecond();
         final int fbid = Math.abs((ver + date + time).hashCode());
         long vid = mkVendorId();
 
-        final BuildStamp stamp = new BuildStamp(
+        return new BuildStamp(
                 ver,
                 date,
                 time,
@@ -129,44 +132,10 @@ public final class ReleaseUtils
                 fbid,
                 vid
         );
+    }
 
-        if (!META_INF_PATH.exists())
-        {
-            META_INF_PATH.mkdir();
-        }
-
-        if (!BUILD_STAMP_JSON_PATH.exists())
-        {
-            BUILD_STAMP_JSON_PATH.createNewFile();
-
-            try (FileWriter s = new FileWriter(BUILD_STAMP_JSON_PATH))
-            {
-                //s.write(Qlang.builder().AddTagLibrary(instructions).build().parse(BUILD_STAMP_JSON).outputString());
-                s.write(prettyPrintWithIndent(new Gson().toJson(stamp), 4));
-            }
-            catch (Throwable e)
-            {
-                throw new RuntimeException(e);
-            }
-        }
-
-        if (!VENDOR_STAMP_PATH.exists())
-        {
-            VENDOR_STAMP_PATH.createNewFile();
-
-            try (FileOutputStream s = new FileOutputStream(VENDOR_STAMP_PATH))
-            {
-                s.write("VID".getBytes(StandardCharsets.US_ASCII));
-                s.write(mkVendorBytes());
-                s.write("TRS".getBytes(StandardCharsets.US_ASCII));
-            }
-            catch (Throwable e)
-            {
-                throw new RuntimeException(e);
-            }
-        }
-
-
+    private void mkAuxStamp() throws IOException
+    {
         if (!AUX_STAMP_PATH.exists())
         {
             AUX_STAMP_PATH.createNewFile();
@@ -194,47 +163,62 @@ public final class ReleaseUtils
             {
                 throw new RuntimeException(e);
             }
-        }*/
-
-        new BuildMetadataBuilder(processResources).build();
+        }
     }
 
-    static String prettyPrintWithIndent(String json, int indentSize)
+    private void mkVendorStamp() throws IOException
     {
-        JsonElement jsonElement = JsonParser.parseString(json);
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-        // Step 1: Convert JSON to a pretty-printed version with default indentation
-        String prettyJson = gson.toJson(jsonElement);
-
-        // Step 2: Define the custom indentation string
-        String indent = " ".repeat(indentSize);
-
-        // Step 3: Use StringBuilder to construct the final string with custom indentation
-        StringBuilder indentedJson = new StringBuilder();
-        int currentIndentLevel = 0;
-
-        // Split the JSON into lines and apply custom indentation per line
-        for (String line : prettyJson.split("\n"))
+        if (!VENDOR_STAMP_PATH.exists())
         {
-            String trimmedLine = line.trim();
+            VENDOR_STAMP_PATH.createNewFile();
 
-            // Decrease indent level for closing braces/brackets
-            if (trimmedLine.startsWith("}") || trimmedLine.startsWith("]"))
+            try (FileOutputStream s = new FileOutputStream(VENDOR_STAMP_PATH))
             {
-                currentIndentLevel--;
+                s.write("VID".getBytes(StandardCharsets.US_ASCII));
+                s.write(mkVendorBytes());
+                s.write("TRS".getBytes(StandardCharsets.US_ASCII));
             }
-
-            // Apply current indentation and add line
-            indentedJson.append(indent.repeat(currentIndentLevel)).append(trimmedLine).append("\n");
-
-            // Increase indent level after opening braces/brackets
-            if (trimmedLine.endsWith("{") || trimmedLine.endsWith("["))
+            catch (Throwable e)
             {
-                currentIndentLevel++;
+                throw new RuntimeException(e);
             }
         }
+    }
 
-        return indentedJson.toString().trim();
+    private void mkJsonMark() throws IOException
+    {
+        if (!BUILD_STAMP_JSON_PATH.exists())
+        {
+            BUILD_STAMP_JSON_PATH.createNewFile();
+
+            try (FileWriter s = new FileWriter(BUILD_STAMP_JSON_PATH))
+            {
+                //s.write(Qlang.builder().AddTagLibrary(instructions).build().parse(BUILD_STAMP_JSON).outputString());
+                s.write(prettyPrintWithIndent(new Gson().toJson(mkBuildData()), 4));
+            }
+            catch (Throwable e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void build()
+    {
+        if (!META_INF_PATH.exists())
+        {
+            META_INF_PATH.mkdir();
+        }
+        try
+        {
+            mkJsonMark();
+            mkVendorStamp();
+            mkAuxStamp();
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
+
     }
 }

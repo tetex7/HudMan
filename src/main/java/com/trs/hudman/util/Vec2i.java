@@ -17,28 +17,34 @@
 
 package com.trs.hudman.util;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 import org.joml.Vector2ic;
 
 public record Vec2i(int x, int y)
 {
-    public static Vec2i of(int x, int y)
+    public static @NotNull Vec2i of(int x, int y)
     {
         return new Vec2i(x, y);
     }
 
+    public static @NotNull Vec2i of(@NotNull Vector2ic vector2ic)
+    {
+        return new Vec2i(vector2ic.x(), vector2ic.y());
+    }
+
     public @NotNull Vec2i plus(@NotNull Vec2i vec)
     {
-        return new Vec2i((this.x + vec.x),(this.y + vec.y));
+        return new Vec2i((this.x + vec.x), (this.y + vec.y));
     }
 
     public @NotNull Vec2i minus(@NotNull Vec2i vec)
     {
-        return new Vec2i((this.x - vec.x),(this.y - vec.y));
+        return new Vec2i((this.x - vec.x), (this.y - vec.y));
     }
 
-    public Vector2ic toGLvec2i()
+    public @NotNull Vector2ic toGLvec2i()
     {
         return new Vector2i(this.x, this.y);
     }

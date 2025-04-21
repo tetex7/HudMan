@@ -28,7 +28,7 @@ import com.trs.bobbuilder.ReleaseUtils
 plugins {
     id("fabric-loom") version "1.9-SNAPSHOT"
     id("maven-publish")
-    //id("com.trs.bobbuilder")
+    id("com.trs.bobbuilder")
 }
 
 version = "${(project.property("mod_version") as String)}-mc${project.property("minecraft_version") as String}${if (true) "" else ""}"
@@ -103,7 +103,7 @@ tasks.processResources pr@{
     }
 
     doLast {
-        ReleaseUtils.mkJsonMark(this@pr)
+        //ReleaseUtils.mkJsonMark(this@pr)
     }
 }
 

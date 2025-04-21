@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025  Tete
+ * Copyright (C) 2025  Tetex7
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,33 +15,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+package com.trs.bobbuilder
 
-plugins {
-    `java-library`
-    `kotlin-dsl`
-    `java-gradle-plugin`
-}
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.*
+import org.gradle.language.jvm.tasks.ProcessResources
+import com.trs.bobbuilder.ReleaseUtils
 
-repositories {
-    // Use Maven Central for resolving dependencies.
-    mavenCentral()
-}
-
-dependencies {
-    implementation("org.apache.commons:commons-lang3:3.12.0")
-    implementation("com.google.code.gson:gson:2.11.0")
-}
-
-java {
-    val targetJavaVersion = 21
-    toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-}
-
-gradlePlugin {
-    plugins {
-        create("bobbuilder") {
-            id = "com.trs.bobbuilder"
-            implementationClass = "com.trs.bobbuilder.BobBuilderPlugin"
+class BobBuilderPlugin : Plugin<Project>
+{
+    override fun apply(project: Project)
+    {
+        project.tasks.named<ProcessResources>("processResources").configure ret@{
+            doLast {
+                ReleaseUtils.mkJsonMark(this@ret)
+            }
         }
     }
 }
