@@ -47,7 +47,6 @@ public class NamespacePath implements Comparable<NamespacePath>
 
     @Language("RegExp")
     public static final String ALLOWED_CHAR_REGEX = "^[a-z0-9/._-]+$";
-    private static final Logger log = LoggerFactory.getLogger(NamespacePath.class);
 
     private final ResourceLocation resourceLocation;
 

@@ -33,6 +33,7 @@ import org.jetbrains.annotations.Nullable;
 public class ImageElement extends AbstractHudElement
 {
     private final NamespacePath imagePath;
+
     /**
      * @param root        Mostly time it's null and will probably be removed
      * @param client      The current Minecraft client
@@ -49,25 +50,28 @@ public class ImageElement extends AbstractHudElement
     @Override
     public void render(float partialTick, GuiGraphics guiGraphics, Gui gui)
     {
-        try
-        {
-            var da = ((SimpleTexture) getClient().getTextureManager().getTexture(imagePath.getResourceLocation())).loadContents(getClient().getResourceManager()).image();
-            guiGraphics.blit(
-                    RenderType::guiTextured,
-                    imagePath.getResourceLocation(),
-                    getCords().x(),
-                    getCords().y(),
-                    0,
-                    0,
-                    getJsonElement().width(),
-                    getJsonElement().height(),
-                    da.getWidth(),
-                    da.getHeight()
-            );
-        } catch (Exception e)
-        {
-            throw new RuntimeException(e);
-        }
+        doScaleSafeEnvironment(guiGraphics, () -> {
+            try
+            {
+                var da = ((SimpleTexture) getClient().getTextureManager().getTexture(imagePath.getResourceLocation())).loadContents(getClient().getResourceManager()).image();
+                guiGraphics.blit(
+                        RenderType::guiTextured,
+                        imagePath.getResourceLocation(),
+                        0,
+                        0,
+                        0,
+                        0,
+                        getJsonElement().width(),
+                        getJsonElement().height(),
+                        da.getWidth(),
+                        da.getHeight()
+                );
+            } catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        });
+
     }
 
     @Override

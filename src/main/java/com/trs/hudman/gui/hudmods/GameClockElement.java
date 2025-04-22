@@ -50,11 +50,9 @@ public class GameClockElement extends AbstractHudElement
     @Override
     public void render(float partialTick, GuiGraphics guiGraphics, Gui gui)
     {
-        PoseStack poseStack = guiGraphics.pose();
-        poseStack.pushPose();
-        doProperElementScaling(poseStack);
-        gclock.render(guiGraphics, partialTick);
-        poseStack.popPose();
+        doScaleSafeEnvironment(guiGraphics, () -> {
+            gclock.render(guiGraphics, partialTick);
+        });
     }
 
     @Override

@@ -34,10 +34,7 @@ public record ColorRGB(int red, int green, int blue)
 
     public static @NotNull ColorRGB ofInt(int color)
     {
-        int red = (color >> 16) & 0xFF;
-        int green = (color >> 8) & 0xFF;
-        int blue = color & 0xFF;
-        return new ColorRGB(red, green, blue);
+        return new ColorRGB(color);
     }
 
     public int toRgbInt()
@@ -53,5 +50,10 @@ public record ColorRGB(int red, int green, int blue)
     public int toArgbInt()
     {
         return toArgbInt(255);
+    }
+
+    public ColorRGB(int color)
+    {
+        this((color >> 16) & 0xFF,  (color >> 8) & 0xFF,  color & 0xFF);
     }
 }

@@ -29,6 +29,7 @@ plugins {
     id("fabric-loom") version "1.9-SNAPSHOT"
     id("maven-publish")
     id("com.trs.bobbuilder")
+    id("idea")
 }
 
 version = "${(project.property("mod_version") as String)}-mc${project.property("minecraft_version") as String}${if (true) "" else ""}"
@@ -189,6 +190,15 @@ tasks.clean.get().doLast {
 
 loom {
     accessWidenerPath = file("src/main/resources/hudman.accesswidener")
+
+
+    runs {
+        named("client") {
+            vmArgs("-Dcom.trs.hudman.devenv=true")
+            client()
+        }
+    }
+
 }
 
 // configure the maven publication
@@ -207,5 +217,8 @@ publishing {
         // The repositories here will be used for publishing your artifact, not for
         // retrieving dependencies.
     }
+}
+
+idea {
 }
 

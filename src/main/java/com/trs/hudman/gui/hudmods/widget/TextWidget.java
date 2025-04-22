@@ -18,6 +18,7 @@
 package com.trs.hudman.gui.hudmods.widget;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.trs.hudman.util.ColorRGB;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -28,7 +29,7 @@ public final class TextWidget extends AbstractHudWidget
 
 
     private String text = "";
-    private int color = 0xFFFF;
+    private int color = ColorRGB.WHITE.toArgbInt();
 
 
     public TextWidget(int x, int y, float scale)

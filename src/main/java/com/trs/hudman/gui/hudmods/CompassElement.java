@@ -64,11 +64,13 @@ public class CompassElement extends AbstractHudElement
     @Override
     public void render(float partialTick, GuiGraphics guiGraphics, Gui gui)
     {
-        if (!center) {
-            guiGraphics.drawCenteredString(gui.getFont(), text, getCords().x(), getCords().y(), 0xFFFFFF);
-        } else {
-            guiGraphics.drawCenteredString(gui.getFont(), text, guiGraphics.guiWidth() / 2, getCords().y(), 0xFFFFFF);
-        }
+        doScaleSafeEnvironment(guiGraphics, () -> {
+            if (!center) {
+                guiGraphics.drawCenteredString(gui.getFont(), text, 0, 0, 0xFFFFFF);
+            } else {
+                guiGraphics.drawCenteredString(gui.getFont(), text, guiGraphics.guiWidth() / 2, 0, 0xFFFFFF);
+            }
+        });
     }
 
     @Override

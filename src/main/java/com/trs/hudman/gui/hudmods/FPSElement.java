@@ -44,7 +44,7 @@ public final class FPSElement extends AbstractHudElement
     public void render(float partialTick, @NotNull GuiGraphics guiGraphics, @NotNull Gui gui)
     {
         super.doScaleSafeEnvironment(guiGraphics, () -> {
-            guiGraphics.drawCenteredString(gui.getFont(), Component.literal("FPS: " + fps), getCords().x(), getCords().y(), getConfColor().toRgbInt());
+            guiGraphics.drawCenteredString(gui.getFont(), Component.literal("FPS: " + fps), 0, 0, getConfColor().toArgbInt());
         });
     }
 
