@@ -207,6 +207,7 @@ publishing {
         create<MavenPublication>("mavenJava") {
             artifactId = project.property("archives_base_name") as String
             from(components["java"])
+
         }
     }
 
