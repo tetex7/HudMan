@@ -66,7 +66,7 @@ public abstract class AbstractHudElement extends HudCommonEnvironment implements
         this.client = Objects.requireNonNull(client);
         this.jsonElement = Objects.requireNonNull(jsonElement);
         this.root = root;
-        this.player = client.player;
+        this.player = Objects.requireNonNull(client.player);
         this.stringsProperties = new Properties();
         try
         {

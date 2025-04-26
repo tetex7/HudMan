@@ -34,6 +34,8 @@ import org.jetbrains.annotations.Nullable;
 public final class FPSElement extends AbstractHudElement
 {
     private int fps = 0;
+    private int lower_fps = 0;
+    private int hige_fps = 0;
 
     public FPSElement(@Nullable AbstractHudElement root, @NotNull Minecraft client, @NotNull Vec2i cords, @NotNull JsonConfigHudElement jsonElement)
     {

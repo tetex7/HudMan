@@ -52,6 +52,6 @@ public abstract class OptionsScreenMixin extends Screen
         Button hudmanButton = rowHelper.addChild(openScreenButton(Component.translatable("string.hudman.mod_name"), () -> new HudManMenuScreen((OptionsScreen)(Object)this)));
         hudmanButton.active = false;
         hudmanButton.setTooltip(Tooltip.create(Component.literal("Coming Soon(TM)")));
-        this.layout.addToContents(gridLayout);
+        //this.layout.addToContents(gridLayout);
     }
 }

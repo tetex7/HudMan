@@ -43,7 +43,7 @@ here is a test config:
             "pairGameHudElement": "minecraft:hotbar",
             "enable": true,
             "strings": [
-                "doTooltip"
+                "bDoTooltip = true"
             ]
         }
     ],

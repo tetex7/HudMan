@@ -221,5 +221,9 @@ publishing {
 }
 
 idea {
+    module r@{
+        isDownloadJavadoc = true
+        //isDownloadSources = true
+    }
 }
 

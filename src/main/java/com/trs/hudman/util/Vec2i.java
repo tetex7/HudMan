@@ -48,4 +48,9 @@ public record Vec2i(int x, int y)
     {
         return new Vector2i(this.x, this.y);
     }
+
+    public @NotNull Vec2i copy()
+    {
+        return Vec2i.of(x(), y());
+    }
 }

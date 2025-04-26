@@ -23,6 +23,7 @@ import com.trs.hudman.confg.JsonConfigHudElement;
 import com.trs.hudman.gui.hudmods.widget.ClusterWidget;
 import com.trs.hudman.gui.hudmods.widget.FlowMeterWidget;
 import com.trs.hudman.gui.hudmods.widget.TextWidget;
+import com.trs.hudman.util.ColorRGB;
 import com.trs.hudman.util.Vec2i;
 import com.trs.hudman.util.annotations.RegistrableHudElement;
 import net.fabricmc.api.EnvType;
@@ -34,6 +35,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.TooltipRenderUtil;
 import net.minecraft.network.chat.Component;
 
+import net.minecraft.util.ColorRGBA;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -54,8 +56,8 @@ public final class VelocityVectorElement extends AbstractHudElement
 
 
     private final ClusterWidget METER_CLUSTER = new ClusterWidget(
-            getCords().x(),
-            getCords().y(),
+            0,
+            0,
             1,
             90,
             Map.of(
@@ -90,28 +92,27 @@ public final class VelocityVectorElement extends AbstractHudElement
     {
         if (HudState.getConfigDebug())
         {
-            guiGraphics.drawCenteredString(gui.getFont(), delta.toString(), (guiGraphics.guiWidth() / 2), ((guiGraphics.guiWidth() / 2) + 5) + 5, 0xFFFFFF);
+            guiGraphics.drawCenteredString(gui.getFont(), delta.toString(), (guiGraphics.guiWidth() / 2), ((guiGraphics.guiWidth() / 2) + 5) + 5, ColorRGB.WHITE.toArgbInt());
         }
-
-        PoseStack poseStack = guiGraphics.pose();
-        poseStack.pushPose();
-        poseStack.scale(this.getJsonElement().scale(), this.getJsonElement().scale(), this.getJsonElement().scale());
-        RenderSystem.enableBlend();
-        if (doTooltip)
-        {
-            guiGraphics.flush();
-            TooltipRenderUtil.renderTooltipBackground(guiGraphics, this.getCords().x() - 25, this.getCords().y(), 72, 74, 0, null);
-            guiGraphics.flush();
-        }
-        RenderSystem.disableBlend();
-        METER_CLUSTER.render(guiGraphics, partialTick);
-        poseStack.popPose();
-
+        doScaleSafeEnvironment(guiGraphics, () -> {
+            PoseStack poseStack = guiGraphics.pose();
+            poseStack.pushPose();
+            poseStack.scale(this.getJsonElement().scale(), this.getJsonElement().scale(), this.getJsonElement().scale());
+            RenderSystem.enableBlend();
+            if (doTooltip)
+            {
+                guiGraphics.flush();
+                TooltipRenderUtil.renderTooltipBackground(guiGraphics, -25, 0, 72, 74, 0, null);
+                guiGraphics.flush();
+            }
+            RenderSystem.disableBlend();
+            METER_CLUSTER.render(guiGraphics, partialTick);
+            poseStack.popPose();
+        });
         if (isElementDebugMode() && debugText != null)
         {
-            guiGraphics.drawCenteredString(gui.getFont(), debugText, (guiGraphics.guiWidth()/2), (guiGraphics.guiHeight()/2) + 4, 0xFFFFFF);
+            guiGraphics.drawCenteredString(gui.getFont(), debugText, (guiGraphics.guiWidth()/2), (guiGraphics.guiHeight()/2) + 4, ColorRGB.WHITE.toArgbInt());
         }
-
     }
 
     @Override

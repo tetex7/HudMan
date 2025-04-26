@@ -257,8 +257,6 @@ public class HudState
         {
             var gson = new GsonBuilder()
                     .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathAdapter())
-                    /*.registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathJsonDeserializer())
-                    .registerTypeAdapter(NamespacePath.class, new NamespacePath.NamespacePathJsonSerializer())*/
                     .create();
             String json = Files.readString(Paths.get(configPath), StandardCharsets.UTF_8);
             return gson.fromJson(json, JsonConfigHudFile.class);
@@ -266,7 +264,7 @@ public class HudState
         catch (IOException e)
         {
             LOGGER.error("Failed to load config from {}\n{}", configPath, ConfigHelper.stackTraceString(e));
-            throw new RuntimeException("Critical error: Could not load configuration file at " + configPath, e);
+            throw new RuntimeException(fastCat("Critical error: Could not load configuration file at ", configPath), e);
         }
     }
 

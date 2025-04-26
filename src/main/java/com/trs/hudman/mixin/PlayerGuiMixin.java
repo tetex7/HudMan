@@ -28,6 +28,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.PlayerTabOverlay;
+import net.minecraft.util.profiling.Profiler;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Final;
@@ -59,7 +60,7 @@ public abstract class PlayerGuiMixin
         {
             if (HudState.showHud)
             {
-                //minecraft.getProfiler().push("HudMan Rendering Hotbar");
+                Profiler.get().push("HudMan Rendering Hotbar");
                 Stack<AbstractHudElement> huds = HudState.hudElements;
                 if (!huds.isEmpty())
                 {
@@ -73,7 +74,7 @@ public abstract class PlayerGuiMixin
                         }
                     }
                 }
-                //minecraft.getProfiler().pop();
+                Profiler.get().pop();
             }
         }
     }
@@ -85,7 +86,7 @@ public abstract class PlayerGuiMixin
         {
             if (HudState.showHud)
             {
-                //minecraft.getProfiler().push("HudMan Rendering Hotbar");
+                Profiler.get().push("HudMan Rendering Hotbar");
                 Stack<AbstractHudElement> huds = HudState.hudElements;
                 if (!huds.isEmpty())
                 {
@@ -99,7 +100,7 @@ public abstract class PlayerGuiMixin
                         }
                     }
                 }
-                //minecraft.getProfiler().pop();
+                Profiler.get().pop();
             }
         }
     }
@@ -111,7 +112,7 @@ public abstract class PlayerGuiMixin
         {
             if (HudState.showHud)
             {
-                //minecraft.getProfiler().push("HudMan Rendering Effectbar");
+                Profiler.get().push("HudMan Rendering Effectbar");
                 Stack<AbstractHudElement> huds = HudState.hudElements;
                 if (!huds.isEmpty())
                 {
@@ -124,6 +125,7 @@ public abstract class PlayerGuiMixin
                         }
                     }
                 }
+                Profiler.get().pop();
             }
         }
     }
@@ -135,7 +137,7 @@ public abstract class PlayerGuiMixin
         {
             if (HudState.showHud)
             {
-                //minecraft.getProfiler().push("HudMan Tick");
+                Profiler.get().push("HudMan Tick");
                 Stack<AbstractHudElement> huds = HudState.hudElements;
 
                 if (!huds.isEmpty())
@@ -145,7 +147,7 @@ public abstract class PlayerGuiMixin
                         hud.tick();
                     }
                 }
-                //minecraft.getProfiler().pop();
+                Profiler.get().pop();
             }
         }
     }

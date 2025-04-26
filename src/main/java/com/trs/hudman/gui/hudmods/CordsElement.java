@@ -78,15 +78,15 @@ public class CordsElement extends AbstractHudElement
     public void render(float partialTick, GuiGraphics guiGraphics, Gui gui)
     {
         doScaleSafeEnvironment(guiGraphics, () -> {
-            if (isCenter)
-            {
-                guiGraphics.drawCenteredString(gui.getFont(), Text, guiGraphics.guiWidth() / 2, 0, 0xFFFFFF);
-            }
-            else
+            if (!isCenter)
             {
                 guiGraphics.drawCenteredString(gui.getFont(), Text, 0, 0, 0xFFFFFF);
             }
         });
+        if (isCenter)
+        {
+            guiGraphics.drawCenteredString(gui.getFont(), Text, guiGraphics.guiWidth() / 2, 0, 0xFFFFFF);
+        }
     }
 
     @Override
