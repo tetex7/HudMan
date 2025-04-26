@@ -90,7 +90,9 @@ public class Tester extends AbstractHudElement
     @Override
     public void render(GuiGraphics guiGraphics, float partialTick, Gui gui)
     {
-        TEST_FLOW_METER.render(guiGraphics, var1);
+        doScaleSafeEnvironment(guiGraphics, () -> {
+            TEST_FLOW_METER.render(guiGraphics, partialTick);
+        });
     }
 
     @Override
