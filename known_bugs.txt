@@ -2,4 +2,8 @@ Currently, known bugs
 
 
 B01: Scaling values higher than one messing up coordinate placing of an HUD element
-    Fix will be made eventually
+    Fix has been made by using the doScaleSafeEnvironment function call provided by AbstractHudElement
+
+B02: A mess-up in how packages are scanned for classes for HUD element registry causing the scanning system to only work in development environment
+    bug has been fixed with emergency patch upload modrinth Patch version number is 1.8.1
+    The lesson learned by this bug is a better development cycle is required to make sure bugs like this do not make it through
