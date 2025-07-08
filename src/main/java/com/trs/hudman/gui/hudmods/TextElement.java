@@ -18,6 +18,7 @@
 package com.trs.hudman.gui.hudmods;
 
 import com.trs.hudman.confg.JsonConfigHudElement;
+import com.trs.hudman.util.BetterStringsParsers;
 import com.trs.hudman.util.Vec2i;
 import com.trs.hudman.util.annotations.RegistrableHudElement;
 import com.trs.qlang.Qlang;
@@ -80,7 +81,7 @@ public class TextElement extends AbstractHudElement
     {
         if (hasStringOption("sText"))
         {
-            return QlangString.ofLiteral(getStringOption("sText"));
+            return QlangString.ofLiteral(getStringOptionAs("sText", BetterStringsParsers::parseBString));
         }
 
         boolean badStringFlag = (getJsonElement().strings().size() == 1) && getJsonElement().strings().get(0).startsWith("bCenter");

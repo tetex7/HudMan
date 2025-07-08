@@ -34,12 +34,21 @@ import java.util.Objects;
 
 import net.minecraft.ReportedException;
 import net.minecraft.CrashReport;
+import org.intellij.lang.annotations.Language;
+import org.intellij.lang.annotations.Pattern;
 
 public final class FastRegistrar
 {
+    /**
+     *
+     * @param namespace Top level namespace
+     * @param packagePath Path to a package containing HUD elements
+     */
     @SuppressWarnings("unchecked")
-    public static void searchForRegistrables(String namespace, String packagePath)
-    {
+    public static void searchForRegistrables(
+            @Pattern(NamespacePath.ALLOWED_CHAR_REGEX) String namespace,
+            @Language(value = "JAVA", prefix = "import ", suffix = ".*;") String packagePath
+    ) {
         try
         {
             List<Class<?>> classes = getClasses(packagePath);
@@ -91,24 +100,39 @@ public final class FastRegistrar
         }
     }
 
-    private static List<Class<?>> getClasses(String packageName) throws Exception
-    {
+    /**
+     * Fixed in regards with known_bugs.txt(B02)
+     */
+    private static List<Class<?>> getClasses(String packageName) throws Exception {
         List<Class<?>> classes = new ArrayList<>();
         String path = packageName.replace('.', '/');
-        URL resource = Thread.currentThread().getContextClassLoader().getResource(path);
+        var classLoader = Thread.currentThread().getContextClassLoader();
+        var resource = classLoader.getResource(path);
 
-        if (resource == null)
-        {
+        if (resource == null) {
             throw new RuntimeException("Package not found: " + packageName);
         }
 
-        File directory = new File(resource.toURI());
-        for (File file : Objects.requireNonNull(directory.listFiles()))
-        {
-            if (file.getName().endsWith(".class"))
-            {
-                String className = packageName + "." + file.getName().replace(".class", "");
-                classes.add(Class.forName(className));
+        if (resource.getProtocol().equals("jar")) {
+            String jarPath = resource.getPath().substring(5, resource.getPath().indexOf("!"));
+            try (var jarFile = new java.util.jar.JarFile(jarPath)) {
+                var entries = jarFile.entries();
+                while (entries.hasMoreElements()) {
+                    var entry = entries.nextElement();
+                    String name = entry.getName();
+                    if (name.startsWith(path) && name.endsWith(".class") && !name.contains("$")) {
+                        String className = name.replace('/', '.').substring(0, name.length() - 6);
+                        classes.add(Class.forName(className));
+                    }
+                }
+            }
+        } else {
+            File directory = new File(resource.toURI());
+            for (File file : Objects.requireNonNull(directory.listFiles())) {
+                if (file.getName().endsWith(".class") && !file.getName().contains("$")) {
+                    String className = packageName + "." + file.getName().replace(".class", "");
+                    classes.add(Class.forName(className));
+                }
             }
         }
         return classes;

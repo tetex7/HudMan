@@ -27,6 +27,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
+import org.intellij.lang.annotations.Language;
+import org.intellij.lang.annotations.Pattern;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,6 +53,15 @@ public abstract class AbstractHudElement extends HudCommonEnvironment implements
     private final Properties stringsProperties;
     private final ColorRGB confColor;
     private final boolean elementDebugMode;
+
+    @Language("RegExp")
+    public static final String ALLOWED_KEY_CHAR_REGEX = "^[A-Za-z0-9/._-]+$";
+
+    @Pattern(ALLOWED_KEY_CHAR_REGEX)
+    protected static final String DEBUG_STRINGS_KEY = "bDebug";
+    @Pattern(ALLOWED_KEY_CHAR_REGEX)
+    protected static final String COLOR_STRINGS_KEY = "iColor";
+    protected static final String HEX_PREFIX = "0x";
 
     /**
      *
@@ -77,30 +88,8 @@ public abstract class AbstractHudElement extends HudCommonEnvironment implements
             throw new RuntimeException(e);
         }
 
-        if (this.getStringsProperties().containsKey("bDebug"))
-        {
-            this.elementDebugMode = getStringOptionAs("bDebug", Boolean::parseBoolean);
-        }
-        else
-        {
-            this.elementDebugMode = false;
-        }
-
-
-        if (this.getStringsProperties().containsKey("iColor") && getStringOption("iColor").startsWith("0x"))
-        {
-            this.confColor = ColorRGB.ofInt(
-                    Integer.parseInt(
-                            getStringOption("iColor")
-                                    .replace("0x", ""),
-                            16
-                    )
-            );
-        }
-        else
-        {
-            this.confColor = ColorRGB.WHITE;
-        }
+        this.elementDebugMode = getStringOptionAsOr(DEBUG_STRINGS_KEY, false, Boolean::parseBoolean);
+        this.confColor = getStringOptionAsOr(COLOR_STRINGS_KEY, ColorRGB.WHITE, ColorRGB::formHexColorString);
     }
 
     /**
@@ -209,6 +198,16 @@ public abstract class AbstractHudElement extends HudCommonEnvironment implements
         return Objects.requireNonNull(parserCall).parse((String)getStringsProperties().get(key));
     }
 
+
+    protected final <T> T getStringOptionAsOr(String key, T onFailedReturn, @NotNull StringOptionParser<T> parserCall)
+    {
+        if (!hasStringOption(key))
+        {
+            return onFailedReturn;
+        }
+        return Objects.requireNonNull(parserCall).parse((String)getStringsProperties().get(key));
+    }
+
     /**
      * A easy wrapper around the {@link Properties} system
      * @param key the name of the option you wish to parse
@@ -226,6 +225,15 @@ public abstract class AbstractHudElement extends HudCommonEnvironment implements
      */
     protected final String getStringOption(String key)
     {
+        return (String)getStringsProperties().get(key);
+    }
+
+    protected final String getStringOptionOr(String key, String onFailedReturn)
+    {
+        if (!hasStringOption(key))
+        {
+            return onFailedReturn;
+        }
         return (String)getStringsProperties().get(key);
     }
 
@@ -275,7 +283,7 @@ public abstract class AbstractHudElement extends HudCommonEnvironment implements
      * @param guiGraphics A reference to the current gui context
      * @param environment A lambda of code you wish to have run within the safe environment
      */
-    void guiPoseStackSafeEnvironment(@NotNull GuiGraphics guiGraphics, @NotNull Runnable environment)
+    protected void guiPoseStackSafeEnvironment(@NotNull GuiGraphics guiGraphics, @NotNull Runnable environment)
     {
         guiGraphics.pose().pushPose();
         environment.run();
@@ -288,12 +296,15 @@ public abstract class AbstractHudElement extends HudCommonEnvironment implements
      * @param guiGraphics A reference to the current gui context
      * @param environment A lambda of code you wish to have run within the scale safe environment
      */
-    void doScaleSafeEnvironment(@NotNull GuiGraphics guiGraphics, @NotNull Runnable environment)
+    protected void doScaleSafeEnvironment(@NotNull GuiGraphics guiGraphics, @NotNull Runnable environment)
     {
-        guiGraphics.pose().pushPose();
-        doProperElementScaling(guiGraphics);
-        environment.run();
-        guiGraphics.pose().popPose();
+        guiPoseStackSafeEnvironment(
+                guiGraphics,
+                () -> {
+                    doProperElementScaling(guiGraphics);
+                    environment.run();
+                }
+        );
     }
 
     /**

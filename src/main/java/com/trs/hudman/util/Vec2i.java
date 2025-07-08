@@ -17,7 +17,6 @@
 
 package com.trs.hudman.util;
 
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 import org.joml.Vector2ic;
@@ -42,6 +41,11 @@ public record Vec2i(int x, int y)
     public @NotNull Vec2i minus(@NotNull Vec2i vec)
     {
         return new Vec2i((this.x - vec.x), (this.y - vec.y));
+    }
+
+    public @NotNull Vec2i relativeTo(@NotNull Vec2i refVec)
+    {
+        return this.minus(refVec);
     }
 
     public @NotNull Vector2ic toGLvec2i()

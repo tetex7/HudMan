@@ -15,14 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    repositories {
-        maven("https://maven.fabricmc.net/") {
-            name = "Fabric"
-        }
-        gradlePluginPortal()
+package com.trs.hudman.util;
+
+public class BetterStringsParsers
+{
+    public static String parseBString(String input)
+    {
+        return input.trim();
     }
 }
-//include("HudElementProcessor")
-
-include("exampleExtensionMod")
